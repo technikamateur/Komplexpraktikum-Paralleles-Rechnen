@@ -1,0 +1,18 @@
+\documentclass[german,plainarticle,hyperref,utf8]{zihpub}
+\author{Daniel Körsten}
+\title{Komplexpraktikum Paralleles Rechnen}
+\matno{4690396}
+\betreuer{Dr. Robert Schöne}
+\bibfiles{bib-filenames}
+\begin{document}
+	\section{Aufgabe B}
+	\subsection{Beschreibung}
+	In dieser Aufgabe wird Thread-parallele Ausführung von \verb|Conways Game-of-Life| durchgeführt. Conways Game-of-Life kann man sich als $n\times m$ Matrix vorstellen, bei der in jedem Berechnungsschritt die nächste Generation berechnet wird. Die Spielregeln lassen sich \href{https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln}{hier} nachlesen.
+	
+	\subsection{Ansatz}
+	Für die Berechnung der nächsten Generation muss nun jede Zelle einzeln betrachtet werden und ihr Zustand in der nächsten Generation gemäß den Spielregeln berechnet werden.
+	Ein möglicher Ansatz ist über jede Zeile und anschließend jede Spalte zu iterieren. Realisieren lässt sich das über zwei geschachtelte \verb|for|-Schleifen. Das Ergebnis dieser Berechnung muss in einer zweiten Matrix gespeichert werden um die Berechnungen der Nachbarzellen nicht zu verfälschen.
+	Bei diesem Ansatz wird klar, dass jede Berechnung losgelöst von anderen Berechnungen betrachtet werden kann und sich die Schleife mit OpenMP parallelisieren lässt.
+	
+	In der Aufgabenstellung soll das \verb|Game-of-Life| mit \verb|periodic boundary conditions| implementiert werden. Dies erhöht den Schwierigkeitsgrad, da jede Kante und Ecke individuell betrachtet werden muss. Dabei kann auch hier die Berechnung der Kanten parallelisiert werden, da sie lediglich eine besondere Zeile darstellen.
+\end{document}
