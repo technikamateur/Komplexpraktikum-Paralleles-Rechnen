@@ -19,6 +19,7 @@
 
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
+	Ebenso lassen sich Threadanzahl und OpenMP Schedulingverfahren einstellen.
 	
 	\subsection{Probleme und ihre Lösung}
 	Die Erzeugung des 2D-Arrays soll dynamisch erfolgen, damit man, ohne Anpassung des Programmcodes, die Feldgröße festlegen kann. Gemäß der Aufgabenstellung umfasst das größte Feld $32768\times 32768$ Zellen. Damit ist das Array zu groß für den Stack des Programms.
@@ -28,4 +29,6 @@
 	Eine Möglichkeit zur Einsparung von Rechenressourcen ist, den Speicherverbrauch des Programms zu reduzieren. So verwendete ich für die Zellen der Felder den Datentyp \verb|u_int8_t| statt \verb|int|. Dadurch reduziert sich der Speicherverbrauch jeder Zelle von 4 auf 1 Byte. Bei einem Feld der Größe $32768\times 32768$ entspricht dies einer stattlichen Einsparung von über 3 GiB.
 		
 	Des weiteren habe ich die \verb|double pointers| durch ein einzelnes \verb|malloc| ersetzt, indem die Anzahl von Spalten als Offset dient, um sich im 2D-Array zu bewegen. Dadurch vermeidet man einen Speicherzugriff und folglich eine Adressübersetzung bei jeder Datenabfrage und -manipulation.
+	
+	Die Verwendung von von bitweisen Operatoren in den Berechnung bringen ebenfalls einen geringen Geschwindigkeitsvorteil, da bitweise Operationen in der Schaltungstechnik die Einfachsten darstellen. Alle höheren Operationen lassen sich auf sie zurückführen.
 \end{document}
