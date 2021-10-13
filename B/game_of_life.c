@@ -6,6 +6,15 @@
 #include <string.h>
 #include <getopt.h>
 
+/*
+  typedef enum omp_sched_t {
+    omp_sched_static = 1,
+    omp_sched_dynamic = 2,
+    omp_sched_guided = 3,
+    omp_sched_auto = 4
+  } omp_sched_t;
+*/
+
 // defaults
 static float repetitions = 100;
 static u_int64_t columns = 128;
@@ -203,7 +212,9 @@ void argments(int argc, char *argv[])
             printf("-p, --progress             default: false; prints progress on terminal\n");
             printf("-R, --repetitions [int]    default: 3 repetitions; specifies the number of images created\n");
             printf("-s, --size <columns,rows>  default: 128x128; specifies the number of columns and rows\n");
-            printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n");
+            printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n\n");
+            printf("You can set scheduling via environmental variables e.g: export OMP_SCHEDULE=\"dynamic\". Your scheduling is printed on startup\n");
+            printf("omp_sched_static = 1,\nomp_sched_dynamic = 2,\nomp_sched_guided = 3,\nomp_sched_auto = 4");
             exit(0);
         }
     }
@@ -214,9 +225,13 @@ int main(int argc, char *argv[])
 {
     // arguments
     argments(argc, argv);
+    omp_sched_t kind;
+    int chunk;
+    omp_get_schedule(&kind, &chunk);
     // welcome information
     printf("Welcome to the game of life!\n");
     printf("We are doing %.0lf repetitions with %d thread(s)!\n", repetitions, omp_get_max_threads());
+    printf("Scheduling: %d %d\n", kind, chunk);
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
     // initalizing states and pointers
