@@ -18,6 +18,7 @@ static struct option long_options[] =
         {"progress", optional_argument, NULL, 'p'},
         {"repetitions", optional_argument, NULL, 'R'},
         {"size", optional_argument, NULL, 's'},
+        {"threads", optional_argument, NULL, 't'},
         {NULL, 0, NULL, 0}};
 
 void field_initializer(u_int8_t *state)
@@ -165,7 +166,7 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old)
 void argments(int argc, char *argv[])
 {
     int opt;
-    while ((opt = getopt_long(argc, argv, "hpR:s:", long_options, NULL)) != -1)
+    while ((opt = getopt_long(argc, argv, "hpR:s:t:", long_options, NULL)) != -1)
     {
         switch (opt)
         {
@@ -181,17 +182,20 @@ void argments(int argc, char *argv[])
             show_progress = 1;
             break;
         case 's':
-            if (strlen(optarg) > 9)
+            if (strlen(optarg) > 11)
             {
-                printf("Given size too large. Allowed max.: 9999x9999\n");
+                printf("Given size too large. Allowed max.: 99999x99999\n");
                 exit(1);
             }
-            char size[9];
+            char size[11];
             sprintf(size, "%s", optarg);
             char *word = strtok(size, ",");
             columns = strtol(word, NULL, 10);
             word = strtok(NULL, ",");
             rows = strtol(word, NULL, 10);
+            break;
+        case 't':
+            omp_set_num_threads(atoi(optarg));
             break;
         case 'h':
             printf("Welcome to the game of life!\nAvailable arguments:\n");
@@ -199,6 +203,7 @@ void argments(int argc, char *argv[])
             printf("-p, --progress             default: false; prints progress on terminal\n");
             printf("-R, --repetitions [int]    default: 3 repetitions; specifies the number of images created\n");
             printf("-s, --size <columns,rows>  default: 128x128; specifies the number of columns and rows\n");
+            printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n");
             exit(0);
         }
     }
@@ -211,7 +216,7 @@ int main(int argc, char *argv[])
     argments(argc, argv);
     // welcome information
     printf("Welcome to the game of life!\n");
-    printf("We are doing: %.0lf repetitions\n", repetitions);
+    printf("We are doing %.0lf repetitions with %d thread(s)!\n", repetitions, omp_get_max_threads());
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
     // initalizing states and pointers
