@@ -22,30 +22,27 @@ static u_int64_t rows = 128;
 static u_int8_t show_progress = 0;
 // getopt
 static struct option long_options[] =
-    {
-        {"help", optional_argument, NULL, 'h'},
-        {"progress", optional_argument, NULL, 'p'},
-        {"repetitions", optional_argument, NULL, 'R'},
-        {"size", optional_argument, NULL, 's'},
-        {"threads", optional_argument, NULL, 't'},
-        {NULL, 0, NULL, 0}};
+        {
+                {"execution",   optional_argument, NULL, 'e'},
+                {"help",        optional_argument, NULL, 'h'},
+                {"progress",    optional_argument, NULL, 'p'},
+                {"repetitions", optional_argument, NULL, 'R'},
+                {"size",        optional_argument, NULL, 's'},
+                {"threads",     optional_argument, NULL, 't'},
+                {NULL,          0,                 NULL, 0}};
 
-void field_initializer(u_int8_t *state)
-{
+void field_initializer(u_int8_t *state) {
     //fills fields with random numbers 0 = dead, 1 = alive
     srand(time(0));
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < columns; j++)
-        {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
             state[(i * columns) + j] = rand() % 2;
         }
     }
     return;
 }
 
-void calculate_corners(u_int8_t *state, u_int8_t *state_old)
-{
+void calculate_corners(u_int8_t *state, u_int8_t *state_old) {
     u_int8_t corner_sum = 0;
     // top left
     corner_sum = state_old[1] +
@@ -89,11 +86,9 @@ void calculate_corners(u_int8_t *state, u_int8_t *state_old)
     state[rows * columns - 1] = (corner_sum == 3) | ((corner_sum == 2) & state_old[rows * columns - 1]);
 }
 
-void calculate_left_right(u_int8_t *state, u_int8_t *state_old)
-{
-#pragma omp parallel for
-    for (int i = 1; i < rows - 1; i++)
-    {
+void calculate_left_right(u_int8_t *state, u_int8_t *state_old) {
+#pragma omp parallel for schedule(runtime)
+    for (int i = 1; i < rows - 1; i++) {
         u_int8_t sum_of_l_edge = state_old[i * columns + 1] +
                                  state_old[(i - 1) * columns] +
                                  state_old[(i - 1) * columns + 1] +
@@ -115,11 +110,9 @@ void calculate_left_right(u_int8_t *state, u_int8_t *state_old)
     }
 }
 
-void calculate_top_bottom(u_int8_t *state, u_int8_t *state_old)
-{
-#pragma omp parallel for
-    for (int i = 1; i < columns - 1; i++)
-    {
+void calculate_top_bottom(u_int8_t *state, u_int8_t *state_old) {
+#pragma omp parallel for schedule(runtime)
+    for (int i = 1; i < columns - 1; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
                                  state_old[i + 1] +
                                  state_old[2 * columns + (i - 1)] +
@@ -137,12 +130,12 @@ void calculate_top_bottom(u_int8_t *state, u_int8_t *state_old)
                                  state_old[i] +
                                  state_old[i - 1] +
                                  state_old[i + 1];
-        state[(rows - 1) * columns + i] = (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(rows - 1) * columns + i]);
+        state[(rows - 1) * columns + i] =
+                (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(rows - 1) * columns + i]);
     }
 }
 
-void calculate_next_gen(u_int8_t *state, u_int8_t *state_old)
-{
+void calculate_next_gen(u_int8_t *state, u_int8_t *state_old) {
     //i = row, j = column
 
     // corners
@@ -152,11 +145,9 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old)
     // top and bottom edge
     calculate_top_bottom(state, state_old);
     // middle
-#pragma omp parallel for
-    for (int i = 1; i < rows - 1; i++)
-    {
-        for (int j = 1; j < columns - 1; j++)
-        {
+#pragma omp parallel for schedule(runtime)
+    for (int i = 1; i < rows - 1; i++) {
+        for (int j = 1; j < columns - 1; j++) {
             //count up a number (8)
             u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
                                 state_old[(i - 1) * columns + j] +
@@ -172,57 +163,60 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old)
     return;
 }
 
-void argments(int argc, char *argv[])
-{
+void argments(int argc, char *argv[]) {
     int opt;
-    while ((opt = getopt_long(argc, argv, "hpR:s:t:", long_options, NULL)) != -1)
-    {
-        switch (opt)
-        {
-        case 'R':
-            if (strlen(optarg) > 4)
-            {
-                printf("Given repetitions too large. Allowed max.: 9999\n");
-                exit(1);
-            }
-            repetitions = atoi(optarg);
-            break;
-        case 'p':
-            show_progress = 1;
-            break;
-        case 's':
-            if (strlen(optarg) > 11)
-            {
-                printf("Given size too large. Allowed max.: 99999x99999\n");
-                exit(1);
-            }
-            char size[11];
-            sprintf(size, "%s", optarg);
-            char *word = strtok(size, ",");
-            columns = strtol(word, NULL, 10);
-            word = strtok(NULL, ",");
-            rows = strtol(word, NULL, 10);
-            break;
-        case 't':
-            omp_set_num_threads(atoi(optarg));
-            break;
-        case 'h':
-            printf("Welcome to the game of life!\nAvailable arguments:\n");
-            printf("-h, --help                 prints this help page and exits\n");
-            printf("-p, --progress             default: false; prints progress on terminal\n");
-            printf("-R, --repetitions [int]    default: 3 repetitions; specifies the number of images created\n");
-            printf("-s, --size <columns,rows>  default: 128x128; specifies the number of columns and rows\n");
-            printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n\n");
-            printf("You can set scheduling via environmental variables e.g: export OMP_SCHEDULE=\"dynamic\". Your scheduling is printed on startup\n");
-            printf("omp_sched_static = 1,\nomp_sched_dynamic = 2,\nomp_sched_guided = 3,\nomp_sched_auto = 4");
-            exit(0);
+    while ((opt = getopt_long(argc, argv, "hpe:R:s:t:", long_options, NULL)) != -1) {
+        switch (opt) {
+            case 'e':
+                switch (atoi(optarg)) {
+                    case 1: omp_set_schedule(omp_sched_static, 1); break;
+                    case 2: omp_set_schedule(omp_sched_dynamic, 1); break;
+                    case 3: omp_set_schedule(omp_sched_guided, 1); break;
+                    default: omp_set_schedule(omp_sched_auto, 1); break;
+                }
+                break;
+            case 'R':
+                if (strlen(optarg) > 4) {
+                    printf("Given repetitions too large. Allowed max.: 9999\n");
+                    exit(1);
+                }
+                repetitions = atoi(optarg);
+                break;
+            case 'p':
+                show_progress = 1;
+                break;
+            case 's':
+                if (strlen(optarg) > 11) {
+                    printf("Given size too large. Allowed max.: 99999x99999\n");
+                    exit(1);
+                }
+                char size[11];
+                sprintf(size, "%s", optarg);
+                char *word = strtok(size, ",");
+                columns = strtol(word, NULL, 10);
+                word = strtok(NULL, ",");
+                rows = strtol(word, NULL, 10);
+                break;
+            case 't':
+                omp_set_num_threads(atoi(optarg));
+                break;
+            case 'h':
+                printf("Welcome to the game of life!\nAvailable arguments:\n");
+                printf("-e, --execution [int]      default: auto; Scheduler information: 1=static, 2=dynamic, 3=guided\n");
+                printf("-h, --help                 prints this help page and exits\n");
+                printf("-p, --progress             default: false; prints progress on terminal\n");
+                printf("-R, --repetitions [int]    default: 3 repetitions; specifies the number of images created\n");
+                printf("-s, --size <columns,rows>  default: 128x128; specifies the number of columns and rows\n");
+                printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n");
+                exit(0);
         }
     }
     return;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+    // setting scheduling to auto
+    omp_set_schedule(omp_sched_auto, 1);
     // arguments
     argments(argc, argv);
     omp_sched_t kind;
@@ -235,26 +229,23 @@ int main(int argc, char *argv[])
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
     // initalizing states and pointers
-    u_int8_t *state_1 = (u_int8_t *)malloc(columns * rows * sizeof(u_int8_t));
-    u_int8_t *state_2 = (u_int8_t *)malloc(columns * rows * sizeof(u_int8_t));
+    u_int8_t *state_1 = (u_int8_t *) malloc(columns * rows * sizeof(u_int8_t));
+    u_int8_t *state_2 = (u_int8_t *) malloc(columns * rows * sizeof(u_int8_t));
     u_int8_t *state_in = state_1;
     u_int8_t *state_out = state_2;
     u_int8_t *state_tmp = NULL;
     field_initializer(state_1);
     //calculation
-    for (float i = 0; i < repetitions; i++)
-    {
+    for (float i = 0; i < repetitions; i++) {
         calculate_next_gen(state_out, state_in);
         state_tmp = state_in;
         state_in = state_out;
         state_out = state_tmp;
-        if (show_progress)
-        {
+        if (show_progress) {
             printf("%.1lf%c\n", ((i + 1) / repetitions) * 100, 37);
         }
     }
-    if (!show_progress)
-    {
+    if (!show_progress) {
         printf("Done :)\n");
     }
 
