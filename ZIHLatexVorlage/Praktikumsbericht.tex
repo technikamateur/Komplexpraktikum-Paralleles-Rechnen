@@ -24,11 +24,12 @@
 	\subsection{Probleme und ihre Lösung}
 	Die Erzeugung des 2D-Arrays soll dynamisch erfolgen, damit man, ohne Anpassung des Programmcodes, die Feldgröße festlegen kann. Gemäß der Aufgabenstellung umfasst das größte Feld $32768\times 32768$ Zellen. Damit ist das Array zu groß für den Stack des Programms.
 	Mein Lösungsansatz war die Allokation von Speicher mittels \verb|malloc| und \verb|double pointers|: Ein erstes Array wurde mit Pointern gefüllt, die jeweils wiederum auf die einzelnen Zeilen verweisen, welche ebenfalls mit \verb|malloc| allokiert wurden.
+	Später habe ich die \verb|double pointers| durch ein einzelnes \verb|malloc| ersetzt, indem die Anzahl von Spalten als Offset dient, um sich im 2D-Array zu bewegen. Dadurch vermeidet man einen Speicherzugriff und folglich eine Adressübersetzung bei jeder Datenabfrage und -manipulation.
+	
+	Nach der Parallelisierung mit OpenMP änderte sich jedoch nichts an der Ausführungszeit, was eindeutig den Erwartungen widersprach. Durch Experimentieren fand ich heraus, dass die Parallelisierung der Funktion, welche das Array mit Zufallswerten füllt, die Performance massiv beeinflusst. Die Funktion \verb|rand| ist nicht für die parallele Ausführung geeignet. Deshalb habe ich mich hier einfach für die sequentielle Ausführung entschieden.
 	
 	\subsection{Optimierung des Codes}
 	Eine Möglichkeit zur Einsparung von Rechenressourcen ist, den Speicherverbrauch des Programms zu reduzieren. So verwendete ich für die Zellen der Felder den Datentyp \verb|u_int8_t| statt \verb|int|. Dadurch reduziert sich der Speicherverbrauch jeder Zelle von 4 auf 1 Byte. Bei einem Feld der Größe $32768\times 32768$ entspricht dies einer stattlichen Einsparung von über 3 GiB.
-		
-	Des weiteren habe ich die \verb|double pointers| durch ein einzelnes \verb|malloc| ersetzt, indem die Anzahl von Spalten als Offset dient, um sich im 2D-Array zu bewegen. Dadurch vermeidet man einen Speicherzugriff und folglich eine Adressübersetzung bei jeder Datenabfrage und -manipulation.
 	
 	Die Verwendung von von bitweisen Operatoren in den Berechnung bringen ebenfalls einen geringen Geschwindigkeitsvorteil, da bitweise Operationen in der Schaltungstechnik die Einfachsten darstellen. Alle höheren Operationen lassen sich auf sie zurückführen.
 \end{document}
