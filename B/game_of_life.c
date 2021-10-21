@@ -33,10 +33,11 @@ static struct option long_options[] =
 
 void field_initializer(u_int8_t *state) {
     //fills fields with random numbers 0 = dead, 1 = alive
-    srand(time(0));
+    unsigned seed = time(0);
+#pragma omp parallel for schedule(runtime)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
-            state[(i * columns) + j] = rand() % 2;
+            state[(i * columns) + j] = rand_r(&seed) % 2;
         }
     }
     return;
@@ -169,10 +170,18 @@ void argments(int argc, char *argv[]) {
         switch (opt) {
             case 'e':
                 switch (atoi(optarg)) {
-                    case 1: omp_set_schedule(omp_sched_static, 1); break;
-                    case 2: omp_set_schedule(omp_sched_dynamic, 1); break;
-                    case 3: omp_set_schedule(omp_sched_guided, 1); break;
-                    default: omp_set_schedule(omp_sched_auto, 1); break;
+                    case 1:
+                        omp_set_schedule(omp_sched_static, 1);
+                        break;
+                    case 2:
+                        omp_set_schedule(omp_sched_dynamic, 1);
+                        break;
+                    case 3:
+                        omp_set_schedule(omp_sched_guided, 1);
+                        break;
+                    default:
+                        omp_set_schedule(omp_sched_auto, 1);
+                        break;
                 }
                 break;
             case 'R':
