@@ -34,7 +34,7 @@ static struct option long_options[] =
 void field_initializer(u_int8_t *state) {
     //fills fields with random numbers 0 = dead, 1 = alive
     unsigned seed = time(0);
-#pragma omp parallel for schedule(runtime)
+#pragma omp parallel for schedule(runtime) private(seed)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < columns; j++) {
             state[(i * columns) + j] = rand_r(&seed) % 2;
