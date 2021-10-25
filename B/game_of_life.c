@@ -199,7 +199,7 @@ void argments(int argc, char *argv[]) {
                     printf("Given size too large. Allowed max.: 99999x99999\n");
                     exit(1);
                 }
-                char size[11];
+                char size[12];
                 sprintf(size, "%s", optarg);
                 char *word = strtok(size, ",");
                 columns = strtol(word, NULL, 10);
