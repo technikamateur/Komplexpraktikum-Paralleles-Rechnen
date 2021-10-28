@@ -1,13 +1,31 @@
 \documentclass[german,plainarticle,hyperref,utf8]{zihpub}
 \author{Daniel Körsten}
-\title{Komplexpraktikum Paralleles Rechnen}
+\title{Komplexpraktikum Paralleles Rechnen - Aufgabe B}
 \matno{4690396}
 \betreuer{Dr. Robert Schöne}
 \bibfiles{bib-filenames}
+
 \begin{document}
-	\section{Aufgabe B}
-	\subsection{Beschreibung}
-	In dieser Aufgabe wird Thread-parallele Ausführung von \verb|Conways Game-of-Life| durchgeführt. Conways Game-of-Life kann man sich als $n\times m$ Matrix vorstellen, bei der in jedem Berechnungsschritt die nächste Generation berechnet wird. Die Spielregeln lassen sich \href{https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens#Die_Spielregeln}{hier} nachlesen.
+	\section{Aufgabenbeschreibung}
+	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} programmiert werden. Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Spiel \cite{gardner}.
+	
+	\subsection{Conway’s Game-of-Life}
+	Das Spiel besteht dabei aus einem Spielbrett mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
+	
+	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass Spielfeld Torus-förmig sein soll. Alles was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
+	
+	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
+	\begin{enumerate}
+		\item Eine lebende Zelle mit zwei oder drei Nachbarn überlebt in der Folgegeneration.
+		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
+		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
+	\end{enumerate}
+	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
+	
+	\subsection{Besonderheiten der Aufgabenstellung}
+	tba
+	
+	
 	
 	\subsection{Vorbereitung des Codes für eine parallele Ausführung}
 	Für die Berechnung der nächsten Generation muss nun jede Zelle einzeln betrachtet werden und ihr Zustand in der nächsten Generation gemäß den Spielregeln berechnet werden.
@@ -32,4 +50,6 @@
 	Eine Möglichkeit zur Einsparung von Rechenressourcen ist, den Speicherverbrauch des Programms zu reduzieren. So verwendete ich für die Zellen der Felder den Datentyp \verb|u_int8_t| statt \verb|int|. Dadurch reduziert sich der Speicherverbrauch jeder Zelle von 4 auf 1 Byte. Bei einem Feld der Größe $32768\times 32768$ entspricht dies einer stattlichen Einsparung von über 3 GiB.
 	
 	Die Verwendung von von bitweisen Operatoren in den Berechnung bringen ebenfalls einen geringen Geschwindigkeitsvorteil, da bitweise Operationen in der Schaltungstechnik die Einfachsten darstellen. Alle höheren Operationen lassen sich auf sie zurückführen.
+	
+\bibliography{Praktikumsbericht}
 \end{document}
