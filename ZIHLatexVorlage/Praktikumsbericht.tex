@@ -8,6 +8,7 @@
 \begin{document}
 	\section{Aufgabenbeschreibung}
 	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} programmiert werden. Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Spiel \cite{gardner}.
+	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compiler durchgeführt und verglichen werden.
 	
 	\subsection{Conway’s Game-of-Life}
 	Das Spiel besteht dabei aus einem Spielbrett mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
@@ -23,7 +24,22 @@
 	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
-	tba
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, welche es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
+	
+	Weitere Besonderheiten sind:
+	\begin{itemize}
+		\item Die Simulation soll variabel mit Feldgrößen von $128\times 128$ bis $32768\times 32768$ und 1 bis 32 Threads erfolgen.
+		\item Das OpenMP Schedulingverfahren soll hinsichtlich des Einflusses auf die Ausführungszeit untersucht werden.
+		\item Das Programm soll mit dem dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
+	\end{itemize}
+
+	\section{Implementierung}
+	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} mittels der Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen.
+	 Beispiel: Möchte man auf die Zweite Zelle in Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+	 
+	 Um zu Berücksichtigen, dass die Polgeneration immer der aktuelle Generation ersetzt, verwende ich Zwei dieser Speicherbereiche. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	
+	
 	
 	
 	
@@ -51,5 +67,5 @@
 	
 	Die Verwendung von von bitweisen Operatoren in den Berechnung bringen ebenfalls einen geringen Geschwindigkeitsvorteil, da bitweise Operationen in der Schaltungstechnik die Einfachsten darstellen. Alle höheren Operationen lassen sich auf sie zurückführen.
 	
-\bibliography{Praktikumsbericht}
+
 \end{document}
