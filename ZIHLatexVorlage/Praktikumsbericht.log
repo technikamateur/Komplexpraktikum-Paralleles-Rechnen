@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.10.11)  3 NOV 2021 10:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.11.5)  5 NOV 2021 16:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -524,7 +524,17 @@ File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count276
 \l__pdf_internal_box=\box56
 )
-(./Praktikumsbericht.aux)
+(./Praktikumsbericht.aux
+
+LaTeX Warning: Label `gardner' multiply defined.
+
+
+LaTeX Warning: Label `moore' multiply defined.
+
+
+LaTeX Warning: Label `openmp' multiply defined.
+
+)
 \openout1 = `Praktikumsbericht.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
@@ -543,8 +553,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count277
 \scratchdimen=\dimen159
@@ -653,42 +662,78 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 3
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [2
 
-] [3] [4]
-(./Praktikumsbericht.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 12--16
+]
+(./Praktikumsbericht.bbl [3]
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
+[]$\T1/pcr/m/n/10.95 https : / / newsroom . intel . com / wp-[]content / upload
+s / sites / 11 / 2018 /
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 19--23
+[]$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
+ []
+
+) [4] (./Praktikumsbericht.bblpdfTeX warning (ext4): destination with the same 
+identifier (name{cite.gardner}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.3 \bibitem[Gar70]{gardner}
+                            pdfTeX warning (ext4): destination with the same id
+entifier (name{cite.moore}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.10 \bibitem[Moo65]{moore}
+                           
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
+[]$\T1/pcr/m/n/10.95 https : / / newsroom . intel . com / wp-[]content / upload
+s / sites / 11 / 2018 /
+ []
+
+pdfTeX warning (ext4): destination with the same identifier (name{cite.openmp})
+ has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.17 \bibitem[ope18]{openmp}
+                            
+Underfull \hbox (badness 10000) in paragraph at lines 19--23
 []$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
  []
 
 ) [5
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 69.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 69.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 67.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 67.
  (./Praktikumsbericht.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 69.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 69.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 67.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 67.
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 69.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 67.
  ) 
 Here is how much of TeX's memory you used:
- 11275 strings out of 483130
- 185277 string characters out of 5963882
+ 11279 strings out of 483130
+ 185334 string characters out of 5963883
  566554 words of memory out of 5000000
- 26054 multiletter control sequences out of 15000+600000
+ 26055 multiletter control sequences out of 15000+600000
  579001 words of font info for 89 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 49i,11n,58p,10144b,418s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 49i,11n,58p,10144b,506s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 r8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (6 pages, 80808 bytes).
+Output written on Praktikumsbericht.pdf (6 pages, 81451 bytes).
 PDF statistics:
- 119 PDF objects out of 1000 (max. 8388607)
- 103 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
+ 128 PDF objects out of 1000 (max. 8388607)
+ 112 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
  73 words of extra memory for PDF output out of 10000 (max. 10000000)
 

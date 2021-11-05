@@ -1,4 +1,4 @@
-\begin{thebibliography}{Gar70}
+\begin{thebibliography}{Moo65}
 
 \bibitem[Gar70]{gardner}
 \textsc{Gardner}, Martin.
@@ -6,6 +6,13 @@
   Conway's new solitaire game "life"}.
 \newblock \\\url{https://web.stanford.edu/class/sts145/Library/life.pdf}.
 \newblock 1970
+
+\bibitem[Moo65]{moore}
+\textsc{Moore}, Gordon.
+\newblock \emph{Cramming more components onto integrated circuits}.
+\newblock
+  \\\url{https://newsroom.intel.com/wp-content/uploads/sites/11/2018/05/moores-law-electronics.pdf}.
+\newblock 1965
 
 \bibitem[ope18]{openmp}
 
