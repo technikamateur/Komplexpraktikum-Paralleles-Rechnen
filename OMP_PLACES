@@ -1,0 +1,14 @@
+ On the other hand, if the two sockets have a total of sixteen cores and you define
+
+OMP_PLACES=cores
+OMP_PROC_BIND=close
+
+then
+
+    thread 0 goes to core 0, which is on socket 0,
+    thread 1 goes to core 1, which is on socket 0,
+    thread 2 goes to core 2, which is on socket 0,
+    and so on, until thread 7 goes to core 7 on socket 0, and
+    thread 8 goes to core 8, which is on socket 1,
+    et cetera.
+

@@ -20,15 +20,17 @@ static float repetitions = 100;
 static u_int64_t columns = 128;
 static u_int64_t rows = 128;
 static u_int8_t show_progress = 0;
+static u_int8_t produce_output = 0;
+static char output_fname[255] = "life_";
 // getopt
 static struct option long_options[] =
         {
                 {"execution",   optional_argument, NULL, 'e'},
                 {"help",        optional_argument, NULL, 'h'},
+                {"output",      optional_argument, NULL, 'o'},
                 {"progress",    optional_argument, NULL, 'p'},
                 {"repetitions", optional_argument, NULL, 'R'},
                 {"size",        optional_argument, NULL, 's'},
-                {"threads",     optional_argument, NULL, 't'},
                 {NULL,          0,                 NULL, 0}};
 
 void field_initializer(u_int8_t *state) {
@@ -164,6 +166,25 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old) {
     return;
 }
 
+void write_pbm_file(u_int8_t *state, int i) {
+    FILE *fptr;
+    char new_filename[65];
+    sprintf(new_filename, "%s%06d.pbm", output_fname, i);
+    fptr = fopen(new_filename, "w");
+    fprintf(fptr, "P1\n");
+    fprintf(fptr, "# This is the %06d result. Have fun :)\n", i);
+    fprintf(fptr, "%lu %lu\n", columns, rows);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            fprintf(fptr, "%d ", state[i * columns + j]);
+        }
+        fprintf(fptr, "\n");
+    }
+    fclose(fptr);
+    return;
+}
+
+
 void argments(int argc, char *argv[]) {
     int opt;
     while ((opt = getopt_long(argc, argv, "hpe:R:s:t:", long_options, NULL)) != -1) {
@@ -191,32 +212,38 @@ void argments(int argc, char *argv[]) {
                 }
                 repetitions = atoi(optarg);
                 break;
+            case 'o':
+                if (strlen(optarg) > 40) {
+                    printf("Output filename too big. Please use filename smaller than 255 characters.\n");
+                    exit(1);
+                }
+                sprintf(output_fname, "%s", optarg);
+                produce_output = 1;
+                break;
+
             case 'p':
                 show_progress = 1;
                 break;
             case 's':
-                if (strlen(optarg) > 11) {
-                    printf("Given size too large. Allowed max.: 99999x99999\n");
+                if (strlen(optarg) > 254) {
+                    printf("Given size too large.\n");
                     exit(1);
                 }
-                char size[12];
+                char size[255];
                 sprintf(size, "%s", optarg);
                 char *word = strtok(size, ",");
                 columns = strtol(word, NULL, 10);
                 word = strtok(NULL, ",");
                 rows = strtol(word, NULL, 10);
                 break;
-            case 't':
-                omp_set_num_threads(atoi(optarg));
-                break;
             case 'h':
                 printf("Welcome to the game of life!\nAvailable arguments:\n");
                 printf("-e, --execution [int]      default: auto; Scheduler information: 1=static, 2=dynamic, 3=guided\n");
                 printf("-h, --help                 prints this help page and exits\n");
+                printf("-o, --output [filename]    default: life_xxxxxx.pbm, provide an output filename\n");
                 printf("-p, --progress             default: false; prints progress on terminal\n");
                 printf("-R, --repetitions [int]    default: 3 repetitions; specifies the number of images created\n");
                 printf("-s, --size <columns,rows>  default: 128x128; specifies the number of columns and rows\n");
-                printf("-t, --threads [int]        default: auto detection; specifies the number of threads which will be spawned\n");
                 exit(0);
         }
     }
@@ -244,6 +271,8 @@ int main(int argc, char *argv[]) {
     u_int8_t *state_out = state_2;
     u_int8_t *state_tmp = NULL;
     field_initializer(state_1);
+    // write random pattern as -1 file
+    write_pbm_file(state_in, -1);
     //calculation
     for (float i = 0; i < repetitions; i++) {
         calculate_next_gen(state_out, state_in);
@@ -253,10 +282,11 @@ int main(int argc, char *argv[]) {
         if (show_progress) {
             printf("%.1lf%c\n", ((i + 1) / repetitions) * 100, 37);
         }
+        if (produce_output) {
+            write_pbm_file(state_in, i);
+        }
     }
-    if (!show_progress) {
-        printf("Done :)\n");
-    }
+    printf("Done :)\n");
 
     exit(0);
 }
