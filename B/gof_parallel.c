@@ -213,7 +213,7 @@ void argments(int argc, char *argv[]) {
                 repetitions = atoi(optarg);
                 break;
             case 'o':
-                if (strlen(optarg) > 40) {
+                if (strlen(optarg) > 254) {
                     printf("Output filename too big. Please use filename smaller than 255 characters.\n");
                     exit(1);
                 }
@@ -264,18 +264,43 @@ int main(int argc, char *argv[]) {
     printf("Scheduling: %d %d\n", kind, chunk);
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
-    // initalizing states and pointers
+    // initializing states and pointers
     u_int8_t *state_1 = (u_int8_t *) malloc(columns * rows * sizeof(u_int8_t));
     u_int8_t *state_2 = (u_int8_t *) malloc(columns * rows * sizeof(u_int8_t));
     u_int8_t *state_in = state_1;
     u_int8_t *state_out = state_2;
     u_int8_t *state_tmp = NULL;
+    // starting clock
+    clock_t t;
+    double time_rand = 0;
+    double time_calc = 0;
+    double time_out = 0;
+    double t_omp = 0;
+    double omp_rand = 0;
+    double omp_calc = 0;
+    // filling with random numbers
+    t = clock();
+    t_omp = omp_get_wtime();
     field_initializer(state_1);
+    omp_rand = omp_get_wtime() - t_omp;
+    t = clock() - t;
+    time_rand = ((double) t) / CLOCKS_PER_SEC; // in seconds
     // write random pattern as -1 file
-    write_pbm_file(state_in, -1);
+    if (produce_output) {
+        t = clock();
+        write_pbm_file(state_in, -1);
+        t = clock() - t;
+        time_out += ((double) t) / CLOCKS_PER_SEC;
+    }
     //calculation
     for (float i = 0; i < repetitions; i++) {
+        t = clock();
+        t_omp = omp_get_wtime();
         calculate_next_gen(state_out, state_in);
+        t_omp = omp_get_wtime() - t_omp;
+        t = clock() - t;
+        omp_calc += t_omp;
+        time_calc += ((double) t) / CLOCKS_PER_SEC;
         state_tmp = state_in;
         state_in = state_out;
         state_out = state_tmp;
@@ -283,10 +308,17 @@ int main(int argc, char *argv[]) {
             printf("%.1lf%c\n", ((i + 1) / repetitions) * 100, 37);
         }
         if (produce_output) {
+            t = clock();
             write_pbm_file(state_in, i);
+            t = clock() - t;
+            time_out += ((double) t) / CLOCKS_PER_SEC;
         }
     }
     printf("Done :)\n");
-
+    printf("Field initializer took %f seconds to execute (all threads added).\n", time_rand);
+    printf("Field initializer took %f seconds to execute (real time).\n", omp_rand);
+    printf("Calculation took %f seconds to execute (all threads added).\n", time_calc);
+    printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
+    printf("Writing pbm files took %f seconds to execute.\n", time_out);
     exit(0);
 }
