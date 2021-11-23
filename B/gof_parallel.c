@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <getopt.h>
+#include <pthread.h>
 
 /*
   typedef enum omp_sched_t {
@@ -35,11 +36,15 @@ static struct option long_options[] =
 
 void field_initializer(u_int8_t *state) {
     //fills fields with random numbers 0 = dead, 1 = alive
-    unsigned seed = time(0);
-#pragma omp parallel for schedule(runtime) private(seed)
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            state[(i * columns) + j] = rand_r(&seed) % 2;
+#pragma omp parallel
+    {
+        unsigned tid = pthread_self();
+        unsigned seed = time(0) + tid;
+#pragma omp parallel for schedule(runtime)
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                state[(i * columns) + j] = rand_r(&seed) % 2;
+            }
         }
     }
     return;
@@ -187,7 +192,7 @@ void write_pbm_file(u_int8_t *state, int i) {
 
 void argments(int argc, char *argv[]) {
     int opt;
-    while ((opt = getopt_long(argc, argv, "hpe:R:s:t:", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "hpe:R:s:o:", long_options, NULL)) != -1) {
         switch (opt) {
             case 'e':
                 switch (atoi(optarg)) {
@@ -213,14 +218,14 @@ void argments(int argc, char *argv[]) {
                 repetitions = atoi(optarg);
                 break;
             case 'o':
+                printf("%s", optarg);
                 if (strlen(optarg) > 254) {
-                    printf("Output filename too big. Please use filename smaller than 255 characters.\n");
+                    printf("Output filename too big.\n");
                     exit(1);
                 }
                 sprintf(output_fname, "%s", optarg);
                 produce_output = 1;
                 break;
-
             case 'p':
                 show_progress = 1;
                 break;
@@ -260,7 +265,7 @@ int main(int argc, char *argv[]) {
     omp_get_schedule(&kind, &chunk);
     // welcome information
     printf("Welcome to the game of life!\n");
-    printf("We are doing %.0lf repetitions with %d thread(s)!\n", repetitions, omp_get_max_threads());
+    printf("We are doing %.0lf repetitions with %d thread(s)!\n", repetitions, omp_get_thread_limit());
     printf("Scheduling: %d %d\n", kind, chunk);
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
@@ -314,11 +319,11 @@ int main(int argc, char *argv[]) {
             time_out += ((double) t) / CLOCKS_PER_SEC;
         }
     }
-    printf("Done :)\n");
     printf("Field initializer took %f seconds to execute (all threads added).\n", time_rand);
     printf("Field initializer took %f seconds to execute (real time).\n", omp_rand);
     printf("Calculation took %f seconds to execute (all threads added).\n", time_calc);
     printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
     printf("Writing pbm files took %f seconds to execute.\n", time_out);
+    printf("Done :)\n");
     exit(0);
 }
