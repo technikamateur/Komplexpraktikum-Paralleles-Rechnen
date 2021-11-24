@@ -17,7 +17,7 @@
 */
 
 // defaults
-static float repetitions = 100;
+static int repetitions = 100;
 static u_int64_t columns = 128;
 static u_int64_t rows = 128;
 static u_int8_t show_progress = 0;
@@ -211,8 +211,8 @@ void argments(int argc, char *argv[]) {
                 }
                 break;
             case 'R':
-                if (strlen(optarg) > 4) {
-                    printf("Given repetitions too large. Allowed max.: 9999\n");
+                if (strlen(optarg) > 254) {
+                    printf("Given repetitions too large.\n");
                     exit(1);
                 }
                 repetitions = atoi(optarg);
@@ -265,7 +265,8 @@ int main(int argc, char *argv[]) {
     omp_get_schedule(&kind, &chunk);
     // welcome information
     printf("Welcome to the game of life!\n");
-    printf("We are doing %.0lf repetitions with %d thread(s)!\n", repetitions, omp_get_thread_limit());
+    // ignore output if no thread limit is specified
+    printf("We are doing %d repetitions with %d thread(s)!\n", repetitions, omp_get_thread_limit());
     printf("Scheduling: %d %d\n", kind, chunk);
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
@@ -298,7 +299,7 @@ int main(int argc, char *argv[]) {
         time_out += ((double) t) / CLOCKS_PER_SEC;
     }
     //calculation
-    for (float i = 0; i < repetitions; i++) {
+    for (int i = 0; i < repetitions; i++) {
         t = clock();
         t_omp = omp_get_wtime();
         calculate_next_gen(state_out, state_in);
@@ -310,7 +311,8 @@ int main(int argc, char *argv[]) {
         state_in = state_out;
         state_out = state_tmp;
         if (show_progress) {
-            printf("%.1lf%c\n", ((i + 1) / repetitions) * 100, 37);
+            double percentage = 100.0 * (i + 1) / repetitions;
+            printf("%.1lf%c\n", percentage, 37);
         }
         if (produce_output) {
             t = clock();

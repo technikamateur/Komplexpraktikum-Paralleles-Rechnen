@@ -1,0 +1,36 @@
+Dump of assembler code for function calculate_next_gen:
+   0x0000000000001835 <+0>:	push   %rbp
+   0x0000000000001836 <+1>:	mov    %rsp,%rbp
+   0x0000000000001839 <+4>:	sub    $0x30,%rsp
+   0x000000000000183d <+8>:	mov    %rdi,-0x28(%rbp)
+   0x0000000000001841 <+12>:	mov    %rsi,-0x30(%rbp)
+   0x0000000000001845 <+16>:	mov    -0x30(%rbp),%rdx
+   0x0000000000001849 <+20>:	mov    -0x28(%rbp),%rax
+   0x000000000000184d <+24>:	mov    %rdx,%rsi
+   0x0000000000001850 <+27>:	mov    %rax,%rdi
+   0x0000000000001853 <+30>:	call   0x1310 <calculate_corners>
+   0x0000000000001858 <+35>:	mov    -0x30(%rbp),%rdx
+   0x000000000000185c <+39>:	mov    -0x28(%rbp),%rax
+   0x0000000000001860 <+43>:	mov    %rdx,%rsi
+   0x0000000000001863 <+46>:	mov    %rax,%rdi
+   0x0000000000001866 <+49>:	call   0x17af <calculate_left_right>
+   0x000000000000186b <+54>:	mov    -0x30(%rbp),%rdx
+   0x000000000000186f <+58>:	mov    -0x28(%rbp),%rax
+   0x0000000000001873 <+62>:	mov    %rdx,%rsi
+   0x0000000000001876 <+65>:	mov    %rax,%rdi
+   0x0000000000001879 <+68>:	call   0x17f2 <calculate_top_bottom>
+   0x000000000000187e <+73>:	mov    -0x30(%rbp),%rax
+   0x0000000000001882 <+77>:	mov    %rax,-0x18(%rbp)
+   0x0000000000001886 <+81>:	mov    -0x28(%rbp),%rax
+   0x000000000000188a <+85>:	mov    %rax,-0x20(%rbp)
+   0x000000000000188e <+89>:	lea    -0x20(%rbp),%rax
+   0x0000000000001892 <+93>:	mov    $0x0,%ecx
+   0x0000000000001897 <+98>:	mov    $0x0,%edx
+   0x000000000000189c <+103>:	mov    %rax,%rsi
+   0x000000000000189f <+106>:	lea    0x109c(%rip),%rax        # 0x2942 <calculate_next_gen._omp_fn.0>
+   0x00000000000018a6 <+113>:	mov    %rax,%rdi
+   0x00000000000018a9 <+116>:	call   0x11d0 <GOMP_parallel@plt>
+   0x00000000000018ae <+121>:	nop
+   0x00000000000018af <+122>:	leave  
+   0x00000000000018b0 <+123>:	ret    
+End of assembler dump.
