@@ -8,8 +8,8 @@
 #SBATCH --time=00:10:00
 #SBATCH --account=p_lv_kp_wise2122
 #SBATCH --exclusive
-#SBATCH --output=out.txt
-#SBATCH --error=err.txt
+#SBATCH --output=out1.txt
+#SBATCH --error=err1.txt
 #SBATCH --mem=16000
 
 module purge
@@ -22,19 +22,23 @@ export OMP_PLACES=cores
 export OMP_PROC_BIND=close
 export OMP_DISPLAY_ENV=VERBOSE
 
-for ((k = 0 ; k < 19 ; k++)); do
-  srun ./gof.out -s 128,128 -R 1
+# min time
+export OMP_THREAD_LIMIT=32
+for ((k = 0 ; k < 20 ; k++)); do
+  srun ./gof.out -s 128,128 -R 1 >> probe1.txt
 done
 
+# setting sizes and threads
 sizes=(128 512 2048 8192 32768)
+repetitions=(1000000 100000 10000 1000 100)
+threads=(1 2 4 8 16 32)
 
-for ((i = 1 ; i <= 32 ; i=i*2)); do
-  export OMP_THREAD_LIMIT=$i
-  for ((j = 0 ; j <= 4 ; j++)); do
-    power=10**$j
-    repetitions=100000/$power
-    for ((k = 0 ; k < 19 ; k++)); do
-      srun time ./gof.out -s "${sizes[$j]}","${sizes[$j]}" -R "$repetitions" >> gcc_T"$i"_R"$j".txt 2>&1
+#starting loop
+for index in "${!sizes[@]}"; do
+  for j in "${threads[@]}"; do
+    export OMP_THREAD_LIMIT=$j
+    for ((k = 0 ; k < 20 ; k++)); do
+      srun time ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "${repetitions[index]}" >> gcc_S"${sizes[index]}"_T"$j".txt 2>&1
     done
   done
 done
