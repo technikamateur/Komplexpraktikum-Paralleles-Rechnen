@@ -5,7 +5,7 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=32
 #SBATCH --partition=romeo
-#SBATCH --time=00:10:00
+#SBATCH --time=01:00:00
 #SBATCH --account=p_lv_kp_wise2122
 #SBATCH --exclusive
 #SBATCH --output=out1.txt
@@ -37,8 +37,8 @@ threads=(1 2 4 8 16 32)
 for index in "${!sizes[@]}"; do
   for j in "${threads[@]}"; do
     export OMP_THREAD_LIMIT=$j
-    for ((k = 0 ; k < 20 ; k++)); do
-      srun time ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "${repetitions[index]}" >> gcc_S"${sizes[index]}"_T"$j".txt 2>&1
+    for ((k = 0 ; k < 10 ; k++)); do
+      srun ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "${repetitions[index]}" >> gcc_S"${sizes[index]}"_T"$j".txt 2>&1
     done
   done
 done
