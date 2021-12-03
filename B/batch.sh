@@ -30,7 +30,7 @@ done
 
 # setting sizes and threads
 sizes=(128 512 2048 8192 32768)
-repetitions=(1000000 100000 10000 1000 100)
+repetitions=(100000 10000 1000 100 10)
 threads=(1 2 4 8 16 32)
 
 #starting loop
