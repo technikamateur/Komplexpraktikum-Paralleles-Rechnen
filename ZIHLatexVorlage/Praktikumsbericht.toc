@@ -1,4 +1,4 @@
-\babel@toc {ngerman}{}
+\babel@toc {ngerman}{}\relax 
 \contentsline {section}{\numberline {1}Aufgabenbeschreibung}{2}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Conway’s Game-of-Life}{2}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Besonderheiten der Aufgabenstellung}{2}{subsection.1.2}%
@@ -6,5 +6,6 @@
 \contentsline {subsection}{\numberline {2.1}Daten initialisieren}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Vorbereitung des Codes für eine parallele Ausführung}{3}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Ein und Ausgabe}{3}{subsection.2.3}%
-\contentsline {section}{\nonumberline Literatur}{4}{section*.2}%
-\contentsline {section}{\nonumberline Literatur}{5}{section*.3}%
+\contentsline {section}{\nonumberline Literatur}{4}{section*.3}%
+\contentsline {section}{\nonumberline Literatur}{5}{section*.5}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -7,11 +7,14 @@
 
 \begin{document}
 	\section{Aufgabenbeschreibung}
-	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} programmiert werden. Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Spiel \cite{gardner}.
+	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.
+	
 	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compiler durchgeführt und verglichen werden.
 	
 	\subsection{Conway’s Game-of-Life}
-	Das Spiel besteht dabei aus einem Spielbrett mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
+	 Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein Zweidimensionales Spielfeld, jedoch ist auch eine Dreidimensionale Simulation möglich.
+	
+	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
 	
 	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass Spielfeld Torus-förmig sein soll. Alles was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
 	
@@ -34,16 +37,20 @@
 	\end{itemize}
 
 	\section{Implementierung}
-	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} mittels der Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen.Beispiel: Möchte man auf die Zweite Zelle in Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen.Beispiel: Möchte man auf die Zweite Zelle in Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
 	 
 	 Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss.
 	 
-	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, verwende ich Zwei dieser Speicherbereiche. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{Daten initialisieren}
-	Für die Dateninitialisierung habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist kann, im Vergleich zu z.B. \texttt{srand()} Thread-parallel ausgeführt werden.
+	Für die Dateninitialisierung habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser kann, im Vergleich zu z.B. \texttt{srand()} Thread-parallel ausgeführt werden.
 	
-	Für die eigentliche Parallelisierung verwende ich die OpenMP Direktive \texttt{\#pragma omp parallel for}. Diese passt
+	Für die eigentliche Parallelisierung verwende ich die OpenMP Direktive:
+	
+	\texttt{\#pragma omp parallel for}
+	
+	LOL
 	
 	
 	
