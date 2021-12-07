@@ -254,18 +254,12 @@ void argments(int argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-    // setting scheduling to auto
-    omp_set_schedule(omp_sched_auto, 1);
     // arguments
     argments(argc, argv);
-    omp_sched_t kind;
-    int chunk;
-    omp_get_schedule(&kind, &chunk);
     // welcome information
     printf("Welcome to the game of life!\n");
     // ignore output if no thread limit is specified
     printf("We are doing %d repetitions with %d thread(s)!\n", repetitions, omp_get_thread_limit());
-    printf("Scheduling: %d %d\n", kind, chunk);
     printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
     printf("Starting now...\n");
     // initializing states and pointers
