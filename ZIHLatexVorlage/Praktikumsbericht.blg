@@ -1,55 +1,53 @@
-This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: Praktikumsbericht.aux
 The style file: alphadin.bst
-Illegal, another \bibdata command---line 50 of file Praktikumsbericht.aux
- : \bibdata
- :         {bib-filenames}
-I'm skipping whatever remains of this command
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: Praktikumsbericht.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Warning--to sort, need author or key in openmp
+Warning--to sort, need author or key in randr
 Warning--Weder Verfasser noch Hrsg. in openmp
+Warning--Weder Verfasser noch Hrsg. in randr
 You've used 3 entries,
             3183 wiz_defined-function locations,
-            656 strings with 4957 characters,
-and the built_in function-call counts, 884 in all, are:
-= -- 89
-> -- 17
-< -- 18
-+ -- 18
-- -- 4
-* -- 47
-:= -- 173
+            656 strings with 4865 characters,
+and the built_in function-call counts, 771 in all, are:
+= -- 79
+> -- 10
+< -- 9
++ -- 9
+- -- 2
+* -- 44
+:= -- 143
 add.period$ -- 9
 call.type$ -- 3
-change.case$ -- 11
+change.case$ -- 10
 chr.to.int$ -- 3
-cite$ -- 6
-duplicate$ -- 31
-empty$ -- 56
-format.name$ -- 10
-if$ -- 157
+cite$ -- 9
+duplicate$ -- 29
+empty$ -- 57
+format.name$ -- 5
+if$ -- 144
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 0
 newline$ -- 21
-num.names$ -- 6
-pop$ -- 4
+num.names$ -- 3
+pop$ -- 2
 preamble$ -- 1
-purify$ -- 17
+purify$ -- 16
 quote$ -- 0
-skip$ -- 42
+skip$ -- 32
 stack$ -- 0
-substring$ -- 51
-swap$ -- 5
-text.length$ -- 4
-text.prefix$ -- 2
+substring$ -- 45
+swap$ -- 4
+text.length$ -- 2
+text.prefix$ -- 1
 top$ -- 0
 type$ -- 24
-warning$ -- 2
-while$ -- 6
-width$ -- 5
+warning$ -- 4
+while$ -- 3
+width$ -- 6
 write$ -- 41
-(There was 1 error message)
+(There were 4 warnings)

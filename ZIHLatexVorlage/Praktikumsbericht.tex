@@ -3,7 +3,7 @@
 \title{Komplexpraktikum Paralleles Rechnen - Aufgabe B}
 \matno{4690396}
 \betreuer{Dr. Robert Schöne}
-\bibfiles{bib-filenames}
+
 
 \begin{document}
 	\section{Aufgabenbeschreibung}
@@ -44,18 +44,21 @@
 	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{Daten initialisieren}
-	Für die Dateninitialisierung habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser kann, im Vergleich zu z.B. \texttt{srand()} Thread-parallel ausgeführt werden.
+	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
+	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
 	
-	Für die eigentliche Parallelisierung verwende ich die OpenMP Direktive:
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()} Thread-sicher und kann Thread-parallel ausgeführt werden.
 	
-	\texttt{\#pragma omp parallel for}
+	Für die eigentliche Parallelisierung verwende ich die OpenMP Direktive:\\
 	
-	LOL
+	\texttt{\#pragma omp parallel for}\\
 	
+	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt bei betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.
+	seed bla bla\\
 	
+	\textbf{Anmerkung zu rand\_r():}
 	
-	
-	\cite{moore}
+	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{randr}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und der Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
 		
 	\subsection{Vorbereitung des Codes für eine parallele Ausführung}
 	Für die Berechnung der nächsten Generation muss nun jede Zelle einzeln betrachtet werden und ihr Zustand in der nächsten Generation gemäß den Spielregeln berechnet werden.

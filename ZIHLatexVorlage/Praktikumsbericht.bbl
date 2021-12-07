@@ -1,4 +1,4 @@
-\begin{thebibliography}{Moo65}
+\begin{thebibliography}{Gar70}
 
 \bibitem[Gar70]{gardner}
 \textsc{Gardner}, Martin.
@@ -7,18 +7,17 @@
 \newblock \\\url{https://web.stanford.edu/class/sts145/Library/life.pdf}.
 \newblock 1970
 
-\bibitem[Moo65]{moore}
-\textsc{Moore}, Gordon.
-\newblock \emph{Cramming more components onto integrated circuits}.
-\newblock
-  \\\url{https://newsroom.intel.com/wp-content/uploads/sites/11/2018/05/moores-law-electronics.pdf}.
-\newblock 1965
-
 \bibitem[ope18]{openmp}
 
 \newblock \emph{OpenMP Application Programming Interface 5.0}.
 \newblock
   \\\url{https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5.0.pdf}.
 \newblock 2018
+
+\bibitem[ran10]{randr}
+
+\newblock \emph{Linux Man Pages - rand}.
+\newblock \\\url{https://linux.die.net/man/3/rand}.
+\newblock 2010
 
 \end{thebibliography}
