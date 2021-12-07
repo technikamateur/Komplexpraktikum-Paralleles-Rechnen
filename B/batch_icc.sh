@@ -49,6 +49,6 @@ export OMP_THREAD_LIMIT=32
 for element in "${scheduling[@]}"; do
   export OMP_SCHEDULE="$element"
   for ((k = 0; k < 10; k++)); do
-    srun ./gof.out -s 128,128 -R 20 >>icc_scheduling_"$element".txt 2>&1
+    srun ./gof.out -s 128,128 -R 1000000 >>icc_scheduling_"$element".txt 2>&1
   done
 done
