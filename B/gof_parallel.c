@@ -40,7 +40,6 @@ void field_initializer(u_int8_t *state) {
     {
         unsigned tid = pthread_self();
         unsigned seed = time(0) + tid;
-        printf("%d\n",tid);
 #pragma omp parallel for schedule(runtime)
         for (int i = 0; i < columns * rows; i++) {
             state[i] = rand_r(&seed) % 2;
