@@ -6,12 +6,12 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: Praktikumsbericht.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Warning--to sort, need author or key in openmp
-Warning--to sort, need author or key in randr
+Warning--to sort, need author or key in lmp
+Warning--Weder Verfasser noch Hrsg. in lmp
 Warning--Weder Verfasser noch Hrsg. in openmp
-Warning--Weder Verfasser noch Hrsg. in randr
 You've used 3 entries,
             3183 wiz_defined-function locations,
-            656 strings with 4865 characters,
+            656 strings with 4863 characters,
 and the built_in function-call counts, 771 in all, are:
 = -- 79
 > -- 10

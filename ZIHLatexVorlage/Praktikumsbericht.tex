@@ -37,9 +37,11 @@
 	\end{itemize}
 
 	\section{Implementierung}
-	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen.Beispiel: Möchte man auf die Zweite Zelle in Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
 	 
-	 Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss.
+	 Beispiel: Möchte man auf die Zweite Zelle in der Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+	 
+	 Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleiner Datentyp möglich ist.\\
 	 
 	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
@@ -49,24 +51,27 @@
 	
 	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()} Thread-sicher und kann Thread-parallel ausgeführt werden.
 	
-	Für die eigentliche Parallelisierung verwende ich die OpenMP Direktive:\\
+	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
 	
 	\texttt{\#pragma omp parallel for}\\
 	
 	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt bei betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.
-	seed bla bla\\
+	
+	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlich \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
+	
+	\texttt{\#pragma omp parallel}\\
+	
+	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden Zwei Probleme gelöst:
+	\begin{enumerate}
+	\item Jeder Thread arbeitet auf seiner eigenen \textit{seed} Variable. Dadurch wird verhindert, dass Threads auf der gleichen Variable arbeiten und folglich ein Flaschenhals entsteht.
+	\item Die \textit{seed} Variablen können unterschiedliche Werte haben, was wiederum die Entropie des initialisierten Spielfeldes erhöht.
+	\end{enumerate}
+	
+	Die \textit{seed} Variable ergibt sich bei mir aus der aktuellen Zeit in Sekunden und der Thread ID. Da bei jeder Ausführung die Zeit als auch die Thread ID variiert, erhält jeder Thread einen zufälligen \textit{seed} mit minimalem Rechenaufwand.\\
 	
 	\textbf{Anmerkung zu rand\_r():}
 	
-	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{randr}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und der Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
-		
-	\subsection{Vorbereitung des Codes für eine parallele Ausführung}
-	Für die Berechnung der nächsten Generation muss nun jede Zelle einzeln betrachtet werden und ihr Zustand in der nächsten Generation gemäß den Spielregeln berechnet werden.
-	Ein möglicher Ansatz ist über jede Zeile und anschließend jede Spalte zu iterieren. Realisieren lässt sich das über zwei geschachtelte \verb|for|-Schleifen. Das Ergebnis dieser Berechnung muss in einer zweiten Matrix gespeichert werden um die Berechnungen der Nachbarzellen nicht zu verfälschen.
-	
-	Dieser Ansatz bietet den Vorteil, dass er mit OpenMP relativ einfach parallelisiert werden kann, denn die Berechnung jeder einzelnen Zelle ist unabhängig von den Berechnungen anderer Zellen.
-	
-	Besonderes Augenmerk muss man jedoch auf die Kanten und Ecken legen. Diese sollen, laut Aufgabenstellung, mit \verb|periodic boundary conditions| implementiert werden. Jedoch kann auch hier OpenMP zur Parallelisierung der Kanten verwendet werden.
+	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und der Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
 
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
