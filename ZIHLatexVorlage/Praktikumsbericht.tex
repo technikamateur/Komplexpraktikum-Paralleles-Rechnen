@@ -53,10 +53,11 @@
 	
 	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
 	
-	\texttt{\#pragma omp parallel for}\\
+	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
-	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt bei betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.
-	
+	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
+	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Zahl der Anzahl der Hardware-Threads auf dem System.\\
+	Durch \texttt{schedule(runtime)} ist es später möglich, über die Umgebungsvariable \texttt{OMP\_SCHEDULE} das Schedulingverfahren zu wählen.\\
 	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlich \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
 	
 	\texttt{\#pragma omp parallel}\\
@@ -71,11 +72,23 @@
 	
 	\textbf{Anmerkung zu rand\_r():}
 	
-	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und der Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
+	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
+	
+	Vielleicht Bild, wie so ein initialisiertes Feld aussieht?
+	
+	\subsection{Berechnung der nächsten Generation}
+	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder. Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
+	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.\\
+	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt jedoch die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich. Deshalb verfolge ich den Ansatz vom Allgemeinen zum Speziellen schließen und beginne mit der Berechnung der inneren Zellen.\\
+	
+	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
+	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
+	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Gleichzeit ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
+	Daraus ergibt sich ein Performance Vorteil, bei der Verwendung bitweiser Operatoren.	
 
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
-	Ebenso lassen sich Threadanzahl und OpenMP Schedulingverfahren einstellen.
+	Ebenso lassen sich Thread Anzahl und OpenMP Schedulingverfahren einstellen.
 	
 	
 \bibliography{Praktikumsbericht}
