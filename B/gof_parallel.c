@@ -49,7 +49,7 @@ void field_initializer(u_int8_t *state) {
 }
 
 void calculate_corners(u_int8_t *state, u_int8_t *state_old) {
-    u_int8_t corner_sum = 0;
+    u_int8_t corner_sum;
     // top left
     corner_sum = state_old[1] +
                  state_old[columns] +
@@ -190,24 +190,8 @@ void write_pbm_file(u_int8_t *state, int i) {
 
 void argments(int argc, char *argv[]) {
     int opt;
-    while ((opt = getopt_long(argc, argv, "hpe:R:s:o:", long_options, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "hpR:s:o:", long_options, NULL)) != -1) {
         switch (opt) {
-            case 'e':
-                switch (atoi(optarg)) {
-                    case 1:
-                        omp_set_schedule(omp_sched_static, 1);
-                        break;
-                    case 2:
-                        omp_set_schedule(omp_sched_dynamic, 1);
-                        break;
-                    case 3:
-                        omp_set_schedule(omp_sched_guided, 1);
-                        break;
-                    default:
-                        omp_set_schedule(omp_sched_auto, 1);
-                        break;
-                }
-                break;
             case 'R':
                 if (strlen(optarg) > 254) {
                     printf("Given repetitions too large.\n");
@@ -270,11 +254,11 @@ int main(int argc, char *argv[]) {
     u_int8_t *state_tmp = NULL;
     // starting clock
     clock_t t;
-    double time_rand = 0;
+    double time_rand;
     double time_calc = 0;
     double time_out = 0;
-    double t_omp = 0;
-    double omp_rand = 0;
+    double t_omp;
+    double omp_rand;
     double omp_calc = 0;
     // filling with random numbers
     t = clock();

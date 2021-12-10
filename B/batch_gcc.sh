@@ -37,7 +37,7 @@ threads=(1 2 4 8 16 32)
 for index in "${!sizes[@]}"; do
   for j in "${threads[@]}"; do
     export OMP_THREAD_LIMIT=$j
-    for ((k = 0 ; k < 10 ; k++)); do
+    for ((k = 0 ; k < 20 ; k++)); do
       srun ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "${repetitions[index]}" >> gcc_S"${sizes[index]}"_T"$j".txt 2>&1
     done
   done

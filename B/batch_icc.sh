@@ -37,7 +37,7 @@ threads=(1 2 4 8 16 32)
 for index in "${!sizes[@]}"; do
   for j in "${threads[@]}"; do
     export OMP_THREAD_LIMIT=$j
-    for ((k = 0; k < 10; k++)); do
+    for ((k = 0; k < 20; k++)); do
       srun ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "${repetitions[index]}" >>icc_S"${sizes[index]}"_T"$j".txt 2>&1
     done
   done
@@ -48,7 +48,7 @@ scheduling=("STATIC" "DYNAMIC" "GUIDED" "AUTO")
 export OMP_THREAD_LIMIT=32
 for element in "${scheduling[@]}"; do
   export OMP_SCHEDULE="$element"
-  for ((k = 0; k < 10; k++)); do
+  for ((k = 0; k < 20; k++)); do
     srun ./gof.out -s 128,128 -R 1000000 >>icc_scheduling_"$element".txt 2>&1
   done
 done
