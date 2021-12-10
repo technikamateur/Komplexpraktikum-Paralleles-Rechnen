@@ -5,7 +5,7 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=32
 #SBATCH --partition=romeo
-#SBATCH --time=08:00:00
+#SBATCH --time=05:00:00
 #SBATCH --account=p_lv_kp_wise2122
 #SBATCH --exclusive
 #SBATCH --output=out2.txt
