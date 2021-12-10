@@ -18,6 +18,8 @@ module load GCC/11.2.0
 gcc --version
 gcc -fopenmp gof_parallel.c -o gof.out
 
+date
+
 export OMP_PLACES=cores
 export OMP_PROC_BIND=close
 export OMP_DISPLAY_ENV=VERBOSE
@@ -42,3 +44,5 @@ for index in "${!sizes[@]}"; do
     done
   done
 done
+
+date

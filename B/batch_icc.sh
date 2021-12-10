@@ -18,6 +18,8 @@ module load icc/2019.1.144-GCC-8.2.0-2.31.1
 icc --version
 icc -fopenmp gof_parallel.c -o gof.out
 
+date
+
 export OMP_PLACES=cores
 export OMP_PROC_BIND=close
 export OMP_DISPLAY_ENV=VERBOSE
@@ -52,3 +54,5 @@ for element in "${scheduling[@]}"; do
     srun ./gof.out -s 128,128 -R 1000000 >>icc_scheduling_"$element".txt 2>&1
   done
 done
+
+date
