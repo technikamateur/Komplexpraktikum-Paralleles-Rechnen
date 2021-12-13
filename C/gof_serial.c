@@ -1,4 +1,3 @@
-#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -26,7 +25,6 @@ static struct option long_options[] =
 void field_initializer(u_int8_t *state) {
     //fills fields with random numbers 0 = dead, 1 = alive
     srand(time(NULL));
-#pragma omp simd
     for (int i = 0; i < columns * rows; i++) {
         state[i] = rand() % 2;
     }
@@ -77,7 +75,6 @@ void calculate_corners(u_int8_t *state, u_int8_t *state_old) {
 }
 
 void calculate_left_right(u_int8_t *state, u_int8_t *state_old) {
-#pragma omp simd
     for (int i = 1; i < rows - 1; i++) {
         u_int8_t sum_of_l_edge = state_old[i * columns + 1] +
                                  state_old[(i - 1) * columns] +
@@ -101,7 +98,6 @@ void calculate_left_right(u_int8_t *state, u_int8_t *state_old) {
 }
 
 void calculate_top_bottom(u_int8_t *state, u_int8_t *state_old) {
-#pragma omp simd
     for (int i = 1; i < columns - 1; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
                                  state_old[i + 1] +
@@ -136,7 +132,6 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old) {
     calculate_top_bottom(state, state_old);
     // middle
     for (int i = 1; i < rows - 1; i++) {
-#pragma omp simd
         for (int j = 1; j < columns - 1; j++) {
             //count up a number (8)
             u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
