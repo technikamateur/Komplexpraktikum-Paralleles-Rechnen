@@ -71,22 +71,22 @@ for index in "${!sizes[@]}"; do
 done
 
 #simd
-icc -fopenmp -O3 -mavx2 -fma gof_simd.c -o gof.out
+icc -fopenmp -O3 -mavx2 -fma gof_simd.c -o gof_omp.out
 
 #starting loop
 for index in "${!sizes[@]}"; do
   for ((k = 0; k < 20; k++)); do
-    srun time ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "100" >>icc_S"${sizes[index]}"_openmp.txt 2>&1
+    srun time ./gof_omp.out -s "${sizes[index]}","${sizes[index]}" -R "100" >>icc_S"${sizes[index]}"_openmp.txt 2>&1
   done
 done
 
 #simd extrem
-icc -fopenmp -std=c99 -O3 -mavx2 -fma gof_simd_extrem.c -o gof.out simdxorshift128plus.o xorshift128plus.o
+icc -fopenmp -std=c99 -O3 -mavx2 -fma gof_simd_extrem.c -o gof_omp_extrem.out simdxorshift128plus.o xorshift128plus.o
 
 #starting loop
 for index in "${!sizes[@]}"; do
   for ((k = 0; k < 20; k++)); do
-    srun time ./gof.out -s "${sizes[index]}","${sizes[index]}" -R "100" >>icc_S"${sizes[index]}"_openmp_extrem.txt 2>&1
+    srun time ./gof_omp_extrem.out -s "${sizes[index]}","${sizes[index]}" -R "100" >>icc_S"${sizes[index]}"_openmp_extrem.txt 2>&1
   done
 done
 
