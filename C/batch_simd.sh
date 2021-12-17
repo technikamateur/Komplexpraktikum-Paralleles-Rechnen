@@ -16,6 +16,7 @@
 date
 module purge
 export OMP_DISPLAY_ENV=VERBOSE
+export MKL_DEBUG_CPU_TYPE=5
 sizes=(128 512 2048 8192 32768)
 
 #####
@@ -59,7 +60,7 @@ done
 #####
 
 #serial version
-module load icc/2019.1.144-GCC-8.2.0-2.31.1
+module load intel/2019b
 icc --version
 icc -O3 -mavx2 -fma gof_serial.c -o gof.out
 
