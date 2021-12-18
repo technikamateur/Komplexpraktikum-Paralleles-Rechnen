@@ -15,6 +15,7 @@
 #setting things up
 date
 module purge
+module load intel/2019b
 export OMP_DISPLAY_ENV=VERBOSE
 export MKL_DEBUG_CPU_TYPE=5
 sizes=(128 512 2048 8192 32768)
@@ -25,7 +26,6 @@ rept=(100 100 100 100 10)
 #####
 
 #serial version
-module load intel/2019b
 icc --version
 icc -O3 -mavx2 -fma gof_serial.c -o gof.out
 

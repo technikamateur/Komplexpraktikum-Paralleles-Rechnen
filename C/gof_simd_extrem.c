@@ -179,8 +179,8 @@ void calculate_next_gen(uint8_t *state, uint8_t *state_old) {
     // top and bottom edge
     calculate_top_bottom(state, state_old);
     // middle
-#pragma omp simd
     for (int i = 1; i < rows - 1; i++) {
+#pragma omp simd
         for (int j = 1; j < columns - 1; j++) {
             //count up a number (8)
             uint8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
