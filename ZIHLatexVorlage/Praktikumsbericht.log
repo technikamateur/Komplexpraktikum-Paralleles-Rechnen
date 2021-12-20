@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2021.12.6)  18 DEC 2021 16:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2021.12.20)  20 DEC 2021 16:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **Praktikumsbericht.tex
 (./Praktikumsbericht.tex
-LaTeX2e <2021-11-15>
+LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2021-11-22> (./zihpub.cls
 Document Class: zihpub 
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
@@ -121,7 +121,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 )
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
-Package: color 2021/10/11 v1.3b Standard LaTeX Color (DPC)
+Package: color 2021/12/07 v1.3c Standard LaTeX Color (DPC)
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
@@ -332,7 +332,7 @@ Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
 Class scrartcl Info: longtable captions redefined on input line 459.
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2021/11/08 3.66 The Babel package
+Package: babel 2021/11/29 3.67 The Babel package
 \babel@savecnt=\count279
 \U@D=\dimen158
 \l@unhyphenated=\language8
@@ -592,7 +592,7 @@ Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2021-10-18 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2021-12-14 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count301
 \l__pdf_internal_box=\box64
 )
@@ -781,7 +781,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 116--119
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 120--124
+Underfull \hbox (badness 10000) in paragraph at lines 121--125
 
  []
 
@@ -791,12 +791,12 @@ File: lstlang1.sty 2020/03/24 1.8d listings language file
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
 File: lstmisc.sty 2020/03/24 1.8d (Carsten Heinz)
 )
-Underfull \hbox (badness 10000) in paragraph at lines 125--126
+Underfull \hbox (badness 10000) in paragraph at lines 126--127
 
  []
 
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 126.
+nput line 127.
 
 Underfull \hbox (badness 10000) in paragraph at lines 144--145
 
@@ -817,7 +817,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 151--153
 
  []
 
-[5] (./Praktikumsbericht.bbl
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 158--160
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 161--162
+
+ []
+
+(./Praktikumsbericht.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 18--22
 []$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
  []
@@ -827,13 +837,13 @@ Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 18185 strings out of 480260
- 311199 string characters out of 5895088
- 1139464 words of memory out of 5000000
- 35754 multiletter control sequences out of 15000+600000
+ 18204 strings out of 480260
+ 311781 string characters out of 5895087
+ 1139947 words of memory out of 5000000
+ 35772 multiletter control sequences out of 15000+600000
  458654 words of font info for 99 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 122i,12n,120p,10644b,1230s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 122i,11n,120p,10644b,1230s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
@@ -841,10 +851,10 @@ fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
 rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 b8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (7 pages, 106493 bytes).
+Output written on Praktikumsbericht.pdf (7 pages, 107424 bytes).
 PDF statistics:
- 159 PDF objects out of 1000 (max. 8388607)
- 134 compressed objects within 2 object streams
- 42 named destinations out of 1000 (max. 500000)
- 65 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 169 PDF objects out of 1000 (max. 8388607)
+ 144 compressed objects within 2 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 81 words of extra memory for PDF output out of 10000 (max. 10000000)
 

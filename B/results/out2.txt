@@ -1,0 +1,5 @@
+icc (ICC) 19.0.1.144 20181018
+Copyright (C) 1985-2018 Intel Corporation.  All rights reserved.
+
+Fr 10. Dez 15:25:40 CET 2021
+Fr 10. Dez 18:56:28 CET 2021

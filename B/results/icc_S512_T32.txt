@@ -1,0 +1,1700 @@
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.540000 seconds to execute (all threads added).
+Field initializer took 0.021258 seconds to execute (real time).
+Calculation took 20.590000 seconds to execute (all threads added).
+Calculation took 0.588560 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.500000 seconds to execute (all threads added).
+Field initializer took 0.019908 seconds to execute (real time).
+Calculation took 20.860000 seconds to execute (all threads added).
+Calculation took 0.592816 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.160000 seconds to execute (all threads added).
+Field initializer took 0.008609 seconds to execute (real time).
+Calculation took 20.610000 seconds to execute (all threads added).
+Calculation took 0.589246 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.740000 seconds to execute (all threads added).
+Field initializer took 0.027464 seconds to execute (real time).
+Calculation took 20.770000 seconds to execute (all threads added).
+Calculation took 0.590525 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.470000 seconds to execute (all threads added).
+Field initializer took 0.018355 seconds to execute (real time).
+Calculation took 20.620000 seconds to execute (all threads added).
+Calculation took 0.592036 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.670000 seconds to execute (all threads added).
+Field initializer took 0.025087 seconds to execute (real time).
+Calculation took 20.770000 seconds to execute (all threads added).
+Calculation took 0.594265 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.350000 seconds to execute (all threads added).
+Field initializer took 0.014975 seconds to execute (real time).
+Calculation took 20.740000 seconds to execute (all threads added).
+Calculation took 0.593937 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.190000 seconds to execute (all threads added).
+Field initializer took 0.009721 seconds to execute (real time).
+Calculation took 20.590000 seconds to execute (all threads added).
+Calculation took 0.590306 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.230000 seconds to execute (all threads added).
+Field initializer took 0.010936 seconds to execute (real time).
+Calculation took 20.830000 seconds to execute (all threads added).
+Calculation took 0.589195 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.510000 seconds to execute (all threads added).
+Field initializer took 0.019991 seconds to execute (real time).
+Calculation took 20.730000 seconds to execute (all threads added).
+Calculation took 0.593762 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.630000 seconds to execute (all threads added).
+Field initializer took 0.023597 seconds to execute (real time).
+Calculation took 20.950000 seconds to execute (all threads added).
+Calculation took 0.596302 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.580000 seconds to execute (all threads added).
+Field initializer took 0.023316 seconds to execute (real time).
+Calculation took 20.850000 seconds to execute (all threads added).
+Calculation took 0.591612 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.510000 seconds to execute (all threads added).
+Field initializer took 0.020492 seconds to execute (real time).
+Calculation took 20.610000 seconds to execute (all threads added).
+Calculation took 0.590646 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.350000 seconds to execute (all threads added).
+Field initializer took 0.015902 seconds to execute (real time).
+Calculation took 20.630000 seconds to execute (all threads added).
+Calculation took 0.592918 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.480000 seconds to execute (all threads added).
+Field initializer took 0.020666 seconds to execute (real time).
+Calculation took 21.130000 seconds to execute (all threads added).
+Calculation took 0.600774 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.480000 seconds to execute (all threads added).
+Field initializer took 0.019326 seconds to execute (real time).
+Calculation took 20.650000 seconds to execute (all threads added).
+Calculation took 0.594256 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.620000 seconds to execute (all threads added).
+Field initializer took 0.023337 seconds to execute (real time).
+Calculation took 20.900000 seconds to execute (all threads added).
+Calculation took 0.590319 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.710000 seconds to execute (all threads added).
+Field initializer took 0.026250 seconds to execute (real time).
+Calculation took 20.530000 seconds to execute (all threads added).
+Calculation took 0.589936 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.180000 seconds to execute (all threads added).
+Field initializer took 0.008975 seconds to execute (real time).
+Calculation took 21.000000 seconds to execute (all threads added).
+Calculation took 0.593659 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+   _OPENMP='201611'
+  [host] KMP_ABORT_DELAY='0'
+  [host] KMP_ADAPTIVE_LOCK_PROPS='1,1024'
+  [host] KMP_ALIGN_ALLOC='64'
+  [host] KMP_ALL_THREADPRIVATE='1024'
+  [host] KMP_ATOMIC_MODE='2'
+  [host] KMP_BLOCKTIME='200'
+  [host] KMP_CPUINFO_FILE: value is not defined
+  [host] KMP_DETERMINISTIC_REDUCTION='FALSE'
+  [host] KMP_DEVICE_THREAD_LIMIT='2147483647'
+  [host] KMP_DISP_HAND_THREAD='FALSE'
+  [host] KMP_DISP_NUM_BUFFERS='7'
+  [host] KMP_DUPLICATE_LIB_OK='FALSE'
+  [host] KMP_FORCE_REDUCTION: value is not defined
+  [host] KMP_FOREIGN_THREADS_THREADPRIVATE='TRUE'
+  [host] KMP_FORKJOIN_BARRIER='2,2'
+  [host] KMP_FORKJOIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_FORKJOIN_FRAMES='TRUE'
+  [host] KMP_FORKJOIN_FRAMES_MODE='3'
+  [host] KMP_GTID_MODE='3'
+  [host] KMP_HANDLE_SIGNALS='FALSE'
+  [host] KMP_HOT_TEAMS_MAX_LEVEL='1'
+  [host] KMP_HOT_TEAMS_MODE='0'
+  [host] KMP_INIT_AT_FORK='TRUE'
+  [host] KMP_ITT_PREPARE_DELAY='0'
+  [host] KMP_LIBRARY='throughput'
+  [host] KMP_LOCK_KIND='queuing'
+  [host] KMP_MALLOC_POOL_INCR='1M'
+  [host] KMP_NUM_LOCKS_IN_BLOCK='1'
+  [host] KMP_PLAIN_BARRIER='2,2'
+  [host] KMP_PLAIN_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_REDUCTION_BARRIER='1,1'
+  [host] KMP_REDUCTION_BARRIER_PATTERN='hyper,hyper'
+  [host] KMP_SCHEDULE='static,balanced;guided,iterative'
+  [host] KMP_SETTINGS='FALSE'
+  [host] KMP_SPIN_BACKOFF_PARAMS='4096,100'
+  [host] KMP_STACKOFFSET='64'
+  [host] KMP_STACKPAD='0'
+  [host] KMP_STACKSIZE='4M'
+  [host] KMP_STORAGE_MAP='FALSE'
+  [host] KMP_TASKING='2'
+  [host] KMP_TASKLOOP_MIN_TASKS='0'
+  [host] KMP_TASK_STEALING_CONSTRAINT='1'
+  [host] KMP_TEAMS_THREAD_LIMIT='256'
+  [host] KMP_TOPOLOGY_METHOD='all'
+  [host] KMP_USER_LEVEL_MWAIT='FALSE'
+  [host] KMP_VERSION='FALSE'
+  [host] KMP_WARNINGS='TRUE'
+  [host] OMP_AFFINITY_FORMAT='OMP: pid %P tid %T thread %n bound to OS proc set {%a}'
+  [host] OMP_ALLOCATOR='omp_default_mem_alloc'
+  [host] OMP_CANCELLATION='FALSE'
+  [host] OMP_DEBUG='disabled'
+  [host] OMP_DEFAULT_DEVICE='-10'
+  [host] OMP_DISPLAY_AFFINITY='FALSE'
+  [host] OMP_DISPLAY_ENV='VERBOSE'
+  [host] OMP_DYNAMIC='FALSE'
+  [host] OMP_MAX_ACTIVE_LEVELS='2147483647'
+  [host] OMP_MAX_TASK_PRIORITY='0'
+  [host] OMP_NESTED='FALSE'
+  [host] OMP_NUM_THREADS: value is not defined
+  [host] OMP_PLACES='cores'
+  [host] OMP_PROC_BIND='close'
+  [host] OMP_SCHEDULE='static'
+  [host] OMP_STACKSIZE='4M'
+   OMP_TARGET_OFFLOAD=DEFAULT
+  [host] OMP_THREAD_LIMIT='32'
+  [host] OMP_TOOL='enabled'
+  [host] OMP_TOOL_LIBRARIES: value is not defined
+  [host] OMP_WAIT_POLICY='PASSIVE'
+  [host] KMP_AFFINITY='noverbose,warnings,respect,granularity=core,compact,0,0'
+OPENMP DISPLAY ENVIRONMENT END
+
+
+Welcome to the game of life!
+We are doing 10000 repetitions with 32 thread(s)!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.800000 seconds to execute (all threads added).
+Field initializer took 0.031469 seconds to execute (real time).
+Calculation took 20.930000 seconds to execute (all threads added).
+Calculation took 0.603016 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)

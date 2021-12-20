@@ -5,6 +5,8 @@
 \contentsline {section}{\numberline {2}Implementierung}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Daten initialisieren}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Berechnung der nächsten Generation}{4}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Inneres Feld}{4}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Kanten}{6}{subsubsection.2.2.2}%
 \contentsline {subsection}{\numberline {2.3}Ein und Ausgabe}{6}{subsection.2.3}%
 \contentsline {section}{\nonumberline Literatur}{6}{section*.3}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

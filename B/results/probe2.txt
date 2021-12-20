@@ -1,0 +1,200 @@
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.020000 seconds to execute (all threads added).
+Field initializer took 0.004343 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000144 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.030000 seconds to execute (all threads added).
+Field initializer took 0.004568 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000071 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.080000 seconds to execute (all threads added).
+Field initializer took 0.006159 seconds to execute (real time).
+Calculation took 0.010000 seconds to execute (all threads added).
+Calculation took 0.000095 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.180000 seconds to execute (all threads added).
+Field initializer took 0.009640 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000050 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.520000 seconds to execute (all threads added).
+Field initializer took 0.020867 seconds to execute (real time).
+Calculation took 0.010000 seconds to execute (all threads added).
+Calculation took 0.000088 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.500000 seconds to execute (all threads added).
+Field initializer took 0.020864 seconds to execute (real time).
+Calculation took 0.010000 seconds to execute (all threads added).
+Calculation took 0.000106 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.070000 seconds to execute (all threads added).
+Field initializer took 0.005695 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000050 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.500000 seconds to execute (all threads added).
+Field initializer took 0.020149 seconds to execute (real time).
+Calculation took 0.010000 seconds to execute (all threads added).
+Calculation took 0.000078 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.410000 seconds to execute (all threads added).
+Field initializer took 0.017209 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000079 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.040000 seconds to execute (all threads added).
+Field initializer took 0.004987 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000060 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.520000 seconds to execute (all threads added).
+Field initializer took 0.020655 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000070 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.060000 seconds to execute (all threads added).
+Field initializer took 0.005227 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000070 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.540000 seconds to execute (all threads added).
+Field initializer took 0.021047 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000067 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.050000 seconds to execute (all threads added).
+Field initializer took 0.005307 seconds to execute (real time).
+Calculation took 0.010000 seconds to execute (all threads added).
+Calculation took 0.000060 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.530000 seconds to execute (all threads added).
+Field initializer took 0.020594 seconds to execute (real time).
+Calculation took 0.140000 seconds to execute (all threads added).
+Calculation took 0.003901 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.050000 seconds to execute (all threads added).
+Field initializer took 0.004898 seconds to execute (real time).
+Calculation took 0.150000 seconds to execute (all threads added).
+Calculation took 0.004777 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.170000 seconds to execute (all threads added).
+Field initializer took 0.009689 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000108 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.400000 seconds to execute (all threads added).
+Field initializer took 0.016727 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000093 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.610000 seconds to execute (all threads added).
+Field initializer took 0.023409 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000077 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the game of life!
+We are doing 1 repetitions with 32 thread(s)!
+Game size: Columns: 128, Rows: 128.
+Starting now...
+Field initializer took 0.470000 seconds to execute (all threads added).
+Field initializer took 0.018714 seconds to execute (real time).
+Calculation took 0.000000 seconds to execute (all threads added).
+Calculation took 0.000062 seconds to execute (real time).
+Writing pbm files took 0.000000 seconds to execute.
+Done :)

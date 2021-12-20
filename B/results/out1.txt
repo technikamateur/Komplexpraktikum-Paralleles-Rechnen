@@ -1,0 +1,7 @@
+gcc (GCC) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+Dies ist freie Software; die Kopierbedingungen stehen in den Quellen. Es
+gibt KEINE Garantie; auch nicht für MARKTGÄNGIGKEIT oder FÜR SPEZIELLE ZWECKE.
+
+Fr 10. Dez 15:20:38 CET 2021
+Fr 10. Dez 21:51:04 CET 2021

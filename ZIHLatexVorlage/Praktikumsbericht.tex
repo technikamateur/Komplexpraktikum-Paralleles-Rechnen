@@ -115,8 +115,9 @@
 	\subsection{Berechnung der nächsten Generation}
 	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder. Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
 	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.\\
-	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt jedoch die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich.\\
+	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich.\\
 	
+	\subsubsection{Inneres Feld}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
 	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Gleichzeit ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
@@ -138,8 +139,7 @@ for (int i = 1; i < rows - 1; i++) {
 												state_old[(i + 1) * columns + (j + 1)];
 		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
 	}
-}
-	\end{lstlisting}
+}	\end{lstlisting}
 
 	Die Erste Schleife iteriert dabei über jede Zeile und in jeder Zeile geht die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive:\\
 	
@@ -151,11 +151,22 @@ for (int i = 1; i < rows - 1; i++) {
 	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
 	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Hyperthreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
 	
-	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. ->(kein Vektor (überprüft))
+	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
+	
+	\subsubsection{Kanten}
+	
+	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife berechnet. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
+	Auch hier wurden die Kanten wieder mit\\
+	
+	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+	
+	parallelisiert.
+	
 	
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
-	Ebenso lassen sich Thread Anzahl und OpenMP Schedulingverfahren einstellen.
+	Ebenso lässt sich das Ergebnis visualisieren.\\
+	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
 	
 	
 \bibliography{Praktikumsbericht}
