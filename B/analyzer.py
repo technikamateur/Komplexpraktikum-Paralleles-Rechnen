@@ -9,9 +9,41 @@ class Bench:
         self.threads = threads
         self.init = list()
         self.calc = list()
+        self.repetitions = None
+        self.bind = None
+        self.schedule = None
 
     def fetch_data(self, lines):
-        pass
+        init_counter = 0
+        calc_counter = 0
+        for line in lines:
+            line = line.lstrip(' ')
+            if line.startswith("OMP_SCHEDULE"):
+                line_split = line.split("=")
+                line_split = line_split[1].lstrip(' ')
+                self.schedule = line_split.replace('\'', '')
+            elif line.startswith("OMP_PROC_BIND"):
+                line_split = line.split("=")
+                line_split = line_split[1].lstrip(' ')
+                self.bind = line_split.replace('\'', '')
+            elif line.startswith("Field initializer took"):
+                if init_counter:
+                    line_split = line.split(' ')
+                    self.init.append(line_split[3])
+                else:
+                    init_counter = True
+            elif line.startswith("Calculation took"):
+                if calc_counter:
+                    line_split = line.split(' ')
+                    self.calc.append(line_split[2])
+                else:
+                    calc_counter = True
+            elif line.startswith('We are doing'):
+                line_split = line.split(' ')
+                self.repetitions = line_split[3]
+            elif line.startswith("Done"):
+                init_counter = False
+                calc_counter = False
 
 
 all_data = list()
@@ -28,3 +60,7 @@ for file in glob.glob('./results/*cc_S*_T*.txt'):
         bench = Bench(file_name[0], file_name[1], file_name[2])
         all_data.append(bench)
         bench.fetch_data(lines)
+
+for ele in all_data:
+    from pprint import pprint
+    pprint(vars(ele))

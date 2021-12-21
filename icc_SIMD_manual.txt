@@ -1,0 +1,115 @@
+Welcome to the SIMD game of life!
+Game size: Columns: 32768, Rows: 32768.
+Field initializer took 13.410000 seconds to execute.
+Calculation took 25.620000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+38.38user 0.79system 0:39.21elapsed 99%CPU (0avgtext+0avgdata 2098372maxresident)k
+192inputs+0outputs (1major+524646minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 32768, Rows: 32768.
+Starting now...
+Field initializer took 13.370000 seconds to execute.
+Calculation took 25.310000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 32768, Rows: 32768.
+Starting now...
+Field initializer took 13.390000 seconds to execute.
+Calculation took 25.490000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+
+
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.470000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.840000 seconds to execute.
+Calculation took 1.550000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.840000 seconds to execute.
+Calculation took 1.620000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.660000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+
+Welcome to the SIMD game of life!
+Game size: Columns: 2048, Rows: 2048.
+Starting now...
+Field initializer took 0.050000 seconds to execute.
+Calculation took 0.090000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 2048, Rows: 2048.
+Starting now...
+Field initializer took 0.050000 seconds to execute.
+Calculation took 0.090000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 2048, Rows: 2048.
+Starting now...
+Field initializer took 0.050000 seconds to execute.
+Calculation took 0.090000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+
+Welcome to the SIMD game of life!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.000000 seconds to execute.
+Calculation took 0.010000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.000000 seconds to execute.
+Calculation took 0.010000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 512, Rows: 512.
+Starting now...
+Field initializer took 0.000000 seconds to execute.
+Calculation took 0.010000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+
+
+Welcome to the SIMD game of life!
+Game size: Columns: 32768, Rows: 32768.
+Starting now...
+Field initializer took 1.350000 seconds to execute.
+Calculation took 25.960000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the SIMD game of life!
+Game size: Columns: 32768, Rows: 32768.
+Starting now...
+Field initializer took 1.360000 seconds to execute.
+Calculation took 25.860000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
