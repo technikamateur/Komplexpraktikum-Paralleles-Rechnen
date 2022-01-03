@@ -1,4 +1,4 @@
-\begin{thebibliography}{Gar70}
+\begin{thebibliography}{Mar21}
 
 \bibitem[Gar70]{gardner}
 \textsc{Gardner}, Martin.
@@ -12,6 +12,12 @@
 \newblock \emph{Linux Man Pages - rand}.
 \newblock \\\url{https://linux.die.net/man/3/rand}.
 \newblock 2010
+
+\bibitem[Mar21]{hpc}
+\textsc{Markwardt}, Dr.~U.
+\newblock \emph{Introduction to HPC at ZIH}.
+\newblock \\\url{https://doc.zih.tu-dresden.de/misc/HPC-Introduction.pdf}.
+\newblock 2021
 
 \bibitem[ope18]{openmp}
 

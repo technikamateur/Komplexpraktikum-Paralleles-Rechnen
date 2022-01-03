@@ -155,7 +155,7 @@ for (int i = 1; i < rows - 1; i++) {
 	
 	\subsubsection{Kanten}
 	
-	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife berechnet. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
+	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
 	Auch hier wurden die Kanten wieder mit\\
 	
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
@@ -167,6 +167,21 @@ for (int i = 1; i < rows - 1; i++) {
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
 	Ebenso lässt sich das Ergebnis visualisieren.\\
 	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
+	
+	\section{Zeitmessung auf Taurus}
+	\subsection{Testumgebung}
+	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen.\\
+	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
+	
+	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein HyperThreading verwendet werden.\\
+	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung außerdem nur auf einem der beiden Prozessoren ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden.\\
+	Um das zu erreichen, verwendete ich die Environment-Variablen:
+	\begin{itemize}
+	\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
+	\item \texttt{OMP\_PROC\_BIND=close} - Threads nah nebeneinander platzieren
+	\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - Überprüfung, ob alle Parameter korrekt gesetzt wurden
+	\end{itemize}
 	
 	
 \bibliography{Praktikumsbericht}
