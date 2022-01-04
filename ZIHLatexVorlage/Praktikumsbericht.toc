@@ -10,5 +10,9 @@
 \contentsline {subsection}{\numberline {2.3}Ein und Ausgabe}{6}{subsection.2.3}%
 \contentsline {section}{\numberline {3}Zeitmessung auf Taurus}{6}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Testumgebung}{6}{subsection.3.1}%
-\contentsline {section}{\nonumberline Literatur}{7}{section*.3}%
+\contentsline {subsection}{\numberline {3.2}Testmethode}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Testergebnisse}{8}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}GCC kompilierte Version}{8}{subsubsection.3.3.1}%
+\contentsline {section}{\numberline {A}Tabellen}{10}{appendix.A}%
+\contentsline {section}{\nonumberline Literatur}{12}{section*.6}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,4 +1,4 @@
-\documentclass[german,plainarticle,hyperref,utf8]{zihpub}
+\documentclass[german,plainarticle,hyperref,utf8,appendix]{zihpub}
 \author{Daniel Körsten}
 \title{Komplexpraktikum Paralleles Rechnen - Aufgabe B}
 \matno{4690396}
@@ -8,181 +8,350 @@
 \usepackage{color}
 \usepackage{caption}
 
+\usepackage{pgf}
+
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
 \lstset{ 
-	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
-	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-	breaklines=true,                 % sets automatic line breaking
-	captionpos=b,                    % sets the caption-position to bottom
-	commentstyle=\color{mygreen},    % comment style
-	deletekeywords={...},            % if you want to delete keywords from the given language
-	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
-	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-	firstnumber=1,                % start line enumeration with line 1000
-	frame=single,	                   % adds a frame around the code
-	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-	keywordstyle=\color{blue},       % keyword style
-	language=Octave,                 % the language of the code
-	morekeywords={*,...},            % if you want to add more keywords to the set
-	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
-	numbersep=5pt,                   % how far the line-numbers are from the code
-	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
-	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-	showstringspaces=false,          % underline spaces within strings only
-	showtabs=false,                  % show tabs within strings adding particular underscores
-	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
-	stringstyle=\color{mymauve},     % string literal style
-	tabsize=2,	                   % sets default tabsize to 2 spaces
-	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+   	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+   	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+   	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+   	breaklines=true,                 % sets automatic line breaking
+   	captionpos=b,                    % sets the caption-position to bottom
+   	commentstyle=\color{mygreen},    % comment style
+   	deletekeywords={...},            % if you want to delete keywords from the given language
+   	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+   	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+   	firstnumber=1,                % start line enumeration with line 1000
+   	frame=single,	                   % adds a frame around the code
+   	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+   	keywordstyle=\color{blue},       % keyword style
+   	language=Octave,                 % the language of the code
+   	morekeywords={*,...},            % if you want to add more keywords to the set
+   	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+   	numbersep=5pt,                   % how far the line-numbers are from the code
+   	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+   	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+   	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+   	showstringspaces=false,          % underline spaces within strings only
+   	showtabs=false,                  % show tabs within strings adding particular underscores
+   	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+   	stringstyle=\color{mymauve},     % string literal style
+   	tabsize=2,	                   % sets default tabsize to 2 spaces
+   	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
 \begin{document}
-	\section{Aufgabenbeschreibung}
-	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.
-	
-	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compiler durchgeführt und verglichen werden.
-	
-	\subsection{Conway’s Game-of-Life}
-	 Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein Zweidimensionales Spielfeld, jedoch ist auch eine Dreidimensionale Simulation möglich.
-	
-	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
-	
-	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass Spielfeld Torus-förmig sein soll. Alles was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
-	
-	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
-	\begin{enumerate}
-		\item Eine lebende Zelle mit zwei oder drei Nachbarn überlebt in der Folgegeneration.
-		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
-		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
-	\end{enumerate}
-	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
-	
-	\subsection{Besonderheiten der Aufgabenstellung}
-	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, welche es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
-	
-	Weitere Besonderheiten sind:
-	\begin{itemize}
-		\item Die Simulation soll variabel mit Feldgrößen von $128\times 128$ bis $32768\times 32768$ und 1 bis 32 Threads erfolgen.
-		\item Das OpenMP Schedulingverfahren soll hinsichtlich des Einflusses auf die Ausführungszeit untersucht werden.
-		\item Das Programm soll mit dem dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
-	\end{itemize}
+   	\section{Aufgabenbeschreibung}
+   	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.
+   	
+   	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compiler durchgeführt und verglichen werden.
+   	
+   	\subsection{Conway’s Game-of-Life}
+  	 Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein Zweidimensionales Spielfeld, jedoch ist auch eine Dreidimensionale Simulation möglich.
+   	
+   	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
+   	
+   	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass Spielfeld Torus-förmig sein soll. Alles was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
+   	
+   	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
+   	\begin{enumerate}
+   		\item Eine lebende Zelle mit zwei oder drei Nachbarn überlebt in der Folgegeneration.
+   		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
+   		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
+   	\end{enumerate}
+   	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
+   	
+   	\subsection{Besonderheiten der Aufgabenstellung}
+   	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, welche es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
+   	
+   	Weitere Besonderheiten sind:
+   	\begin{itemize}
+   		\item Die Simulation soll variabel mit Feldgrößen von $128\times 128$ bis $32768\times 32768$ und 1 bis 32 Threads erfolgen.
+   		\item Das OpenMP Schedulingverfahren soll hinsichtlich des Einflusses auf die Ausführungszeit untersucht werden.
+   		\item Das Programm soll mit dem dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
+   	\end{itemize}
 
-	\section{Implementierung}
-	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
-	 
-	 Beispiel: Möchte man auf die Zweite Zelle in der Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
-	 
-	 Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleiner Datentyp möglich ist.\\
-	 
-	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
-	
-	\subsection{Daten initialisieren}
-	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
-	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
-	
-	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()} Thread-sicher und kann Thread-parallel ausgeführt werden.
-	
-	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
-	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
-	
-	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
-	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Zahl der Anzahl der Hardware-Threads auf dem System.\\
-	Durch \texttt{schedule(runtime)} ist es später möglich, über die Umgebungsvariable \texttt{OMP\_SCHEDULE} das Schedulingverfahren zu wählen.\\
-	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlich \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
-	
-	\texttt{\#pragma omp parallel}\\
-	
-	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden Zwei Probleme gelöst:
-	\begin{enumerate}
-	\item Jeder Thread arbeitet auf seiner eigenen \textit{seed} Variable. Dadurch wird verhindert, dass Threads auf der gleichen Variable arbeiten und folglich ein Flaschenhals entsteht.
-	\item Die \textit{seed} Variablen können unterschiedliche Werte haben, was wiederum die Entropie des initialisierten Spielfeldes erhöht.
-	\end{enumerate}
-	
-	Die \textit{seed} Variable ergibt sich bei mir aus der aktuellen Zeit in Sekunden und der Thread ID. Da bei jeder Ausführung die Zeit als auch die Thread ID variiert, erhält jeder Thread einen zufälligen \textit{seed} mit geringem Rechenaufwand.\\
-	
-	\textbf{Anmerkung zu rand\_r():}
-	
-	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
-	
-	Vielleicht Bild, wie so ein initialisiertes Feld aussieht?
-	
-	\subsection{Berechnung der nächsten Generation}
-	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder. Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
-	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.\\
-	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich.\\
-	
-	\subsubsection{Inneres Feld}
-	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
-	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
-	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Gleichzeit ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
-	Daraus ergibt sich, bei der Verwendung bitweiser Operatoren, ein Performance Vorteil.\\
-	
-	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
-	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
+   	\section{Implementierung}
+  	 Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
+  	 
+  	 Beispiel: Möchte man auf die Zweite Zelle in der Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+  	 
+  	 Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleiner Datentyp möglich ist.\\
+  	 
+  	 Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+   	
+   	\subsection{Daten initialisieren}
+   	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
+   	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
+   	
+   	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()} Thread-sicher und kann Thread-parallel ausgeführt werden.
+   	
+   	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
+   	
+   	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+   	
+   	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
+   	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Zahl der Anzahl der Hardware-Threads auf dem System.\\
+   	Durch \texttt{schedule(runtime)} ist es später möglich, über die Umgebungsvariable \texttt{OMP\_SCHEDULE} das Schedulingverfahren zu wählen.\\
+   	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlich \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
+   	
+   	\texttt{\#pragma omp parallel}\\
+   	
+   	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden Zwei Probleme gelöst:
+   	\begin{enumerate}
+   	\item Jeder Thread arbeitet auf seiner eigenen \textit{seed} Variable. Dadurch wird verhindert, dass Threads auf der gleichen Variable arbeiten und folglich ein Flaschenhals entsteht.
+   	\item Die \textit{seed} Variablen können unterschiedliche Werte haben, was wiederum die Entropie des initialisierten Spielfeldes erhöht.
+   	\end{enumerate}
+   	
+   	Die \textit{seed} Variable ergibt sich bei mir aus der aktuellen Zeit in Sekunden und der Thread ID. Da bei jeder Ausführung die Zeit als auch die Thread ID variiert, erhält jeder Thread einen zufälligen \textit{seed} mit geringem Rechenaufwand.\\
+   	
+   	\textbf{Anmerkung zu rand\_r():}
+   	
+   	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
+   	
+   	Vielleicht Bild, wie so ein initialisiertes Feld aussieht?
+   	
+   	\subsection{Berechnung der nächsten Generation}
+   	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder. Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
+   	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.\\
+   	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich.\\
+   	
+   	\subsubsection{Inneres Feld}
+   	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
+   	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
+   	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Gleichzeit ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
+   	Daraus ergibt sich, bei der Verwendung bitweiser Operatoren, ein Performance Vorteil.\\
+   	
+   	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
+   	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
 #pragma omp parallel for schedule(runtime)
 for (int i = 1; i < rows - 1; i++) {
-	for (int j = 1; j < columns - 1; j++) {
-		//count up the neighbours
-		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
-												state_old[(i - 1) * columns + j] +
-												state_old[(i - 1) * columns + (j + 1)] +
-												state_old[i * columns + (j - 1)] +
-												state_old[i * columns + (j + 1)] +
-												state_old[(i + 1) * columns + (j - 1)] +
-												state_old[(i + 1) * columns + j] +
-												state_old[(i + 1) * columns + (j + 1)];
-		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
-	}
+   	for (int j = 1; j < columns - 1; j++) {
+   		//count up the neighbours
+   		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
+   												state_old[(i - 1) * columns + j] +
+   												state_old[(i - 1) * columns + (j + 1)] +
+   												state_old[i * columns + (j - 1)] +
+   												state_old[i * columns + (j + 1)] +
+   												state_old[(i + 1) * columns + (j - 1)] +
+   												state_old[(i + 1) * columns + j] +
+   												state_old[(i + 1) * columns + (j + 1)];
+   		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
+   	}
 }	\end{lstlisting}
 
-	Die Erste Schleife iteriert dabei über jede Zeile und in jeder Zeile geht die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive:\\
+   	Die Erste Schleife iteriert dabei über jede Zeile und in jeder Zeile geht die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive:\\
+   	
+   	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+   	
+   	verwendet.\\
+   	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} ist in der Lage mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
+   	
+   	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
+   	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Hyperthreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
+   	
+   	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
+   	
+   	\subsubsection{Kanten}
+   	
+   	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
+   	Auch hier wurden die Kanten wieder mit\\
+   	
+   	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+   	
+   	parallelisiert.
+       
+       --> Zeitmessung
+   	
+   	
+   	\subsection{Ein und Ausgabe}
+   	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
+   	Ebenso lässt sich das Ergebnis visualisieren.\\
+   	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
+   	
+   	\section{Zeitmessung auf Taurus}
+   	\subsection{Testumgebung}
+   	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
+   	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen.\\
+   	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
+   	
+   	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein HyperThreading verwendet werden.\\
+   	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung außerdem nur auf einem der beiden Prozessoren ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden.\\
+   	Um das zu erreichen, verwendete ich die Environment-Variablen:
+   	\begin{itemize}
+   	\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
+   	\item \texttt{OMP\_PROC\_BIND=close} - Threads nah nebeneinander platzieren
+   	\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - Überprüfung, ob alle Parameter korrekt gesetzt wurden
+   	\end{itemize}
+   
+   	\subsection{Testmethode}
+       Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
+       Um herauszufinden, wie lang ein Test durchgeführt werden muss, aber ich einen Messung mit 1 Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
+       Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
+        \ref{tab:icc} entnehmen.\\
+       Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt.
+       \newpage
+    \subsection{Testergebnisse}
+    In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
+    \subsubsection{GCC kompilierte Version}
+    Zuerst möchte ich auf die GCC kompilierte Version des Spiels eingehen.
+    \begin{figure}[h]
+    	\begin{center}
+    		\input{gcc_all.pgf}
+    	\end{center}
+    	\caption{Logarithmische Darstellung Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}. Kompiliert mit \texttt{GCC}.}
+    \end{figure}
+	\newline
+	Die gezeigte Grafik berücksichtigt nur die Ausführung der Funktion \texttt{calculate\_next\_gen()}. Da sich sowohl die Feldgröße, als auch die Anzahl der Wiederholungen exponentiell erhöht, bietet sich eine Doppellogarithmische Darstellung an.\\
+	Man erkennt eindeutig die zu erwartende Tendenz: Mehr Threads bewirken eine Verkürzung der Laufzeit. Allerdings lässt sich bei den Feldgrößen 128 deutlich und 512 in abgeschwächter Form erkennen, dass ab einer gewissen Thread Anzahl kein Speedup mehr erreicht werden kann. Schlimmer noch: Bei der Größe 128 steigt die Ausführungszeit mit 32 Threads wieder an.\\
+	Eine Begründung ist, dass die einzelnen Schleifendurchläufe dieser Feldgrößen sehr schnell abgeschlossen sind. Mit steigender Anzahl an Threads steigt auch der Overhead durch Thread spawning, Synchronisation und Zuteilung der Arbeit. Ab einem gewissen Punkt ist dieser Overhead im Vergleich zum zu lösenden Problem nicht mehr vernachlässigbar klein und wirkt sich negativ auf den Speedup aus.\\
 	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
-	
-	verwendet.\\
-	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} ist in der Lage mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
-	
-	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
-	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Hyperthreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
-	
-	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
-	
-	\subsubsection{Kanten}
-	
-	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
-	Auch hier wurden die Kanten wieder mit\\
-	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
-	
-	parallelisiert.
-	
-	
-	\subsection{Ein und Ausgabe}
-	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
-	Ebenso lässt sich das Ergebnis visualisieren.\\
-	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
-	
-	\section{Zeitmessung auf Taurus}
-	\subsection{Testumgebung}
-	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen.\\
-	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
-	
-	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein HyperThreading verwendet werden.\\
-	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung außerdem nur auf einem der beiden Prozessoren ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden.\\
-	Um das zu erreichen, verwendete ich die Environment-Variablen:
-	\begin{itemize}
-	\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
-	\item \texttt{OMP\_PROC\_BIND=close} - Threads nah nebeneinander platzieren
-	\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - Überprüfung, ob alle Parameter korrekt gesetzt wurden
-	\end{itemize}
-	
-	
+	Wie in allen folgenden Grafiken zeichnet sich schon hier das Bild ab, dass eine Verdopplung der Threads nicht zur Halbierung der Laufzeit führt.
+\appendix
+\section{Tabellen} \label{tables}
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{||c c c c c c||} 
+			\hline 
+			Compiler & Size & \#Threads & Repetitions & Initialization & Calculation  \\ [1ex] 
+			\hline\hline
+			GCC & 128 & 1 & 100 000 & 3 & 5 \\ 
+			\hline
+			GCC & 128 & 2 & 100 000 & 3 & 5 \\ 
+			\hline
+			GCC & 128 & 4 & 100 000 & 3 & 5 \\ 
+			\hline
+			GCC & 128 & 8 & 100 000 & 3 & 5 \\
+			\hline
+			GCC & 128 & 16 & 100 000 & 3 & 5 \\
+			\hline
+			GCC & 128 & 32 & 100 000 & 3 & 5 \\
+			\hline\hline
+			GCC & 512 & 1 & 10 000 & 3 & 5 \\ 
+			\hline
+			GCC & 512 & 2 & 10 000 & 3 & 5 \\ 
+			\hline
+			GCC & 512 & 4 & 10 000 & 3 & 5 \\ 
+			\hline
+			GCC & 512 & 8 & 10 000 & 3 & 5 \\
+			\hline
+			GCC & 512 & 16 & 10 000 & 3 & 5 \\
+			\hline
+			GCC & 512 & 32 & 10 000 & 3 & 5 \\
+			\hline\hline
+			GCC & 2048 & 1 & 1 000 & 3 & 5 \\ 
+			\hline
+			GCC & 2048 & 2 & 1 000 & 3 & 5 \\ 
+			\hline
+			GCC & 2048 & 4 & 1 000 & 3 & 5 \\ 
+			\hline
+			GCC & 2048 & 8 & 1 000 & 3 & 5 \\
+			\hline
+			GCC & 2048 & 16 & 1 000 & 3 & 5 \\
+			\hline
+			GCC & 2048 & 32 & 1 000 & 3 & 5 \\
+			\hline\hline
+			GCC & 8192 & 1 & 100 & 3 & 5 \\ 
+			\hline
+			GCC & 8192 & 2 & 100 & 3 & 5 \\ 
+			\hline
+			GCC & 8192 & 4 & 100 & 3 & 5 \\ 
+			\hline
+			GCC & 8192 & 8 & 100 & 3 & 5 \\
+			\hline
+			GCC & 8192 & 16 & 100 & 3 & 5 \\
+			\hline
+			GCC & 8192 & 32 & 100 & 3 & 5 \\
+			\hline\hline
+			GCC & 32768 & 1 & 10 & 3 & 5 \\ 
+			\hline
+			GCC & 32768 & 2 & 10 & 3 & 5 \\ 
+			\hline
+			GCC & 32768 & 4 & 10 & 3 & 5 \\ 
+			\hline
+			GCC & 32768 & 8 & 10 & 3 & 5 \\
+			\hline
+			GCC & 32768 & 16 & 10 & 3 & 5 \\
+			\hline
+			GCC & 32768 & 32 & 10 & 3 & 5 \\
+			\hline
+		\end{tabular}
+		\caption{\label{tab:gcc}Testergebnisse der GCC kompilierten Version des Game-of-Life}
+	\end{center}
+\end{table}
+\begin{table}
+	\begin{center}
+		\begin{tabular}{||c c c c c c||} 
+			\hline 
+			Compiler & Size & \#Threads & Repetitions & Initialization & Calculation  \\ [1ex] 
+			\hline\hline
+			ICC & 128 & 1 & 100 000 & 3 & 5 \\ 
+			\hline
+			ICC & 128 & 2 & 100 000 & 3 & 5 \\ 
+			\hline
+			ICC & 128 & 4 & 100 000 & 3 & 5 \\ 
+			\hline
+			ICC & 128 & 8 & 100 000 & 3 & 5 \\
+			\hline
+			ICC & 128 & 16 & 100 000 & 3 & 5 \\
+			\hline
+			ICC & 128 & 32 & 100 000 & 3 & 5 \\
+			\hline\hline
+			ICC & 512 & 1 & 10 000 & 3 & 5 \\ 
+			\hline
+			ICC & 512 & 2 & 10 000 & 3 & 5 \\ 
+			\hline
+			ICC & 512 & 4 & 10 000 & 3 & 5 \\ 
+			\hline
+			ICC & 512 & 8 & 10 000 & 3 & 5 \\
+			\hline
+			ICC & 512 & 16 & 10 000 & 3 & 5 \\
+			\hline
+			ICC & 512 & 32 & 10 000 & 3 & 5 \\
+			\hline\hline
+			ICC & 2048 & 1 & 1 000 & 3 & 5 \\ 
+			\hline
+			ICC & 2048 & 2 & 1 000 & 3 & 5 \\ 
+			\hline
+			ICC & 2048 & 4 & 1 000 & 3 & 5 \\ 
+			\hline
+			ICC & 2048 & 8 & 1 000 & 3 & 5 \\
+			\hline
+			ICC & 2048 & 16 & 1 000 & 3 & 5 \\
+			\hline
+			ICC & 2048 & 32 & 1 000 & 3 & 5 \\
+			\hline\hline
+			ICC & 8192 & 1 & 100 & 3 & 5 \\ 
+			\hline
+			ICC & 8192 & 2 & 100 & 3 & 5 \\ 
+			\hline
+			ICC & 8192 & 4 & 100 & 3 & 5 \\ 
+			\hline
+			ICC & 8192 & 8 & 100 & 3 & 5 \\
+			\hline
+			ICC & 8192 & 16 & 100 & 3 & 5 \\
+			\hline
+			ICC & 8192 & 32 & 100 & 3 & 5 \\
+			\hline\hline
+			ICC & 32768 & 1 & 10 & 3 & 5 \\ 
+			\hline
+			ICC & 32768 & 2 & 10 & 3 & 5 \\ 
+			\hline
+			ICC & 32768 & 4 & 10 & 3 & 5 \\ 
+			\hline
+			ICC & 32768 & 8 & 10 & 3 & 5 \\
+			\hline
+			ICC & 32768 & 16 & 10 & 3 & 5 \\
+			\hline
+			ICC & 32768 & 32 & 10 & 3 & 5 \\
+			\hline
+		\end{tabular}
+		\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life}
+	\end{center}
+\end{table}
+\clearpage
 \bibliography{Praktikumsbericht}
 \end{document}
