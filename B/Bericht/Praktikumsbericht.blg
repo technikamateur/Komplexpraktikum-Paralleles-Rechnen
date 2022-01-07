@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: Praktikumsbericht.aux
+The style file: alphadin.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: Praktikumsbericht.bib
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Warning--to sort, need author or key in openmp
+Warning--to sort, need author or key in lmp
+Warning--Weder Verfasser noch Hrsg. in lmp
+Warning--Weder Verfasser noch Hrsg. in openmp
+You've used 4 entries,
+            3183 wiz_defined-function locations,
+            661 strings with 4976 characters,
+and the built_in function-call counts, 1107 in all, are:
+= -- 114
+> -- 18
+< -- 19
++ -- 19
+- -- 5
+* -- 62
+:= -- 206
+add.period$ -- 12
+call.type$ -- 4
+change.case$ -- 14
+chr.to.int$ -- 4
+cite$ -- 10
+duplicate$ -- 40
+empty$ -- 75
+format.name$ -- 10
+if$ -- 202
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 27
+num.names$ -- 6
+pop$ -- 4
+preamble$ -- 1
+purify$ -- 22
+quote$ -- 0
+skip$ -- 51
+stack$ -- 0
+substring$ -- 67
+swap$ -- 6
+text.length$ -- 4
+text.prefix$ -- 2
+top$ -- 0
+type$ -- 32
+warning$ -- 4
+while$ -- 6
+width$ -- 6
+write$ -- 54
+(There were 4 warnings)
