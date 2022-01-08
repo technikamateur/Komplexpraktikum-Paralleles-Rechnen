@@ -1,4 +1,4 @@
-\documentclass[german,plainarticle,hyperref,utf8,appendix]{zihpub}
+\documentclass[german,plainarticle,hyperref,utf8]{zihpub}
 \author{Daniel Körsten}
 \title{Komplexpraktikum Paralleles Rechnen - Aufgabe B}
 \matno{4690396}
@@ -8,8 +8,8 @@
 \usepackage{color}
 \usepackage{caption}
 \usepackage{float}
-
 \usepackage{pgf}
+\usepackage{appendix}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -152,7 +152,7 @@
 	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} ist in der Lage mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
 	
 	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
-	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Hyperthreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
+	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
 	
 	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
 	
@@ -174,12 +174,12 @@
 	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
 	
 	\section{Zeitmessung auf Taurus}
-	\subsection{Testumgebung}
+	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
 	
-	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein HyperThreading verwendet werden.\\
+	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein Simultaneous Multithreading verwendet werden.\\
 	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung außerdem nur auf einem der beiden Prozessoren ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden. Zusätzlich erleichtert es die Umsetzung der \textit{first touch NUMA policy}, deren Befolgung zu einer höheren Ausführungsgeschwindigkeit führt.\\
 	
 	Auf Linux wird Speicher mit \texttt{malloc()} nur reserviert, aber nicht im physischen Speicher angelegt. Das geschieht erst beim Zugriff der Threads auf die entsprechenden Speicherbereiche. Würde man dazu Threads auf beiden Sockets ausführen, würde ein Teil des Arrays im physischen Speicher von Socket 0 und der Andere im physischen Speicher von Socket 1 liegen.\\
@@ -189,16 +189,13 @@
 		\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
 		\item \texttt{OMP\_PROC\_BIND=close} - Threads nah nebeneinander platzieren
 		\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - zur Überprüfung, ob alle Parameter korrekt gesetzt wurden
-	\end{itemize}
-	
-	SCHEDULING ERKLÄREN
-	
+	\end{itemize}	
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
 	Um herauszufinden, wie lang ein Test durchgeführt werden muss, aber ich einen Messung mit 1 Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
 	\ref{tab:icc} entnehmen.\\
-	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt.
+	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt. Damit bleiben die Ausführungszeiten für alle Feldgrößen in etwa konstant.
 	\newpage
 	\section{Testergebnisse}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
@@ -263,15 +260,26 @@
 		\end{center}
 		\caption{Ausführungszeit der Funktion \texttt{field\_initializer()} unter Berücksichtigung des Scheduling-Verfahrens. Kompiliert mit \texttt{ICC}.}
 	\end{figure}
+	\newline
+	Betrachtet man die Zeiten der \texttt{field\_initializer()} Funktion, fallen die Unterschiede sehr gering aus, was auch der kleinen Feldgröße geschuldet ist.
 	\newpage
 	\begin{figure}
 		\begin{center}
-			\input{scheduling_init.pgf}
+			\input{scheduling_calc.pgf}
 		\end{center}
 		\caption{Ausführungszeit der Funktion \texttt{calculate\_next\_gen()} unter Berücksichtigung des Scheduling-Verfahrens. Kompiliert mit \texttt{ICC}.}
 	\end{figure}
-	In beiden Diagrammen lässt sich die gleiche Tendenz erkennen. Die Verfahren \textit{dynamic} und \textit{static} sind etwa gleichauf erzielen eine schnellere Ausführungszeit. Der geringe Unterschied der beiden lässt sich, wie eingangs beschrieben, damit begründen, dass alle Threads auf einem Socket ausgeführt werden.
+	Bei der \texttt{calculate\_next\_gen()} Funktion fallen hingegen deutliche Unterschiede auf. Das Verfahren \textit{static} liefert hier mit Abstand die kürzesten Ausführungszeiten.
+	Um zu erklären warum, ist es sinnvoll, sich die Funktionsweise der Verfahren anzusehen.\\
 	
+	Beim \textit{static} schedule garantiert \texttt{OpenMP}, dass mehrere Schleifen mit der selben Anzahl an Iterationen und Threads so unter den Threads aufgeteilt werden, dass jeder Thread bei den Durchläufen den selben Bereich der Iterationen abarbeitet. Im Fall des \texttt{Game-of-Life} also immer auf den selben Zellen arbeitet. Das führt hier natürlich zu einer sehr guten Performance, da Cache und NUMA Eigenschaften optimal ausgenutzt werden. Das \textit{static} Verfahren hat zusätzlich einen geringen Overhead.\\
+	
+	Beim \textit{dynamic} schedule gibt es diese feste Aufteilung nicht. Es arbeitet nach dem Prinzip \textit{first come, first served} und hat einen höheren Overhead als \textit{static}. Der Vorteil des \textit{first come, first served} Prinzips liegt in der guten Systemauslastung (workload balancing), wenn der Berechnungsaufwand der einzelnen Iterationsschritte variiert, da einem Thread einfach neue Arbeit zugewiesen wird, sobald er seine Arbeit beendet hat.\\
+	Das das \texttt{Game-of-Life} jedoch einen konstanten Berechnungsaufwand je Iterationsschritt hat, ist dieses Verfahren eher ungeeignet. Das zeigt sich auch in der Ausführungszeit.\\
+	
+	Das \textit{guided} Verfahren ist nur ein Spezialfall des \textit{dynamic} schedule. Der Unterschied besteht darin, dass sich die chunk size, also die Anzahl der Iterationen, die ein Thread zur Abarbeitung erhält, mit zunehmenden Fortschritt verkleinert. Entsprechend schneidet das \textit{guided} Verfahren ähnlich schlecht wie \textit{dynamic} ab.\\
+	
+	Bei \textit{auto} entscheidet der Compiler und/oder die Laufzeitumgebung über das Scheduling Verfahren \cite{schedule}. Betrachtet man die Ausführungszeit, ist diese zwar kürzer als \textit{dynamic} und \textit{guided}, erreicht aber mit großem Abstand nicht die Ergebnisse von \textit{static}.
 	\appendix
 	\section{Tabellen} \label{tables}
 	\begin{table}[h]
@@ -350,65 +358,65 @@
 				\hline
 				Compiler & Size  & \#Threads & Repetitions & Initialization in s & Calculation in s \\ [1ex]
 				\hline\hline
-				ICC      & 128   & 1         & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 1         & 100 000     & 0.0021                   & 8.5322                \\
 				\hline
-				ICC      & 128   & 2         & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 2         & 100 000     & 0.0022                   & 4.5041                \\
 				\hline
-				ICC      & 128   & 4         & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 4         & 100 000     & 0.0025                   & 2.5492                \\
 				\hline
-				ICC      & 128   & 8         & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 8         & 100 000     & 0.0035                   & 1.9608                \\
 				\hline
-				ICC      & 128   & 16        & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 16        & 100 000     & 0.0054                   & 1.8089                \\
 				\hline
-				ICC      & 128   & 32        & 100 000     & 3                   & 5                \\
+				ICC      & 128   & 32        & 100 000     & 0.0127                   & 1.9434                \\
 				\hline\hline
-				ICC      & 512   & 1         & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 1         & 10 000      & 0.0061                   & 13.4002                \\
 				\hline
-				ICC      & 512   & 2         & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 2         & 10 000      & 0.0063                   & 6.742                \\
 				\hline
-				ICC      & 512   & 4         & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 4         & 10 000      & 0.0072                   & 3.4289                \\
 				\hline
-				ICC      & 512   & 8         & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 8         & 10 000      & 0.0082                   & 1.7867                \\
 				\hline
-				ICC      & 512   & 16        & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 16        & 10 000      & 0.0099                   & 0.9776                \\
 				\hline
-				ICC      & 512   & 32        & 10 000      & 3                   & 5                \\
+				ICC      & 512   & 32        & 10 000      & 0.0195                   & 0.5929                \\
 				\hline\hline
-				ICC      & 2048  & 1         & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 1         & 1 000       & 0.0496                   & 21.5322                \\
 				\hline
-				ICC      & 2048  & 2         & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 2         & 1 000       & 0.0485                   & 10.7675                \\
 				\hline
-				ICC      & 2048  & 4         & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 4         & 1 000       & 0.052                   & 5.4267                \\
 				\hline
-				ICC      & 2048  & 8         & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 8         & 1 000       & 0.0519                   & 2.7251                \\
 				\hline
-				ICC      & 2048  & 16        & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 16        & 1 000       & 0.0546                  & 1.3692                \\
 				\hline
-				ICC      & 2048  & 32        & 1 000       & 3                   & 5                \\
+				ICC      & 2048  & 32        & 1 000       & 0.0638                  & 0.6911                \\
 				\hline\hline
-				ICC      & 8192  & 1         & 100         & 3                   & 5                \\
+				ICC      & 8192  & 1         & 100         & 0.7441                   & 37.5091                \\
 				\hline
-				ICC      & 8192  & 2         & 100         & 3                   & 5                \\
+				ICC      & 8192  & 2         & 100         & 0.7437                   & 19.5603                \\
 				\hline
-				ICC      & 8192  & 4         & 100         & 3                   & 5                \\
+				ICC      & 8192  & 4         & 100         & 0.7483                   & 9.9158                \\
 				\hline
-				ICC      & 8192  & 8         & 100         & 3                   & 5                \\
+				ICC      & 8192  & 8         & 100         & 0.7696                   & 5.1219                \\
 				\hline
-				ICC      & 8192  & 16        & 100         & 3                   & 5                \\
+				ICC      & 8192  & 16        & 100         & 0.7756                   & 2.5619                \\
 				\hline
-				ICC      & 8192  & 32        & 100         & 3                   & 5                \\
+				ICC      & 8192  & 32        & 100         & 0.7851                   & 1.2802                \\
 				\hline\hline
-				ICC      & 32768 & 1         & 10          & 3                   & 5                \\
+				ICC      & 32768 & 1         & 10          & 11.8049                   & 55.2352                \\
 				\hline
-				ICC      & 32768 & 2         & 10          & 3                   & 5                \\
+				ICC      & 32768 & 2         & 10          & 11.8445                   & 27.6332                \\
 				\hline
-				ICC      & 32768 & 4         & 10          & 3                   & 5                \\
+				ICC      & 32768 & 4         & 10          & 11.8567                   & 13.8855                \\
 				\hline
-				ICC      & 32768 & 8         & 10          & 3                   & 5                \\
+				ICC      & 32768 & 8         & 10          & 12.2583                   & 6.9565                \\
 				\hline
-				ICC      & 32768 & 16        & 10          & 3                   & 5                \\
+				ICC      & 32768 & 16        & 10          & 12.2543                   & 3.4985                \\
 				\hline
-				ICC      & 32768 & 32        & 10          & 3                   & 5                \\
+				ICC      & 32768 & 32        & 10          & 12.3533                   & 1.7492                \\
 				\hline
 			\end{tabular}
 			\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
@@ -420,16 +428,16 @@
 				\hline
 				Compiler & Schedule & Size & \#Threads & Repetitions & Initialization in s & Calculation in s \\ [1ex]
 				\hline\hline
-				ICC      & guided   & 128  & 32        & 1 000 000   & 3                   & 5                \\
+				ICC      & guided   & 128  & 32        & 1 000 000   & 0.0167                   & 43.4062                \\
 				\hline
-				ICC      & auto     & 128  & 32        & 1 000 000   & 3                   & 5                \\
+				ICC      & auto     & 128  & 32        & 1 000 000   & 0.0141                   & 37.5988                \\
 				\hline
-				ICC      & dynamic  & 128  & 32        & 1 000 000   & 3                   & 5                \\
+				ICC      & dynamic  & 128  & 32        & 1 000 000   & 0.0133                   & 39.7113                \\
 				\hline
-				ICC      & static   & 128  & 32        & 1 000 000   & 3                   & 5                \\
+				ICC      & static   & 128  & 32        & 1 000 000   & 0.0133                   & 20.6912                \\
 				\hline
 			\end{tabular}
-			\caption{\label{tab:icc}Testergebnisse der verschiedenen Scheduling-Verfahren. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:sched}Testergebnisse der verschiedenen Scheduling-Verfahren. Zeiten gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\clearpage

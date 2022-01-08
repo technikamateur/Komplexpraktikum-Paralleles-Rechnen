@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2021.12.20)  7 JAN 2022 16:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  8 JAN 2022 16:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -335,7 +335,7 @@ Class scrartcl Info: longtable captions redefined on input line 459.
 Package: babel 2021/11/29 3.67 The Babel package
 \babel@savecnt=\count279
 \U@D=\dimen158
-\l@unhyphenated=\language8
+\l@unhyphenated=\language12
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read3
@@ -829,23 +829,21 @@ Package: pgfcomp-version-0-65 2021/05/15 v3.1.9a (3.1.9a)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
 .sty
 Package: pgfcomp-version-1-18 2021/05/15 v3.1.9a (3.1.9a)
-)) (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+)) (/usr/share/texlive/texmf-dist/tex/latex/appendix/appendix.sty
+Package: appendix 2020/02/08 v1.2c extra appendix facilities
+\c@@pps=\count314
+\c@@ppsavesec=\count315
+\c@@ppsaveapp=\count316
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2021-12-14 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count314
+\l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box73
 )
-
-LaTeX Warning: Unused global option(s):
-    [appendix].
-
-(./Praktikumsbericht.aux
-
-LaTeX Warning: Label `tab:icc' multiply defined.
-
-)
+(./Praktikumsbericht.aux)
 \openout1 = `Praktikumsbericht.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
@@ -866,18 +864,19 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
- (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count315
+\scratchcounter=\count318
 \scratchdimen=\dimen269
 \scratchbox=\box74
-\nofMPsegments=\count316
-\nofMParguments=\count317
+\nofMPsegments=\count319
+\nofMParguments=\count320
 \everyMPshowfont=\toks41
-\MPscratchCnt=\count318
+\MPscratchCnt=\count321
 \MPscratchDim=\dimen270
-\MPnumerator=\count319
-\makeMPintoPDFobject=\count320
+\MPnumerator=\count322
+\makeMPintoPDFobject=\count323
 \everyMPtoPDFconversion=\toks42
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -899,7 +898,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count321
+\c@section@level=\count324
 )
 LaTeX Info: Redefining \ref on input line 47.
 LaTeX Info: Redefining \pageref on input line 47.
@@ -923,7 +922,7 @@ Package: bookmark 2020-11-06 v1.29 PDF bookmarks (HO)
 
 (/usr/share/texlive/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
 File: bkm-pdftex.def 2020-11-06 v1.29 bookmark driver for pdfTeX (HO)
-\BKM@id=\count322
+\BKM@id=\count325
 ))
 LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
 
@@ -960,7 +959,7 @@ l.47 \begin{document}
 
 
 ]
-\c@lstlisting=\count323
+\c@lstlisting=\count326
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
@@ -1080,96 +1079,132 @@ Underfull \hbox (badness 10000) in paragraph at lines 182--184
  []
 
 [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 206--207
+Underfull \hbox (badness 10000) in paragraph at lines 203--204
 
  []
 
 (./gcc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1152--211
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1152--208
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 212--212
+Underfull \hbox (badness 10000) in paragraph at lines 209--209
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 214--218
+Underfull \hbox (badness 10000) in paragraph at lines 211--215
 
  []
 
 [8] (./gcc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 2092--223
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 2092--220
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 224--224
+Underfull \hbox (badness 10000) in paragraph at lines 221--221
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 [9] (./icc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1216--235
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1216--232
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 236--236
+Underfull \hbox (badness 10000) in paragraph at lines 233--233
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 [10] (./icc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1734--245
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1734--242
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 246--246
+Underfull \hbox (badness 10000) in paragraph at lines 243--243
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 [11] (./scheduling_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--263
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--260
  [] 
  []
 
-[12] (./scheduling_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--270
+[12] (./scheduling_calc.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 547--269
  [] 
  []
 
-[13] [14
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--276
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 277--279
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
+
+ []
+
+
+Overfull \hbox (9.42558pt too wide) in paragraph at lines 282--283
+[]\T1/ptm/m/n/10.95 Bei \T1/ptm/m/it/10.95 au-to \T1/ptm/m/n/10.95 ent-schei-de
+t der Com-pi-ler un-d/o-der die Lauf-zeit-um-ge-bung über das Sche-du-ling Ver-
+fah-ren [[]].
+ []
+
+[14] [15
 
 
 
 
-] [15] (./Praktikumsbericht.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 24--28
+] [16] (./Praktikumsbericht.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
+[]$\T1/pcr/m/n/10.95 https : / / www . fz-[]juelich . de / ias / jsc / EN / Abo
+utUs / Staff / Hagemeier _
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--16
+\T1/pcr/m/n/10.95 A / docs-[]parallel-[]programming / OpenMP-[]Slides . pdf ? _
+ _ blob =
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 31--35
 []$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
  []
 
-) [16
+) [17
 
 ] (./Praktikumsbericht.aux)
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26276 strings out of 480260
- 479854 string characters out of 5895087
- 1258510 words of memory out of 5000000
- 43613 multiletter control sequences out of 15000+600000
+ 26388 strings out of 480187
+ 481743 string characters out of 5893507
+ 1260239 words of memory out of 5000000
+ 43727 multiletter control sequences out of 15000+600000
  467324 words of font info for 105 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 122i,11n,120p,10644b,1232s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 59 hyphenation exceptions out of 8191
+ 122i,12n,120p,10644b,1232s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
@@ -1178,10 +1213,10 @@ rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/
 uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (17 pages, 148693 bytes).
+Output written on Praktikumsbericht.pdf (18 pages, 152311 bytes).
 PDF statistics:
- 278 PDF objects out of 1000 (max. 8388607)
- 240 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
+ 289 PDF objects out of 1000 (max. 8388607)
+ 250 compressed objects within 3 object streams
+ 73 named destinations out of 1000 (max. 500000)
  157 words of extra memory for PDF output out of 10000 (max. 10000000)
 

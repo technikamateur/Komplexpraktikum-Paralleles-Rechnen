@@ -87,6 +87,7 @@ for file in glob.glob('./results/icc_scheduling*.txt'):
         scheduling_list.append(bench)
         bench.fetch_data(lines)
 
+
 # create beautiful graphs
 print("Creating beautiful graphs")
 for measurement in [gcc_list, icc_list]:
@@ -123,7 +124,7 @@ for measurement in [gcc_list, icc_list]:
     plt.title("\n".join(wrap("calculate_next_gen run time in dependence of size and threads", 60)))
     plt.savefig("pics/{}_all_calc.png".format(compiler), dpi=300)
     plt.savefig("pics/{}_all_calc.svg".format(compiler))
-    plt.savefig('pics/{}_all_calc.pgf'.format(compiler), format='pgf')
+    plt.savefig('Bericht/{}_all_calc.pgf'.format(compiler), format='pgf')
     plt.close()
 
     # now init plot
@@ -155,7 +156,7 @@ for measurement in [gcc_list, icc_list]:
     plt.title("\n".join(wrap("field_initializer run time in dependence of size and threads", 60)))
     plt.savefig("pics/{}_all_init.png".format(compiler), dpi=300)
     plt.savefig("pics/{}_all_init.svg".format(compiler))
-    plt.savefig('pics/{}_all_init.pgf'.format(compiler), format='pgf')
+    plt.savefig('Bericht/{}_all_init.pgf'.format(compiler), format='pgf')
     plt.close()
 
 ####
@@ -181,7 +182,7 @@ plt.gca().grid(True, which="both")
 plt.title("\n".join(wrap("calculate_next_gen run time in dependence of schedule", 60)))
 plt.savefig("pics/scheduling_calc.png", dpi=300)
 plt.savefig("pics/scheduling_calc.svg")
-plt.savefig('pics/scheduling_calc.pgf', format='pgf')
+plt.savefig('Bericht/scheduling_calc.pgf', format='pgf')
 plt.close()
 
 # now init plot
@@ -200,7 +201,7 @@ plt.gca().grid(True, which="both")
 plt.title("\n".join(wrap("field_initializer run time in dependence of schedule", 60)))
 plt.savefig("pics/scheduling_init.png", dpi=300)
 plt.savefig("pics/scheduling_init.svg")
-plt.savefig('pics/scheduling_init.pgf', format='pgf')
+plt.savefig('Bericht/scheduling_init.pgf', format='pgf')
 plt.close()
 
 print("Done.")
