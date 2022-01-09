@@ -10,6 +10,7 @@
 \usepackage{float}
 \usepackage{pgf}
 \usepackage{appendix}
+\usepackage{svg}
 
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -55,7 +56,7 @@
 	
 	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
 	
-	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass Spielfeld Torus-förmig sein soll. Alles was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
+	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass das Spielfeld Torus-förmig sein soll. Alles, was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
 	
 	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
 	\begin{enumerate}
@@ -66,7 +67,7 @@
 	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
-	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, welche es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, die es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
 	
 	Weitere Besonderheiten sind:
 	\begin{itemize}
@@ -84,7 +85,7 @@
 	
 	Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
-	\subsection{Daten initialisieren}
+	\subsection{Daten Initialisierung}
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
 	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
 	
@@ -109,50 +110,78 @@
 	
 	Die \textit{seed} Variable ergibt sich bei mir aus der aktuellen Zeit in Sekunden und der Thread ID. Da bei jeder Ausführung die Zeit als auch die Thread ID variiert, erhält jeder Thread einen zufälligen \textit{seed} mit geringem Rechenaufwand.\\
 	
+	Zusammengesetzt ergibt sich daraus folgender Code:\\
+	
+	\begin{lstlisting}[language=C, caption=Daten Initialisierung]
+void field_initializer(u_int8_t *state) {
+	//fills fields with random numbers 0 = dead, 1 = alive
+	#pragma omp parallel
+	{
+		unsigned tid = pthread_self();
+		unsigned seed = time(0) + tid;
+		#pragma omp parallel for schedule(runtime)
+		for (int i = 0; i < columns * rows; i++) {
+			state[i] = rand_r(&seed) % 2;
+		}
+	}
+	return;
+}\end{lstlisting}
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[scale=5.0]{initialized_board.pdf}
+		\end{center}
+		\caption{Generiertes Spielfeld der Größe: $64\times 64$}
+	\end{figure}
+	\newpage
 	\textbf{Anmerkung zu rand\_r():}
 	
 	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
 	
-	Vielleicht Bild, wie so ein initialisiertes Feld aussieht?
-	
 	\subsection{Berechnung der nächsten Generation}
 	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
-	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.\\
-	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Den Großteil stellt die Berechnung des inneren Feldes dar. Gleichzeitig unterscheiden sich die Schritte nur unwesentlich.\\
+	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.
+	\begin{lstlisting}[language=C, caption=Vertauschen der Pointer for jedem Funktionsaufruf (vereinfacht)]
+for (int i = 0; i < repetitions; i++) {
+	calculate_next_gen(state_out, state_in);
+	state_tmp = state_in;
+	state_in = state_out;
+	state_out = state_tmp;
+}\end{lstlisting}
+	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterschiedet sich nur unwesentlich von der Berechnung des inneren Feldes.
 	
 	\subsubsection{Inneres Feld}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
-	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Gleichzeit ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
+	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Zusätzlich ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
 	Daraus ergibt sich, bei der Verwendung bitweiser Operatoren, ein Performance Vorteil.\\
 	
 	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
 	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
-		#pragma omp parallel for schedule(runtime)
-		for (int i = 1; i < rows - 1; i++) {
-			for (int j = 1; j < columns - 1; j++) {
-				//count up the neighbours
-				u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
-				state_old[(i - 1) * columns + j] +
-				state_old[(i - 1) * columns + (j + 1)] +
-				state_old[i * columns + (j - 1)] +
-				state_old[i * columns + (j + 1)] +
-				state_old[(i + 1) * columns + (j - 1)] +
-				state_old[(i + 1) * columns + j] +
-				state_old[(i + 1) * columns + (j + 1)];
-				state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
-			}
-	}	\end{lstlisting}
+#pragma omp parallel for schedule(runtime)
+for (int i = 1; i < rows - 1; i++) {
+	for (int j = 1; j < columns - 1; j++) {
+		//count up the neighbours
+		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
+		state_old[(i - 1) * columns + j] +
+		state_old[(i - 1) * columns + (j + 1)] +
+		state_old[i * columns + (j - 1)] +
+		state_old[i * columns + (j + 1)] +
+		state_old[(i + 1) * columns + (j - 1)] +
+		state_old[(i + 1) * columns + j] +
+		state_old[(i + 1) * columns + (j + 1)];
+		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
+	}
+}\end{lstlisting}
 	
-	Die Erste Schleife iteriert dabei über jede Zeile und in jeder Zeile geht die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive:\\
+	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive\\
 	
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
 	verwendet.\\
-	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} ist in der Lage mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
+	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
 	
 	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
-	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (= ein Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal angefasst hat.\\
+	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (gleichbedeutend mit einem Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal geladen hat.\\
 	
 	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
 	
@@ -163,14 +192,30 @@
 	
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
-	parallelisiert.
+	parallelisiert.	
+	\begin{lstlisting}[language=C, caption=Beispielhafte Berechnung der obersten Zeile]
+void calculate_top(u_int8_t *state, u_int8_t *state_old) {
+	#pragma omp parallel for schedule(runtime)
+	for (int i = 1; i < columns - 1; i++) {
+		u_int8_t sum_of_t_edge = state_old[i - 1] +
+								state_old[i + 1] +
+								state_old[2 * columns + (i - 1)] +
+								state_old[2 * columns + i] +
+								state_old[2 * columns + (i + 1)] +
+								state_old[(rows - 1) * columns + i] +
+								state_old[(rows - 1) * columns + i + 1] +
+								state_old[(rows - 1) * columns + i - 1];
+		state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
+	}
+}\end{lstlisting}
+
+	\subsubsection{Ecken}
 	
-	--> Zeitmessung
-	
+	\subsection{Zeitmessung}	
 	
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
-	Ebenso lässt sich das Ergebnis visualisieren.\\
+	Ebenso lässt sich das Ergebnis über \textit{pbm}-Files visualisieren.\\
 	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
 	
 	\section{Zeitmessung auf Taurus}
