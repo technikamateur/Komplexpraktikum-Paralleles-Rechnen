@@ -75,7 +75,7 @@
 		\item Das OpenMP Schedulingverfahren soll hinsichtlich des Einflusses auf die Ausführungszeit untersucht werden.
 		\item Das Programm soll mit dem dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
 	\end{itemize}
-	
+	\newpage
 	\section{Implementierung}
 	Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
 	
@@ -162,13 +162,13 @@ for (int i = 1; i < rows - 1; i++) {
 	for (int j = 1; j < columns - 1; j++) {
 		//count up the neighbours
 		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
-		state_old[(i - 1) * columns + j] +
-		state_old[(i - 1) * columns + (j + 1)] +
-		state_old[i * columns + (j - 1)] +
-		state_old[i * columns + (j + 1)] +
-		state_old[(i + 1) * columns + (j - 1)] +
-		state_old[(i + 1) * columns + j] +
-		state_old[(i + 1) * columns + (j + 1)];
+												state_old[(i - 1) * columns + j] +
+												state_old[(i - 1) * columns + (j + 1)] +
+												state_old[i * columns + (j - 1)] +
+												state_old[i * columns + (j + 1)] +
+												state_old[(i + 1) * columns + (j - 1)] +
+												state_old[(i + 1) * columns + j] +
+												state_old[(i + 1) * columns + (j + 1)];
 		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
 	}
 }\end{lstlisting}
@@ -193,31 +193,74 @@ for (int i = 1; i < rows - 1; i++) {
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
 	parallelisiert.	
-	\begin{lstlisting}[language=C, caption=Beispielhafte Berechnung der obersten Zeile]
+	\begin{lstlisting}[language=C, caption=Berechnung der obersten Zeile]
 void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	#pragma omp parallel for schedule(runtime)
 	for (int i = 1; i < columns - 1; i++) {
 		u_int8_t sum_of_t_edge = state_old[i - 1] +
-								state_old[i + 1] +
-								state_old[2 * columns + (i - 1)] +
-								state_old[2 * columns + i] +
-								state_old[2 * columns + (i + 1)] +
-								state_old[(rows - 1) * columns + i] +
-								state_old[(rows - 1) * columns + i + 1] +
-								state_old[(rows - 1) * columns + i - 1];
+														 state_old[i + 1] +
+														 state_old[2 * columns + (i - 1)] +
+														 state_old[2 * columns + i] +
+														 state_old[2 * columns + (i + 1)] +
+														 state_old[(rows - 1) * columns + i] +
+														 state_old[(rows - 1) * columns + i + 1] +
+														 state_old[(rows - 1) * columns + i - 1];
 		state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
 	}
 }\end{lstlisting}
 
 	\subsubsection{Ecken}
+	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da Vier Ecken bei einem Feld mit mehr als 16.000 Felder nicht ins Gewicht fallen.\\
+	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
 	
-	\subsection{Zeitmessung}	
+	\begin{lstlisting}[language=C, caption=Berechnung der Ecke oben links]
+void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
+	u_int8_t corner_sum;
+	// top left
+	corner_sum = state_old[1] +
+	state_old[columns] +
+	state_old[columns + 1] +
+	state_old[(rows - 1) * columns] +
+	state_old[(rows - 1) * columns + 1] +
+	state_old[columns - 1] +
+	state_old[2 * columns - 1] +
+	state_old[rows * columns - 1];
+	state[0] = (corner_sum == 3) | ((corner_sum == 2) & state_old[0]);
+}\end{lstlisting}
+	
+	\subsection{Zeitmessung}
+	
+	Für die Zeitmessung habe ich auf die \texttt{clock()} und \texttt{omp\_get\_wtime()} Funktion zurückgegriffen.\\
+	
+	Die \texttt{clock()} Funktion misst dabei die CPU Zeit des Prozesses und nicht die reale vergangene Zeit (\textit{wall-clock time}). Das Ergebnis ist also die aufaddierte Zeit aller Threads in der Funktion.\\
+	
+	Die \texttt{omp\_get\_wtime()} Funktion gibt hingegen die \textit{wall-clock time} zurück; unabhängig von der Anzahl der Threads.\\
+	
+	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sonder auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems machen. Für die Berechnung der Ausführungszeit, wird vor und nach Ausführung der zu untersuchenden Funktion, \texttt{clock()} und \texttt{omp\_get\_wtime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
+	\newpage
+	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
+double time_calc = 0;
+double omp_calc = 0;
+for (int i = 0; i < repetitions; i++) {
+	t = clock();
+	t_omp = omp_get_wtime();
+	// function call
+	t_omp = omp_get_wtime() - t_omp;
+	t = clock() - t;
+	omp_calc += t_omp;
+	time_calc += ((double) t) / CLOCKS_PER_SEC;
+}
+printf("Calculation took %f seconds to execute (all threads added).\n", time_calc);
+printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
+\end{lstlisting}
+
+	Bei der Darstellung der Testergebnisse \ref{erg} beziehe ich mich nur auf die Ergebnisse der \texttt{omp\_get\_wtime()} Funktion, da die Ausführungszeiten (\textit{wall-clock time}) verglichen werden sollten.
 	
 	\subsection{Ein und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
 	Ebenso lässt sich das Ergebnis über \textit{pbm}-Files visualisieren.\\
 	Alle Funktionen, sowie der Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.
-	
+	\newpage
 	\section{Zeitmessung auf Taurus}
 	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
@@ -225,10 +268,10 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
 	
 	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein Simultaneous Multithreading verwendet werden.\\
-	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung außerdem nur auf einem der beiden Prozessoren ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden. Zusätzlich erleichtert es die Umsetzung der \textit{first touch NUMA policy}, deren Befolgung zu einer höheren Ausführungsgeschwindigkeit führt.\\
+	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung nur auf einem der beiden Sockets ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden. Zusätzlich erleichtert es die Umsetzung der \textit{first touch NUMA policy}, deren Befolgung zu einer höheren Ausführungsgeschwindigkeit führt.\\
 	
 	Auf Linux wird Speicher mit \texttt{malloc()} nur reserviert, aber nicht im physischen Speicher angelegt. Das geschieht erst beim Zugriff der Threads auf die entsprechenden Speicherbereiche. Würde man dazu Threads auf beiden Sockets ausführen, würde ein Teil des Arrays im physischen Speicher von Socket 0 und der Andere im physischen Speicher von Socket 1 liegen.\\
-	Damit wird es kompliziert, denn es muss bei späteren Teilen des Codes, die Thread-parallel ausgeführt werden, sichergestellt werden, dass auf die Teile des Arrays, die physisch an Socket 0 angebunden sind, nur Threads zugreifen, die auch auf Socket 0 ausgeführt werden. Ansonsten müssten die Threads auf nicht lokalen Speicher zugreifen, was Zeit kostet.\\
+	Damit wird es kompliziert, denn es muss bei folgenden Teilen des Codes, die Thread-parallel ausgeführt werden, sichergestellt werden, dass auf die Teile des Arrays, die physisch an Socket 0 angebunden sind, nur Threads zugreifen, die auch auf Socket 0 ausgeführt werden. Ansonsten müssten die Threads auf nicht lokalen Speicher zugreifen, was Zeit kostet.\\
 	Einfacher ist es daher, alle Threads auf einem Socket auszuführen. Um das zu erreichen, verwendete ich die Environment-Variablen:
 	\begin{itemize}
 		\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
@@ -237,12 +280,12 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	\end{itemize}	
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
-	Um herauszufinden, wie lang ein Test durchgeführt werden muss, aber ich einen Messung mit 1 Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
+	Um herauszufinden, wie lang ein Test durchgeführt werden muss, habe ich eine Messung mit einer Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
 	\ref{tab:icc} entnehmen.\\
 	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt. Damit bleiben die Ausführungszeiten für alle Feldgrößen in etwa konstant.
 	\newpage
-	\section{Testergebnisse}
+	\section{Testergebnisse} \label{erg}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
 	\subsection{GCC kompilierte Version}
 	Zuerst möchte ich auf die \texttt{GCC} kompilierte Version des Spiels eingehen.\\
@@ -256,7 +299,7 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	Die gezeigte Grafik berücksichtigt nur die Ausführung der Funktion \texttt{calculate\_next\_gen()}. Da sich sowohl die Feldgröße, als auch die Anzahl der Wiederholungen exponentiell erhöht, bietet sich eine Doppellogarithmische Darstellung an.\\
 	Man erkennt eindeutig die zu erwartende Tendenz: Mehr Threads bewirken eine Verkürzung der Laufzeit. Allerdings lässt sich bei den Feldgrößen 128 deutlich und 512 in abgeschwächter Form erkennen, dass ab einer gewissen Thread Anzahl kein Speedup mehr erreicht werden kann. Schlimmer noch: Bei der Größe 128 steigt die Ausführungszeit mit 32 Threads wieder an.\\
 	Eine Begründung ist, dass die einzelnen Schleifendurchläufe dieser Feldgrößen sehr schnell abgeschlossen sind. Mit steigender Anzahl an Threads steigt auch der Overhead durch Thread spawning, Synchronisation und Zuteilung der Arbeit. Ab einem gewissen Punkt ist dieser Overhead im Vergleich zum zu lösenden Problem nicht mehr vernachlässigbar klein und wirkt sich negativ auf den Speedup aus.\\
-	Wie in allen folgenden Grafiken zeichnet sich schon hier das Bild ab, dass eine Verdopplung der Threads nicht zur Halbierung der Laufzeit führt.\\
+	Wie in allen folgenden Grafiken zeichnet sich das Bild ab, dass eine Verdopplung der Threads, aus den genannten Gründen, nicht zur Halbierung der Laufzeit führt. Das ist eine theoretische Annahme, die in der Praxis nie erreicht werden kann.\\
 	
 	Ein anderes Bild zeichnet sich jedoch beim Ausführen der Funktion \texttt{field\_initializer()} ab.
 	\begin{figure}[h]
@@ -268,7 +311,8 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	\newline
 	Erwartungsgemäß benötigt ein großes Feld mehr Zeit zum initialisieren, als ein kleines Feld. Betrachtet man, dass ein 32768 Spielfeld 16 mal so groß ist wie 8192 und nach den Daten auch etwa 16 mal so viel Zeit in Anspruch nimmt, sind die Zeiten sehr plausibel und skalieren etwa linear mit der Feldgröße. Ausnahmen bilden hier wieder die kleinen Feldgrößen, bei denen die Werte auch extrem schwanken.\\
 	Erklären lässt sich das mit der äußerst kurzen Ausführungszeit von teilweise deutlich unter 10 ms bei einer Feldgröße von 128. Vermutlich ist hier wieder der Overhead im Verhältnis zum zu lösenden Problem deutlich größer.
-	Bei einer großen Problemgröße benötigt die Initialisierung etwa gleich viel Zeit unabhängig von der Zahl der Threads. Die Parallelisierung bietet an dieser Stelle keinen nennenswerten Geschwindigkeitsvorteil. Für kleine Felder ist ein leichter Anstieg zu erkennen, der ähnlich der \texttt{calculate\_next\_gen()} Funktion mit dem entstehenden Overhead erklärbar ist.
+	Bei einer großen Problemgröße benötigt die Initialisierung etwa gleich viel Zeit unabhängig von der Zahl der Threads.\\
+	Die Parallelisierung bietet an dieser Stelle keinen nennenswerten Geschwindigkeitsvorteil.
 	\newpage
 	\subsection{ICC kompilierte Version}
 	\begin{figure}[h]
@@ -288,7 +332,7 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}. Kompiliert mit \texttt{ICC}.}
 	\end{figure}
 	Bei der Dateninitialisierung zeigt sich beim Intel Compiler ein etwas anderes Bild. Im Allgemeinen schwanken die Werte der \texttt{ICC} Version weniger stark.\\
-	Bei Feldgrößen ab 2048 ist er ebenfalls schneller als die Version des \texttt{GCC} Compilers. Bei den Werten darunter ist ein Vergleich schwierig, da die Zeiten der \texttt{GCC} Version stark schwanken. Tendenziell lässt sich wieder ein Anstieg der Zeit mit steigender Zahl an Threads verbuchen.
+	Bei Feldgrößen ab 2048 ist er ebenfalls schneller als die Version des \texttt{GCC} Compilers. Bei den Werten darunter ist ein Vergleich aufgrund der Schwankungen schwierig. Tendenziell lässt sich wieder ein Anstieg der Zeit mit steigender Zahl an Threads verbuchen.
 	\newpage
 	\subsection{Scheduling-Verfahren}
 	Den letzten Teil der Ergebnisse stellt der Vergleich der Scheduling-Verfahren dar. \texttt{OpenMP} bietet verschiedene Scheduling-Verfahren zur Auswahl. Im Rahmen der Aufgabenstellung betrachte ich
@@ -317,9 +361,11 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 	Bei der \texttt{calculate\_next\_gen()} Funktion fallen hingegen deutliche Unterschiede auf. Das Verfahren \textit{static} liefert hier mit Abstand die kürzesten Ausführungszeiten.
 	Um zu erklären warum, ist es sinnvoll, sich die Funktionsweise der Verfahren anzusehen.\\
 	
-	Beim \textit{static} schedule garantiert \texttt{OpenMP}, dass mehrere Schleifen mit der selben Anzahl an Iterationen und Threads so unter den Threads aufgeteilt werden, dass jeder Thread bei den Durchläufen den selben Bereich der Iterationen abarbeitet. Im Fall des \texttt{Game-of-Life} also immer auf den selben Zellen arbeitet. Das führt hier natürlich zu einer sehr guten Performance, da Cache und NUMA Eigenschaften optimal ausgenutzt werden. Das \textit{static} Verfahren hat zusätzlich einen geringen Overhead.\\
+	Beim \textit{static} schedule garantiert \texttt{OpenMP}, dass mehrere Schleifen, mit der selben Anzahl an Iterationen und Threads, so unter den Threads aufgeteilt werden, dass jeder Thread bei den Durchläufen den selben Bereich der Schleifen abarbeitet. Im Fall des \texttt{Game-of-Life} also immer auf den selben Zellen arbeitet. Das führt hier natürlich zu einer sehr guten Performance, da Cache und NUMA Eigenschaften optimal ausgenutzt werden. Das \textit{static} Verfahren hat zusätzlich einen geringen Overhead.\\
 	
-	Beim \textit{dynamic} schedule gibt es diese feste Aufteilung nicht. Es arbeitet nach dem Prinzip \textit{first come, first served} und hat einen höheren Overhead als \textit{static}. Der Vorteil des \textit{first come, first served} Prinzips liegt in der guten Systemauslastung (workload balancing), wenn der Berechnungsaufwand der einzelnen Iterationsschritte variiert, da einem Thread einfach neue Arbeit zugewiesen wird, sobald er seine Arbeit beendet hat.\\
+	Beim \textit{dynamic} schedule gibt es diese feste Aufteilung nicht. Es arbeitet nach dem Prinzip \textit{first come, first served} und hat einen höheren Overhead als \textit{static}.\\
+	Der Vorteil des \textit{first come, first served} Prinzips liegt in der guten Systemauslastung (workload balancing), wenn der Berechnungsaufwand der einzelnen Iterationsschritte variiert, da einem Thread einfach neue Arbeit zugewiesen wird, sobald er seine Arbeit beendet hat.\\
+	Der Nachteil liegt im höheren Overhead und schlechteren NUMA Eigenschaften.\\
 	Das das \texttt{Game-of-Life} jedoch einen konstanten Berechnungsaufwand je Iterationsschritt hat, ist dieses Verfahren eher ungeeignet. Das zeigt sich auch in der Ausführungszeit.\\
 	
 	Das \textit{guided} Verfahren ist nur ein Spezialfall des \textit{dynamic} schedule. Der Unterschied besteht darin, dass sich die chunk size, also die Anzahl der Iterationen, die ein Thread zur Abarbeitung erhält, mit zunehmenden Fortschritt verkleinert. Entsprechend schneidet das \textit{guided} Verfahren ähnlich schlecht wie \textit{dynamic} ab.\\

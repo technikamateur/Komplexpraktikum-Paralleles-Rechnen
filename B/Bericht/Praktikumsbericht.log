@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  9 JAN 2022 14:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  10 JAN 2022 13:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1096,113 +1096,144 @@ Underfull \hbox (badness 10000) in paragraph at lines 193--194
 
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--215
+
+ []
+
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 223--226
+Underfull \hbox (badness 10000) in paragraph at lines 233--234
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 227--229
+Underfull \hbox (badness 10000) in paragraph at lines 235--236
 
  []
 
-[8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 248--249
+
+Underfull \hbox (badness 10000) in paragraph at lines 237--238
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--240
+
+ []
+
+[8]
+Overfull \hbox (8.8018pt too wide) in paragraph at lines 257--258
+[]\T1/ptm/m/n/10.95 Bei der Dar-stel-lung der Tes-t-er-geb-nis-se []4[] be-zie-
+he ich mich nur auf die Er-geb-nis-se der \T1/pcr/m/n/10.95 omp_get_wtime()
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 266--269
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--272
+
+ []
+
+[10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 
  []
 
 (./gcc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1152--253
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1152--296
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--254
+Underfull \hbox (badness 10000) in paragraph at lines 297--297
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 256--260
+Underfull \hbox (badness 10000) in paragraph at lines 299--303
 
  []
 
-[10] (./gcc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 2092--265
+[12] (./gcc_all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 2092--308
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 266--266
+Underfull \hbox (badness 10000) in paragraph at lines 309--309
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[11] (./icc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1216--277
+[13] (./icc_all_calc.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1216--321
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 278--278
+Underfull \hbox (badness 10000) in paragraph at lines 322--322
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[12] (./icc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1734--287
+[14] (./icc_all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1734--331
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 288--288
+Underfull \hbox (badness 10000) in paragraph at lines 332--332
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[13] (./scheduling_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--305
+[15] (./scheduling_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--349
  [] 
  []
 
-[14] (./scheduling_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 547--314
+[16] (./scheduling_calc.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 547--358
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 317--319
+Underfull \hbox (badness 10000) in paragraph at lines 361--363
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 320--321
+Underfull \hbox (badness 10000) in paragraph at lines 364--365
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--324
+Underfull \hbox (badness 10000) in paragraph at lines 366--370
 
  []
 
-[15]
-Underfull \hbox (badness 10000) in paragraph at lines 325--326
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 371--372
 
  []
 
 
-Overfull \hbox (9.42558pt too wide) in paragraph at lines 327--328
+Overfull \hbox (9.42558pt too wide) in paragraph at lines 373--374
 []\T1/ptm/m/n/10.95 Bei \T1/ptm/m/it/10.95 au-to \T1/ptm/m/n/10.95 ent-schei-de
 t der Com-pi-ler un-d/o-der die Lauf-zeit-um-ge-bung über das Sche-du-ling Ver-
 fah-ren [[]].
  []
 
-[16] [17
+[18] [19
 
 
 
 
-] [18] (./Praktikumsbericht.bbl
+] [20] (./Praktikumsbericht.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 11--16
 []$\T1/pcr/m/n/10.95 https : / / www . fz-[]juelich . de / ias / jsc / EN / Abo
 utUs / Staff / Hagemeier _
@@ -1219,20 +1250,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--35
 []$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
  []
 
-) [19
+) [21
 
 ] (./Praktikumsbericht.aux)
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26907 strings out of 480187
- 493431 string characters out of 5893507
- 1262762 words of memory out of 5000000
- 44189 multiletter control sequences out of 15000+600000
+ 26959 strings out of 480187
+ 494105 string characters out of 5893507
+ 1307801 words of memory out of 5000000
+ 44211 multiletter control sequences out of 15000+600000
  467324 words of font info for 105 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 122i,12n,120p,10644b,1236s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 122i,11n,120p,10644b,1236s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
@@ -1241,10 +1272,10 @@ rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/
 uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (20 pages, 160330 bytes).
+Output written on Praktikumsbericht.pdf (22 pages, 166123 bytes).
 PDF statistics:
- 358 PDF objects out of 1000 (max. 8388607)
- 314 compressed objects within 4 object streams
- 114 named destinations out of 1000 (max. 500000)
+ 400 PDF objects out of 1000 (max. 8388607)
+ 354 compressed objects within 4 object streams
+ 144 named destinations out of 1000 (max. 500000)
  178 words of extra memory for PDF output out of 10000 (max. 10000000)
 
