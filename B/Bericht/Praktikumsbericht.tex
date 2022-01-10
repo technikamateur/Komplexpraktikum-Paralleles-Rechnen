@@ -49,10 +49,10 @@
 	\section{Aufgabenbeschreibung}
 	In dieser Aufgabe soll eine Thread-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.
 	
-	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compiler durchgeführt und verglichen werden.
+	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compilern durchgeführt und verglichen werden.
 	
 	\subsection{Conway’s Game-of-Life}
-	Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein Zweidimensionales Spielfeld, jedoch ist auch eine Dreidimensionale Simulation möglich.
+	Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein zweidimensionales Spielfeld, jedoch ist auch eine dreidimensionale Simulation möglich.
 	
 	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
 	
@@ -64,7 +64,7 @@
 		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
 		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
 	\end{enumerate}
-	Wichtig ist, dass die Folgegenration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
+	Wichtig ist, dass die Folgegeneration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich, die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
 	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} erfolgen soll. \texttt{OpenMP} ist eine API, die es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.
@@ -73,36 +73,36 @@
 	\begin{itemize}
 		\item Die Simulation soll variabel mit Feldgrößen von $128\times 128$ bis $32768\times 32768$ und 1 bis 32 Threads erfolgen.
 		\item Das OpenMP Schedulingverfahren soll hinsichtlich des Einflusses auf die Ausführungszeit untersucht werden.
-		\item Das Programm soll mit dem dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
+		\item Das Programm soll mit dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
 	\end{itemize}
 	\newpage
 	\section{Implementierung}
-	Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
+	Zuerst habe ich mich mit der Abstraktion des Feldes in \texttt{C} beschäftigt. Meine Idee ist die Allokierung eines Speicherbereichs der Größe \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}. Innerhalb des Speicherbereichs kann man sich nun frei bewegen. Dabei verwendet man die \texttt{columns} als Offset, um an die entsprechende Stelle zu springen. Praktischerweise entspricht eine Zelle im Feld einem Byte im Speicher.
 	
-	Beispiel: Möchte man auf die Zweite Zelle in der Zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
+	Beispiel: Möchte man auf die zweite Zelle in der zweiten Zeile (da die Nummerierung typischerweise bei 0 beginnt, also das erste Element) zugreifen, würde man das \texttt{columns + 1} Byte innerhalb des Speicherbereichs verwenden.
 	
-	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur Ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleiner Datentyp möglich ist.\\
+	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
 	
-	Um zu Berücksichtigen, dass die Folgegeneration immer der aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{Daten Initialisierung}
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
 	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
 	
-	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()} Thread-sicher und kann Thread-parallel ausgeführt werden.
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()}, Thread-sicher und kann Thread-parallel ausgeführt werden.
 	
 	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
 	
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
-	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
-	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Zahl der Anzahl der Hardware-Threads auf dem System.\\
+	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim Betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
+	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Anzahl der Hardware-Threads auf dem System.\\
 	Durch \texttt{schedule(runtime)} ist es später möglich, über die Umgebungsvariable \texttt{OMP\_SCHEDULE} das Schedulingverfahren zu wählen.\\
-	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlich \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
+	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlichen \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
 	
 	\texttt{\#pragma omp parallel}\\
 	
-	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden Zwei Probleme gelöst:
+	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden zwei Probleme gelöst:
 	\begin{enumerate}
 		\item Jeder Thread arbeitet auf seiner eigenen \textit{seed} Variable. Dadurch wird verhindert, dass Threads auf der gleichen Variable arbeiten und folglich ein Flaschenhals entsteht.
 		\item Die \textit{seed} Variablen können unterschiedliche Werte haben, was wiederum die Entropie des initialisierten Spielfeldes erhöht.
@@ -139,8 +139,8 @@ void field_initializer(u_int8_t *state) {
 	
 	\subsection{Berechnung der nächsten Generation}
 	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
-	Bei jedem Simulationsschritt werden Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.
-	\begin{lstlisting}[language=C, caption=Vertauschen der Pointer for jedem Funktionsaufruf (vereinfacht)]
+	Bei jedem Simulationsschritt werden die Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.
+	\begin{lstlisting}[language=C, caption=Vertauschen der Pointer vor jedem Funktionsaufruf (vereinfacht)]
 for (int i = 0; i < repetitions; i++) {
 	calculate_next_gen(state_out, state_in);
 	state_tmp = state_in;
@@ -150,9 +150,9 @@ for (int i = 0; i < repetitions; i++) {
 	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterschiedet sich nur unwesentlich von der Berechnung des inneren Feldes.
 	
 	\subsubsection{Inneres Feld}
-	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren Acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
+	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
-	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Zusätzlich ist die CPU sehr schnell im abarbeiten von arithmetischen Operationen.\\
+	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet, um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Zusätzlich ist die CPU sehr schnell im Abarbeiten von arithmetischen Operationen.\\
 	Daraus ergibt sich, bei der Verwendung bitweiser Operatoren, ein Performance Vorteil.\\
 	
 	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
@@ -173,7 +173,7 @@ for (int i = 1; i < rows - 1; i++) {
 	}
 }\end{lstlisting}
 	
-	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Daten Initialisierung, die \texttt{OpenMP} Direktive\\
+	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Dateninitialisierung, die \texttt{OpenMP} Direktive\\
 	
 	\texttt{\#pragma omp parallel for schedule(runtime)}\\
 	
@@ -181,7 +181,7 @@ for (int i = 1; i < rows - 1; i++) {
 	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
 	
 	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
-	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre Acht Nachbarn. Geht man eine Zelle weiter, benötigt man Sechs der Neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (gleichbedeutend mit einem Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal geladen hat.\\
+	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre acht Nachbarn. Geht man eine Zelle weiter, benötigt man sechs der neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (gleichbedeutend mit einem Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal geladen hat.\\
 	
 	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
 	
@@ -210,7 +210,7 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 }\end{lstlisting}
 
 	\subsubsection{Ecken}
-	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da Vier Ecken bei einem Feld mit mehr als 16.000 Felder nicht ins Gewicht fallen.\\
+	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Felder nicht ins Gewicht fallen.\\
 	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
 	
 	\begin{lstlisting}[language=C, caption=Berechnung der Ecke oben links]
