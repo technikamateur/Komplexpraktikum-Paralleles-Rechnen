@@ -1,180 +1,180 @@
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
-Field initializer took 0.820000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.730000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.80user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66720maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.52user 0.05system 0:02.58elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.840000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.670000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.82user 0.03system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.820000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.80user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.47user 0.05system 0:02.53elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.780000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.81user 0.03system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.80user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.58user 0.04system 0:02.63elapsed 99%CPU (0avgtext+0avgdata 132284maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.840000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.760000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.82user 0.02system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16734minor)pagefaults 0swaps
+2.56user 0.05system 0:02.62elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
-Field initializer took 0.840000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Field initializer took 0.900000 seconds to execute.
+Calculation took 1.660000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.82user 0.03system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16736minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.840000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.82user 0.03system 0:00.86elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.51user 0.06system 0:02.57elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.820000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.800000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.80user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16734minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.82user 0.01system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.03system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16734minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.83user 0.02system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16734minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.03system 0:00.85elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16736minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.81user 0.02system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16734minor)pagefaults 0swaps
-Welcome to the SIMD game of life!
-Game size: Columns: 8192, Rows: 8192.
-Starting now...
-Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
-Writing pbm files took 0.000000 seconds to execute.
-Done :)
-0.80user 0.03system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.58user 0.05system 0:02.64elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.820000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.690000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.80user 0.03system 0:00.83elapsed 99%CPU (0avgtext+0avgdata 66728maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.47user 0.05system 0:02.53elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
 Welcome to the SIMD game of life!
 Game size: Columns: 8192, Rows: 8192.
 Starting now...
 Field initializer took 0.830000 seconds to execute.
-Calculation took 0.000000 seconds to execute.
+Calculation took 1.790000 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
-0.81user 0.02system 0:00.84elapsed 99%CPU (0avgtext+0avgdata 66724maxresident)k
-0inputs+0outputs (0major+16735minor)pagefaults 0swaps
+2.58user 0.05system 0:02.64elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.640000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.43user 0.05system 0:02.49elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.730000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.51user 0.05system 0:02.58elapsed 99%CPU (0avgtext+0avgdata 132284maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.660000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.45user 0.04system 0:02.50elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.790000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.59user 0.04system 0:02.64elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.840000 seconds to execute.
+Calculation took 1.760000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.56user 0.05system 0:02.61elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.700000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.49user 0.04system 0:02.55elapsed 99%CPU (0avgtext+0avgdata 132284maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.650000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.45user 0.04system 0:02.50elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.840000 seconds to execute.
+Calculation took 1.650000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.46user 0.04system 0:02.51elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.760000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.54user 0.05system 0:02.60elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.720000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.52user 0.04system 0:02.57elapsed 99%CPU (0avgtext+0avgdata 132276maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.790000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.58user 0.04system 0:02.63elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33123minor)pagefaults 0swaps
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.840000 seconds to execute.
+Calculation took 1.700000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.50user 0.05system 0:02.56elapsed 99%CPU (0avgtext+0avgdata 132280maxresident)k
+0inputs+0outputs (0major+33124minor)pagefaults 0swaps
