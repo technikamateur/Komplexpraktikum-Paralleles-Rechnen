@@ -1,0 +1,1 @@
+for Intel compiler use intel/2020a toolchain with -mavx2 -fma

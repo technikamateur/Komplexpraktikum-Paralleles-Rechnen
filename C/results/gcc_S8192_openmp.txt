@@ -1,0 +1,660 @@
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.800000 seconds to execute.
+Calculation took 1.440000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.20user 0.05system 0:02.25elapsed 99%CPU (0avgtext+0avgdata 131960maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.460000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.24user 0.05system 0:02.29elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.490000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.27user 0.04system 0:02.31elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.450000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.23user 0.04system 0:02.28elapsed 99%CPU (0avgtext+0avgdata 131960maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.830000 seconds to execute.
+Calculation took 1.530000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.33user 0.04system 0:02.38elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.480000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.25user 0.05system 0:02.31elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33041minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.520000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.29user 0.04system 0:02.34elapsed 99%CPU (0avgtext+0avgdata 131968maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.480000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.26user 0.04system 0:02.31elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.520000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.31user 0.04system 0:02.36elapsed 99%CPU (0avgtext+0avgdata 131968maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.500000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.29user 0.05system 0:02.34elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.510000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.28user 0.06system 0:02.35elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.530000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.31user 0.05system 0:02.37elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.820000 seconds to execute.
+Calculation took 1.580000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.36user 0.05system 0:02.41elapsed 99%CPU (0avgtext+0avgdata 131968maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.440000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.20user 0.06system 0:02.26elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.460000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.24user 0.04system 0:02.29elapsed 99%CPU (0avgtext+0avgdata 131968maxresident)k
+0inputs+0outputs (0major+33041minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.550000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.32user 0.05system 0:02.38elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.800000 seconds to execute.
+Calculation took 1.480000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.24user 0.05system 0:02.29elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.430000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.21user 0.05system 0:02.27elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33040minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.520000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.28user 0.06system 0:02.34elapsed 99%CPU (0avgtext+0avgdata 131968maxresident)k
+0inputs+0outputs (0major+33041minor)pagefaults 0swaps
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  OMP_DYNAMIC = 'FALSE'
+  OMP_NESTED = 'FALSE'
+  OMP_NUM_THREADS = '1'
+  OMP_SCHEDULE = 'DYNAMIC'
+  OMP_PROC_BIND = 'FALSE'
+  OMP_PLACES = ''
+  OMP_STACKSIZE = '0'
+  OMP_WAIT_POLICY = 'PASSIVE'
+  OMP_THREAD_LIMIT = '4294967295'
+  OMP_MAX_ACTIVE_LEVELS = '1'
+  OMP_CANCELLATION = 'FALSE'
+  OMP_DEFAULT_DEVICE = '0'
+  OMP_MAX_TASK_PRIORITY = '0'
+  OMP_DISPLAY_AFFINITY = 'FALSE'
+  OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  OMP_TARGET_OFFLOAD = 'DEFAULT'
+  GOMP_CPU_AFFINITY = ''
+  GOMP_STACKSIZE = '0'
+  GOMP_SPINCOUNT = '300000'
+OPENMP DISPLAY ENVIRONMENT END
+Welcome to the SIMD game of life!
+Game size: Columns: 8192, Rows: 8192.
+Starting now...
+Field initializer took 0.810000 seconds to execute.
+Calculation took 1.420000 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+2.19user 0.05system 0:02.25elapsed 99%CPU (0avgtext+0avgdata 131964maxresident)k
+0inputs+0outputs (0major+33039minor)pagefaults 0swaps

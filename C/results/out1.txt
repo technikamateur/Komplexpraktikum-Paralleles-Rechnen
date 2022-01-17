@@ -1,0 +1,5 @@
+Fr 17. Dez 20:18:43 CET 2021
+icc (ICC) 19.0.5.281 20190815
+Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
+
+Fr 17. Dez 20:25:21 CET 2021

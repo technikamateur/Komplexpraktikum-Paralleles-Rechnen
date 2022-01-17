@@ -5,14 +5,14 @@
 #SBATCH --ntasks-per-core=1
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=romeo
-#SBATCH --time=01:00:00
+#SBATCH --time=03:00:00
 #SBATCH --account=p_lv_kp_wise2122
-#SBATCH --exclusive
 #SBATCH --output=out1.txt
 #SBATCH --error=err1.txt
 #SBATCH --mem=16000
 
 #setting things up
+echo "started"
 date
 module purge
 export OMP_DISPLAY_ENV=VERBOSE
@@ -91,4 +91,5 @@ for index in "${!sizes[@]}"; do
   done
 done
 
+echo "done"
 date

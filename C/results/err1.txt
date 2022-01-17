@@ -1,0 +1,6 @@
+Die folgenden Module wurden nicht entladen:
+  (Benutzen Sie "module --force purge" um alle Module zu entladen):
+
+  1) modenv/scs5
+Module intel/2020a, GCC/11.2.0, p7zip/9.38.1, icc/2019.1.144-GCC-8.2.0-2.31.1 and 9 dependencies unloaded.
+Module intel/2019b and 7 dependencies loaded.
