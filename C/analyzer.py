@@ -24,7 +24,7 @@ class Bench:
         self.repetitions = 100
         self.init_mean = None
         self.calc_mean = None
-        sel.type = 
+        self.type = None
 
     def fetch_data(self, lines):
         init_counter = 0
