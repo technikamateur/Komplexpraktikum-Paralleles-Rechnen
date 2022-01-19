@@ -274,25 +274,24 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\item \texttt{O3} - Optimierungsflag des Compilers
 		\item \texttt{mavx2} - Verwendung von AVX2
 		\item \texttt{fma} - Verwendung von FMA
+		\item \texttt{fopenmp} - Verwendung nur für Tests mit OpenMP
 	\end{itemize}
 	
-	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein Simultaneous Multithreading verwendet werden.\\
-	Da ein Romeo Node aus zwei Epyc Prozessoren \`{a} 64 Cores besteht, aber das \texttt{Game-of-Life} mit maximal 32 Threads ausgeführt werden soll, sollte die Berechnung nur auf einem der beiden Sockets ausgeführt werden. Dadurch kann das Potenzial des Speichers und der Caches optimal ausgeschöpft werden. Zusätzlich erleichtert es die Umsetzung der \textit{first touch NUMA policy}, deren Befolgung zu einer höheren Ausführungsgeschwindigkeit führt.\\
+	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
 	
-	Auf Linux wird Speicher mit \texttt{malloc()} nur reserviert, aber nicht im physischen Speicher angelegt. Das geschieht erst beim Zugriff der Threads auf die entsprechenden Speicherbereiche. Würde man dazu Threads auf beiden Sockets ausführen, würde ein Teil des Arrays im physischen Speicher von Socket 0 und der Andere im physischen Speicher von Socket 1 liegen.\\
-	Damit wird es kompliziert, denn es muss bei folgenden Teilen des Codes, die Thread-parallel ausgeführt werden, sichergestellt werden, dass auf die Teile des Arrays, die physisch an Socket 0 angebunden sind, nur Threads zugreifen, die auch auf Socket 0 ausgeführt werden. Ansonsten müssten die Threads auf nicht lokalen Speicher zugreifen, was Zeit kostet.\\
-	Einfacher ist es daher, alle Threads auf einem Socket auszuführen. Um das zu erreichen, verwendete ich die Environment-Variablen:
-	\begin{itemize}
-		\item \texttt{OMP\_PLACES=cores} - ein Thread je Core
-		\item \texttt{OMP\_PROC\_BIND=close} - Threads nah nebeneinander platzieren
-		\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - zur Überprüfung, ob alle Parameter korrekt gesetzt wurden
-	\end{itemize}	
+	\textbf{Bemerkung zur \texttt{O3} Flag:}\\
+	Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
+	Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
+	Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
+	
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
-	Um herauszufinden, wie lang ein Test durchgeführt werden muss, habe ich eine Messung mit einer Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
-	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
+	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
 	\ref{tab:icc} entnehmen.\\
-	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt. Damit bleiben die Ausführungszeiten für alle Feldgrößen in etwa konstant.
+	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entschieden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
+	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
+	
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an. Ansonsten wären die Werte der Feldgrößen unter 8192 im Diagramm nicht unterscheidbar.
 	\newpage
 	\section{Testergebnisse} \label{erg}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
@@ -343,43 +342,6 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	Bei der Dateninitialisierung zeigt sich beim Intel Compiler ein etwas anderes Bild. Im Allgemeinen schwanken die Werte der \texttt{ICC} Version weniger stark.\\
 	Bei Feldgrößen ab 2048 ist er ebenfalls schneller als die Version des \texttt{GCC} Compilers. Bei den Werten darunter ist ein Vergleich aufgrund der Schwankungen schwierig. Tendenziell lässt sich wieder ein Anstieg der Zeit mit steigender Zahl an Threads verbuchen.
 	\newpage
-	\subsection{Scheduling-Verfahren}
-	Den letzten Teil der Ergebnisse stellt der Vergleich der Scheduling-Verfahren dar. \texttt{OpenMP} bietet verschiedene Scheduling-Verfahren zur Auswahl. Im Rahmen der Aufgabenstellung betrachte ich
-	\begin{itemize}
-		\item guided
-		\item auto
-		\item dynamic
-		\item static
-	\end{itemize}
-	und erhielt die folgenden Messwerte.
-	\begin{figure}[ht]
-		\begin{center}
-			\input{scheduling_init.pgf}
-		\end{center}
-		\caption{Ausführungszeit der Funktion \texttt{field\_initializer()} unter Berücksichtigung des Scheduling-Verfahrens, kompiliert mit \texttt{ICC}.}
-	\end{figure}
-	\newline
-	Betrachtet man die Zeiten der \texttt{field\_initializer()} Funktion, fallen die Unterschiede sehr gering aus, was auch der kleinen Feldgröße geschuldet ist.
-	\newpage
-	\begin{figure}
-		\begin{center}
-			\input{scheduling_calc.pgf}
-		\end{center}
-		\caption{Ausführungszeit der Funktion \texttt{calculate\_next\_gen()} unter Berücksichtigung des Scheduling-Verfahrens, kompiliert mit \texttt{ICC}.}
-	\end{figure}
-	Bei der \texttt{calculate\_next\_gen()} Funktion fallen hingegen deutliche Unterschiede auf. Das Verfahren \textit{static} liefert hier mit Abstand die kürzesten Ausführungszeiten.
-	Um zu erklären warum, ist es sinnvoll, sich die Funktionsweise der Verfahren anzusehen.\\
-	
-	Beim \textit{static} schedule garantiert \texttt{OpenMP}, dass mehrere Schleifen mit der selben Anzahl an Iterationen und Threads so unter den Threads aufgeteilt werden, dass jeder Thread bei den Durchläufen den selben Bereich der Schleifen abarbeitet. Im Fall des \texttt{Game-of-Life} also immer auf den selben Zellen arbeitet. Das führt hier natürlich zu einer sehr guten Performance, da Cache und NUMA Eigenschaften optimal ausgenutzt werden. Das \textit{static} Verfahren hat zusätzlich einen geringen Overhead.\\
-	
-	Beim \textit{dynamic} schedule gibt es diese feste Aufteilung nicht. Es arbeitet nach dem Prinzip \textit{first come, first served} und hat einen höheren Overhead als \textit{static}.\\
-	Der Vorteil des \textit{first come, first served} Prinzips liegt in der guten Systemauslastung (workload balancing), wenn der Berechnungsaufwand der einzelnen Iterationsschritte variiert, da einem Thread einfach neue Arbeit zugewiesen wird, sobald er seine Arbeit beendet hat.\\
-	Der Nachteil liegt im höheren Overhead und schlechteren NUMA Eigenschaften.\\
-	Da das \texttt{Game-of-Life} jedoch einen konstanten Berechnungsaufwand je Iterationsschritt hat, ist dieses Verfahren eher ungeeignet. Das zeigt sich auch in der Ausführungszeit.\\
-	
-	Das \textit{guided} Verfahren ist nur ein Spezialfall des \textit{dynamic} schedule. Der Unterschied besteht darin, dass sich die chunk size, also die Anzahl der Iterationen, die ein Thread zur Abarbeitung erhält, mit zunehmendem Fortschritt verkleinert. Entsprechend schneidet das \textit{guided} Verfahren ähnlich schlecht wie \textit{dynamic} ab.\\
-	
-	Bei \textit{auto} entscheidet der Compiler und/oder die Laufzeitumgebung über das Scheduling Verfahren \cite{schedule}. Betrachtet man die Ausführungszeit, ist diese zwar kürzer als \textit{dynamic} und \textit{guided}, erreicht aber mit großem Abstand nicht die Ergebnisse von \textit{static}.
 	\appendix
 	\section{Tabellen} \label{tables}
 	\begin{table}[h]
@@ -520,24 +482,6 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				\hline
 			\end{tabular}
 			\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
-		\end{center}
-	\end{table}
-	\begin{table}
-		\begin{center}
-			\begin{tabular}{||c c c c c c c||}
-				\hline
-				Compiler & Schedule & Size & \#Threads & Repetitions & Initialization in s & Calculation in s \\ [1ex]
-				\hline\hline
-				ICC      & guided   & 128  & 32        & 1 000 000   & 0.0167                   & 43.4062                \\
-				\hline
-				ICC      & auto     & 128  & 32        & 1 000 000   & 0.0141                   & 37.5988                \\
-				\hline
-				ICC      & dynamic  & 128  & 32        & 1 000 000   & 0.0133                   & 39.7113                \\
-				\hline
-				ICC      & static   & 128  & 32        & 1 000 000   & 0.0133                   & 20.6912                \\
-				\hline
-			\end{tabular}
-			\caption{\label{tab:sched}Testergebnisse der verschiedenen Scheduling-Verfahren. Zeiten gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\clearpage

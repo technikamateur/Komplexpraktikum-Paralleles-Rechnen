@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  18 JAN 2022 16:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  19 JAN 2022 12:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1119,112 +1119,80 @@ he ich mich nur auf die Er-geb-nis-se der \T1/pcr/m/n/10.95 omp_get_wtime()
  []
 
 [9]
-Underfull \hbox (badness 10000) in paragraph at lines 266--269
+Underfull \hbox (badness 10000) in paragraph at lines 266--268
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 270--272
+Underfull \hbox (badness 10000) in paragraph at lines 280--281
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 288--293
 
  []
 
 [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 291--292
+Underfull \hbox (badness 10000) in paragraph at lines 299--300
 
  []
 
 (./gcc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1458--296
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1458--304
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 297--297
+Underfull \hbox (badness 10000) in paragraph at lines 305--305
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 299--303
+Underfull \hbox (badness 10000) in paragraph at lines 307--311
 
  []
 
 [12] (./gcc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1235--308
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1235--316
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 309--309
+Underfull \hbox (badness 10000) in paragraph at lines 317--317
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 [13] (./icc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 2144--321
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 2144--329
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 322--322
+Underfull \hbox (badness 10000) in paragraph at lines 330--330
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 [14] (./icc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1235--331
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1235--339
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 332--332
+Underfull \hbox (badness 10000) in paragraph at lines 340--340
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[15] (./scheduling_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 699--349
- [] 
- []
-
-[16] (./scheduling_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 547--358
- [] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 361--363
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 364--365
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 366--370
-
- []
-
-[17]
-Underfull \hbox (badness 10000) in paragraph at lines 371--372
-
- []
-
-
-Overfull \hbox (9.42558pt too wide) in paragraph at lines 373--374
-[]\T1/ptm/m/n/10.95 Bei \T1/ptm/m/it/10.95 au-to \T1/ptm/m/n/10.95 ent-schei-de
-t der Com-pi-ler un-d/o-der die Lauf-zeit-um-ge-bung über das Sche-du-ling Ver-
-fah-ren [[]].
- []
-
-[18] [19
+[15] [16
 
 
 
 
-] [20] (./Praktikumsbericht.bbl
+] [17] (./Praktikumsbericht.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 11--16
 []$\T1/pcr/m/n/10.95 https : / / www . fz-[]juelich . de / ias / jsc / EN / Abo
 utUs / Staff / Hagemeier _
@@ -1241,32 +1209,33 @@ Underfull \hbox (badness 10000) in paragraph at lines 31--35
 []$\T1/pcr/m/n/10.95 https : / / www . openmp . org / wp-[]content / uploads /
  []
 
-) [21
+) [18
 
 ] (./Praktikumsbericht.aux)
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26952 strings out of 480187
- 493903 string characters out of 5893507
- 1379804 words of memory out of 5000000
- 44205 multiletter control sequences out of 15000+600000
- 467324 words of font info for 105 fonts, out of 8000000 for 9000
+ 26936 strings out of 480187
+ 493619 string characters out of 5893507
+ 1379683 words of memory out of 5000000
+ 44200 multiletter control sequences out of 15000+600000
+ 467945 words of font info for 107 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  122i,12n,120p,10644b,1909s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
-rw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/
-uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (22 pages, 163601 bytes).
+fonts/type1/urw/courier/ucrb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/u
+hvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/times/utmri8a.pfb>
+Output written on Praktikumsbericht.pdf (19 pages, 163068 bytes).
 PDF statistics:
- 395 PDF objects out of 1000 (max. 8388607)
- 351 compressed objects within 4 object streams
- 144 named destinations out of 1000 (max. 500000)
- 173 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 378 PDF objects out of 1000 (max. 8388607)
+ 335 compressed objects within 4 object streams
+ 137 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 
