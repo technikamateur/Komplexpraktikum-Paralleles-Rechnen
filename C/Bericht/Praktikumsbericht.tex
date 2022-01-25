@@ -66,8 +66,8 @@
 	Wichtig ist, dass die Folgegeneration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich, die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
-	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} Compiler-Direktiven erfolgen soll. \texttt{OpenMP} ist eine API, die es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}, was in Aufgabe B ausführlich bearbeitet wurde. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.\\
-	\texttt{OpenMP} bietet auch die Möglichkeit, explizit SIMD Instruktionen für die Bearbeitung von Schleifen zu verwenden, was in dieser Aufgabe thematisiert ist.
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{OpenMP} Compiler-Direktiven erfolgen soll. \texttt{OpenMP} ist eine API, die es ermöglicht, Schleifen mithilfe von Threads zu parallelisieren \cite{openmp}, was in Aufgabe B thematisiert wurde. Es eignet sich hervorragend für \texttt{Shared-Memory Systeme}, also Systeme, bei denen mehrere Threads auf einen gemeinsamen Hauptspeicher zugreifen.\\
+	\texttt{OpenMP} bietet auch die Möglichkeit, explizit SIMD Instruktionen für die Bearbeitung von Schleifen zu verwenden. Das soll in dieser Aufgabe bearbeitet werden.
 	
 	Weitere Besonderheiten sind:
 	\begin{itemize}
@@ -89,26 +89,10 @@
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
 	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
 	
-	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, habe ich mich für Pseudo-Zufallszahlengenerator \texttt{rand\_r()} entschieden. Dieser ist, im Vergleich zu z.B. \texttt{rand()}, Thread-sicher und kann Thread-parallel ausgeführt werden.
-	
-	Für die eigentliche Parallelisierung verwende ich die \texttt{OpenMP} Direktive:\\
-	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
-	
-	Diese bewirkt, dass der Code innerhalb der Schleife parallel ausgeführt wird. \texttt{OpenMP} erzeugt beim Betreten zusätzliche \textit{slave} Threads. Jeder bekommt einen Teil der Arbeit zugewiesen und führt diesen unabhängig von den anderen Threads aus. Wenn alle Threads ihre Arbeit erledigt haben, der parallel auszuführende Code also abgearbeitet wurde, fährt der \textit{master} Thread mit der seriellen Ausführung fort, bis er die nächste Direktive erreicht.\\
-	Über die Umgebungsvariable \texttt{OMP\_THREAD\_LIMIT} kann ein Thread Limit gesetzt werden. \texttt{OpenMP} verwendet dann maximal so viele Threads, wie angegeben. Wird die Umgebungsvariable nicht gesetzt, verwendet \texttt{OpenMP} eine optimale Anzahl an Threads. Typischerweise entspricht die der Anzahl der Hardware-Threads auf dem System.\\
-	Durch \texttt{schedule(runtime)} ist es später möglich, über die Umgebungsvariable \texttt{OMP\_SCHEDULE} das Schedulingverfahren zu wählen.\\
-	Bei der parallelen Ausführung ist darauf zu achten, dass jeder Thread mit einem unterschiedlichen \textit{seed} den Pseudo-Zufallszahlengenerator \texttt{rand\_r()} startet. Um dieses Problem zu lösen, entschied ich mich, die Threads mit der \texttt{OpenMP} Direktive \\
-	
-	\texttt{\#pragma omp parallel}\\
-	
-	vor der \textit{seed} Generierung zu erzeugen. Dadurch werden zwei Probleme gelöst:
-	\begin{enumerate}
-		\item Jeder Thread arbeitet auf seiner eigenen \textit{seed} Variable. Dadurch wird verhindert, dass Threads auf der gleichen Variable arbeiten und folglich ein Flaschenhals entsteht.
-		\item Die \textit{seed} Variablen können unterschiedliche Werte haben, was wiederum die Entropie des initialisierten Spielfeldes erhöht.
-	\end{enumerate}
-	
-	Die \textit{seed} Variable ergibt sich bei mir aus der aktuellen Zeit in Sekunden und der Thread ID. Da bei jeder Ausführung die Zeit als auch die Thread ID variiert, erhält jeder Thread einen zufälligen \textit{seed} mit geringem Rechenaufwand.\\
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand()}. Den \texttt{seed} setzte ich mit der \texttt{time()} Funktion auf die aktuelle Uhrzeit. Damit beginnt das Spiel bei jedem Programmstart mit einer zufälligen Generation.\\
+
+	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Dieser verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger Rechenintensiv ist.\\
+	Die von mir verwendete Implementierung ist auf \href{https://github.com/lemire/SIMDxorshift}{GitHub} verfügbar.\\
 	
 	Zusammengesetzt ergibt sich daraus folgender Code:\\
 	

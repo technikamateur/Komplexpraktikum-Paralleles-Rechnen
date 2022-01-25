@@ -7,13 +7,6 @@
 \newblock \\\url{https://web.stanford.edu/class/sts145/Library/life.pdf}.
 \newblock 1970
 
-\bibitem[Hag19]{schedule}
-\textsc{Hagemeier}, Annika.
-\newblock \emph{Einführung in die Parallelprogrammierung}.
-\newblock
-  \\\url{https://www.fz-juelich.de/ias/jsc/EN/AboutUs/Staff/Hagemeier_A/docs-parallel-programming/OpenMP-Slides.pdf?__blob=publicationFile}.
-\newblock 2019
-
 \bibitem[lmp10]{lmp}
 
 \newblock \emph{Linux Man Pages - rand}.
@@ -32,5 +25,11 @@
 \newblock
   \\\url{https://www.openmp.org/wp-content/uploads/OpenMP-API-Specification-5.0.pdf}.
 \newblock 2018
+
+\bibitem[Vig17]{xor}
+\textsc{Vigna}, Sebastiano.
+\newblock \emph{Further scramblings of Marsaglia’s xorshift generators}.
+\newblock \\\url{https://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf}.
+\newblock 2017
 
 \end{thebibliography}

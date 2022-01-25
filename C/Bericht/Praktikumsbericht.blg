@@ -11,15 +11,15 @@ Warning--Weder Verfasser noch Hrsg. in lmp
 Warning--Weder Verfasser noch Hrsg. in openmp
 You've used 5 entries,
             3183 wiz_defined-function locations,
-            666 strings with 5182 characters,
-and the built_in function-call counts, 1430 in all, are:
-= -- 147
+            666 strings with 5116 characters,
+and the built_in function-call counts, 1458 in all, are:
+= -- 151
 > -- 26
-< -- 28
-+ -- 28
+< -- 32
++ -- 32
 - -- 7
 * -- 78
-:= -- 269
+:= -- 273
 add.period$ -- 15
 call.type$ -- 5
 change.case$ -- 18
@@ -28,7 +28,7 @@ cite$ -- 11
 duplicate$ -- 51
 empty$ -- 93
 format.name$ -- 15
-if$ -- 258
+if$ -- 262
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 0
@@ -38,9 +38,9 @@ pop$ -- 6
 preamble$ -- 1
 purify$ -- 28
 quote$ -- 0
-skip$ -- 68
+skip$ -- 72
 stack$ -- 0
-substring$ -- 86
+substring$ -- 90
 swap$ -- 8
 text.length$ -- 6
 text.prefix$ -- 3
