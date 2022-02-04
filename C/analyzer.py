@@ -12,7 +12,7 @@ import numpy as np
 class Type(Enum):
     ASERIAL = "without SIMD"
     BSIMD = "SIMD"
-    CEXTREM = "SIMD + xorshift"
+    CEXTREM = "SIMDxorshift"
 
 
 class Bench:
@@ -115,15 +115,16 @@ for measurement in [gcc_list, icc_list]:
     # now init plot
     plt.style.use('ggplot')
     for s in sub_list:
-        x_axes = list()
-        y_axes = list()
-        s.sort(key=lambda x: x.size, reverse=False)
-        for b in s:
-            if b.init_mean != 0:
-                x_axes.append(b.size)
-                y_axes.append(b.init_mean)
-                compiler = b.compiler
-        plt.plot(x_axes, y_axes, 'o-', label=b.type.value)
+        if s[0].type.value != Type.BSIMD.value:
+            x_axes = list()
+            y_axes = list()
+            s.sort(key=lambda x: x.size, reverse=False)
+            for b in s:
+                if b.init_mean != 0:
+                    x_axes.append(b.size)
+                    y_axes.append(b.init_mean)
+                    compiler = b.compiler
+            plt.plot(x_axes, y_axes, 'o-', label=b.type.value)
 
     # generate init plot
     plt.rcParams['pgf.texsystem'] = "pdflatex"
