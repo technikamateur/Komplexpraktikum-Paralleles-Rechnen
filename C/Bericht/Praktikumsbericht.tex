@@ -91,24 +91,63 @@
 	
 	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand()}. Den \texttt{seed} setzte ich mit der \texttt{time()} Funktion auf die aktuelle Uhrzeit. Damit beginnt das Spiel bei jedem Programmstart mit einer zufälligen Generation.\\
 
-	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Dieser verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger Rechenintensiv ist.\\
+	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Die \texttt{Xorshift} Generatoren sind eine Familie von Pseudozufallszahlengeneratoren, die sich durch eine hohe Geschwindigkeit und einer anpassbaren Periodenlänge auszeichnen.
+	\texttt{Xorshift128+} verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger Rechenintensiv ist.\\
 	Die von mir verwendete Implementierung ist auf \href{https://github.com/lemire/SIMDxorshift}{GitHub} verfügbar.\\
+	
+	Da die AMD Rome EPYC 7702 Prozessoren nur AVX2 und nicht AVX512 unterstützen (vergleiche \ref{umgebung}), verwende ich die Funktion \texttt{avx\_xorshift128plus}, welche auf 256 Bit Registern arbeitet.\\
+	Meine Idee war, die 256 generierten Bits auf die 8 Bit großen Zellen des Spiels aufzuteilen. Damit lassen sich pro Durchgang 32 Zellen mit Zufallszahlen füllen, was zu einer deutlichen Geschwindigkeitssteigerung führen sollte.
 	
 	Zusammengesetzt ergibt sich daraus folgender Code:\\
 	
 	\begin{lstlisting}[language=C, caption=Daten Initialisierung]
-void field_initializer(u_int8_t *state) {
+void field_initializer(uint8_t *state) {
 	//fills fields with random numbers 0 = dead, 1 = alive
-	#pragma omp parallel
-	{
-		unsigned tid = pthread_self();
-		unsigned seed = time(0) + tid;
-		#pragma omp parallel for schedule(runtime)
-		for (int i = 0; i < columns * rows; i++) {
-			state[i] = rand_r(&seed) % 2;
-		}
+	
+	srand(time(NULL));
+	int num_one = rand();
+	int num_two = rand();
+	
+	// create a new key
+	avx_xorshift128plus_key_t mykey;
+	avx_xorshift128plus_init(num_one, num_two, &mykey); // values must be non-zero
+	
+	for (int i = 0; i < columns * rows; i = i + 32) {
+		// generate 32 random bytes, do this as many times as you want
+		__m256i randomstuff = avx_xorshift128plus(&mykey);
+		state[i] = _mm256_extract_epi8(randomstuff, 0) % 2;
+		state[i + 1] = _mm256_extract_epi8(randomstuff, 1) % 2;
+		state[i + 2] = _mm256_extract_epi8(randomstuff, 2) % 2;
+		state[i + 3] = _mm256_extract_epi8(randomstuff, 3) % 2;
+		state[i + 4] = _mm256_extract_epi8(randomstuff, 4) % 2;
+		state[i + 5] = _mm256_extract_epi8(randomstuff, 5) % 2;
+		state[i + 6] = _mm256_extract_epi8(randomstuff, 6) % 2;
+		state[i + 7] = _mm256_extract_epi8(randomstuff, 7) % 2;
+		state[i + 8] = _mm256_extract_epi8(randomstuff, 8) % 2;
+		state[i + 9] = _mm256_extract_epi8(randomstuff, 9) % 2;
+		state[i + 10] = _mm256_extract_epi8(randomstuff, 10) % 2;
+		state[i + 11] = _mm256_extract_epi8(randomstuff, 11) % 2;
+		state[i + 12] = _mm256_extract_epi8(randomstuff, 12) % 2;
+		state[i + 13] = _mm256_extract_epi8(randomstuff, 13) % 2;
+		state[i + 14] = _mm256_extract_epi8(randomstuff, 14) % 2;
+		state[i + 15] = _mm256_extract_epi8(randomstuff, 15) % 2;
+		state[i + 16] = _mm256_extract_epi8(randomstuff, 16) % 2;
+		state[i + 17] = _mm256_extract_epi8(randomstuff, 17) % 2;
+		state[i + 18] = _mm256_extract_epi8(randomstuff, 18) % 2;
+		state[i + 19] = _mm256_extract_epi8(randomstuff, 19) % 2;
+		state[i + 20] = _mm256_extract_epi8(randomstuff, 20) % 2;
+		state[i + 21] = _mm256_extract_epi8(randomstuff, 21) % 2;
+		state[i + 22] = _mm256_extract_epi8(randomstuff, 22) % 2;
+		state[i + 23] = _mm256_extract_epi8(randomstuff, 23) % 2;
+		state[i + 24] = _mm256_extract_epi8(randomstuff, 24) % 2;
+		state[i + 25] = _mm256_extract_epi8(randomstuff, 25) % 2;
+		state[i + 26] = _mm256_extract_epi8(randomstuff, 26) % 2;
+		state[i + 27] = _mm256_extract_epi8(randomstuff, 27) % 2;
+		state[i + 28] = _mm256_extract_epi8(randomstuff, 28) % 2;
+		state[i + 29] = _mm256_extract_epi8(randomstuff, 29) % 2;
+		state[i + 30] = _mm256_extract_epi8(randomstuff, 30) % 2;
+		state[i + 31] = _mm256_extract_epi8(randomstuff, 31) % 2;
 	}
-	return;
 }\end{lstlisting}
 	\begin{figure}[h]
 		\begin{center}
@@ -116,10 +155,6 @@ void field_initializer(u_int8_t *state) {
 		\end{center}
 		\caption{Generiertes Spielfeld der Größe: $64\times 64$}
 	\end{figure}
-	\newpage
-	\textbf{Anmerkung zu rand\_r():}
-	
-	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
 	
 	\subsection{Berechnung der nächsten Generation}
 	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
@@ -136,13 +171,12 @@ for (int i = 0; i < repetitions; i++) {
 	\subsubsection{Inneres Feld}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
-	Der Grund liegt darin, dass die CPU bei \textit{if}-Verzweigungen ihre Sprungvorhersage verwendet, um die Pipeline möglichst sinnvoll auszulasten. Selbst mit einer guten Vorhersage werden falsche Entscheidungen getroffen, die dann rückgängig gemacht werden müssen. Zusätzlich ist die CPU sehr schnell im Abarbeiten von arithmetischen Operationen.\\
-	Daraus ergibt sich, bei der Verwendung bitweiser Operatoren, ein Performance Vorteil.\\
+	Der Grund liegt darin, dass diese bitweisen Operatoren sich gut bei SIMD Operationen verwenden lassen.\\
 	
 	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
 	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
-#pragma omp parallel for schedule(runtime)
 for (int i = 1; i < rows - 1; i++) {
+	#pragma omp simd
 	for (int j = 1; j < columns - 1; j++) {
 		//count up the neighbours
 		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
@@ -157,29 +191,25 @@ for (int i = 1; i < rows - 1; i++) {
 	}
 }\end{lstlisting}
 	
-	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dabei, wie schon bei der Dateninitialisierung, die \texttt{OpenMP} Direktive\\
+	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dafür die \texttt{OpenMP} Direktive\\
 	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+	\texttt{\#pragma omp simd}\\
 	
 	verwendet.\\
-	Dabei wird jedoch nur die äußere Schleife parallelisiert. Das bewirkt, dass die Zeilen jeweils parallel berechnet, jedoch nicht aufgeteilt werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren, indem es daraus eine große Schleife erzeugt. Diese große Schleife wird dann in \texttt{chunks} zerlegt und den einzelnen Threads zur Bearbeitung zugewiesen. In meinen Tests führte dies zu einer enormen Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
-	
-	Die Gründe dafür können vielfältig sein. Ein Grund könnte der Fakt sein, dass \texttt{OpenMP} die Schleife ungünstig zerlegt.\\
-	Für die Berechnung einer Zelle benötigt man die Zelle selbst und ihre acht Nachbarn. Geht man eine Zelle weiter, benötigt man sechs der neun Zellen aus dem vorherigem Schleifendurchlauf. Die Brechungen überlappen also. Verwendet man für die Berechnung einer Zeile einen Kern (gleichbedeutend mit einem Thread; deaktiviertes Simultaneous Multithreading vorausgesetzt), kann man vom Cache profitieren. Jeder Kern arbeitet dann möglichst auf den Daten, die er schon einmal geladen hat.\\
-	
-	Zum anderen kann der Compiler, bei meiner Implementierung, die innere Schleife modifizieren und so eventuelle Optimierungen vornehmen. Ich habe mir deshalb mit \texttt{objdump} den Quellcode anzeigen lassen, konnte jedoch keine \texttt{SIMD}-Instruktionen finden.
+	Dabei wird jedoch nur die innere Schleife parallelisiert. Das bewirkt, dass die Spalten jeweils parallel berechnet werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren. In meinen Tests führte dies zu einer Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
+	Zum anderen kann der Compiler, bei meiner Implementierung, die äußere Schleife modifizieren und so eventuelle Optimierungen vornehmen.
 	
 	\subsubsection{Kanten}
 	
 	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
 	Auch hier wurden die Kanten wieder mit\\
 	
-	\texttt{\#pragma omp parallel for schedule(runtime)}\\
+	\texttt{\#pragma omp simd}\\
 	
 	parallelisiert.	
 	\begin{lstlisting}[language=C, caption=Berechnung der obersten Zeile]
 void calculate_top(u_int8_t *state, u_int8_t *state_old) {
-	#pragma omp parallel for schedule(runtime)
+	#pragma omp simd
 	for (int i = 1; i < columns - 1; i++) {
 		u_int8_t sum_of_t_edge = state_old[i - 1] +
 														 state_old[i + 1] +
@@ -214,31 +244,23 @@ void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
 	
 	\subsection{Zeitmessung}
 	
-	Für die Zeitmessung habe ich auf die \texttt{clock()} und \texttt{omp\_get\_wtime()} Funktion zurückgegriffen.\\
+	Für die Zeitmessung habe ich auf die \texttt{clock()} Funktion zurückgegriffen.\\
 	
-	Die \texttt{clock()} Funktion misst dabei die CPU Zeit des Prozesses und nicht die reale vergangene Zeit (\textit{wall-clock time}). Das Ergebnis ist also die aufaddierte Zeit aller Threads in der Funktion.\\
+	Die \texttt{clock()} Funktion misst dabei die CPU Zeit des Prozesses und nicht die reale vergangene Zeit (\textit{wall-clock time}). Das Ergebnis ist also die aufaddierte Zeit aller Threads in der Funktion. Da dieses Programm jedoch nur von einem Thread ausgeführt wird, stellt es kein Problem dar.\\
 	
-	Die \texttt{omp\_get\_wtime()} Funktion gibt hingegen die \textit{wall-clock time} zurück; unabhängig von der Anzahl der Threads.\\
-	
-	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sonder auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems treffen. Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock()} und \texttt{omp\_get\_wtime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
+	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sondern auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems treffen. Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
 	\newpage
 	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
 double time_calc = 0;
-double omp_calc = 0;
 for (int i = 0; i < repetitions; i++) {
 	t = clock();
-	t_omp = omp_get_wtime();
 	// function call
-	t_omp = omp_get_wtime() - t_omp;
 	t = clock() - t;
-	omp_calc += t_omp;
 	time_calc += ((double) t) / CLOCKS_PER_SEC;
 }
 printf("Calculation took %f seconds to execute (all threads added).\n", time_calc);
 printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 \end{lstlisting}
-
-	Bei der Darstellung der Testergebnisse \ref{erg} beziehe ich mich nur auf die Ergebnisse der \texttt{omp\_get\_wtime()} Funktion, da die Ausführungszeiten (\textit{wall-clock time}) verglichen werden sollten.
 	
 	\subsection{Ein- und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht, die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.

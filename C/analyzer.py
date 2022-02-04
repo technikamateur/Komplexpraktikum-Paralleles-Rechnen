@@ -27,8 +27,6 @@ class Bench:
         self.type = simd
 
     def fetch_data(self, lines):
-        init_counter = 0
-        calc_counter = 0
         for line in lines:
             line = line.lstrip(' ')
             if line.startswith("Field initializer took"):
@@ -76,39 +74,41 @@ for file in glob.glob('./results/*cc_S*_*.txt'):
 # create beautiful graphs
 print("Creating beautiful graphs")
 for measurement in [gcc_list, icc_list]:
-    measurement.sort(key=lambda x: x.size, reverse=False)
-    sub_list = [measurement[i:i + 3] for i in range(0, len(measurement), 3)]
+    measurement.sort(key=lambda x: x.type.name, reverse=False)
+    sub_list = [measurement[i:i + 5] for i in range(0, len(measurement), 5)]
 
     # calc time plots
     plt.style.use('ggplot')
-    # sub list contains all 3 thread configs of one size
+    # sub list contains all sizes of one Type
     for s in sub_list:
-        x_axes = list()
-        y_axes = list()
-        s.sort(key=lambda x: x.type.name, reverse=False)
-        for b in s[:-1]:
-            x_axes.append(b.type.value)
-            y_axes.append(b.calc_mean)
-            compiler = b.compiler
-        plt.plot(x_axes, y_axes, label=b.size)
+        if s[0].type.value != Type.CEXTREM.value:
+            x_axes = list()
+            y_axes = list()
+            s.sort(key=lambda x: x.size, reverse=False)
+            for b in s:
+                if b.calc_mean != 0:
+                    x_axes.append(b.size)
+                    y_axes.append(b.calc_mean)
+                    compiler = b.compiler
+            plt.plot(x_axes, y_axes, 'o-', label=b.type.value)
 
     # generate calc plot
     plt.rcParams['pgf.texsystem'] = "pdflatex"
-    plt.legend(loc='upper right', title="Gameboard size")
+    plt.legend(loc='upper left')
     plt.ylabel('time in s')
-    # plt.xlabel('number of threads')
-    # plt.xticks([1, 2, 4, 8, 16, 32])
+    plt.xlabel('gameboard size')
+    # axes
     plt.yscale("log")
-    # plt.xscale("log", base=2)
-    # plt.gca().xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
-    # plt.gca().xaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
+    plt.xscale("log", base=2)
+    plt.gca().xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
     plt.gca().yaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
     plt.gca().yaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
     plt.gca().yaxis.set_minor_locator(mpl.ticker.LogLocator(base=10, subs='all'))
+    plt.xticks([128, 512, 2048, 8192, 32768])
     plt.gca().grid(True, which="both")
-    plt.title("\n".join(wrap("calculate_next_gen() run time in dependence of size", 60)))
-    plt.savefig("pics/{}_all_calc.png".format(compiler), dpi=300)
-    plt.savefig("pics/{}_all_calc.svg".format(compiler))
+    plt.title("\n".join(wrap("calculate_next_gen() mean run time in dependence of size", 60)))
+    plt.savefig("pics/png/{}_all_calc.png".format(compiler), dpi=300)
+    plt.savefig("pics/svg/{}_all_calc.svg".format(compiler))
     plt.savefig('Bericht/{}_all_calc.pgf'.format(compiler), format='pgf')
     plt.close()
 
@@ -117,29 +117,30 @@ for measurement in [gcc_list, icc_list]:
     for s in sub_list:
         x_axes = list()
         y_axes = list()
-        s.sort(key=lambda x: x.type.name, reverse=False)
+        s.sort(key=lambda x: x.size, reverse=False)
         for b in s:
-            x_axes.append(b.type.value)
-            y_axes.append(b.init_mean)
-            compiler = b.compiler
-        plt.plot(x_axes, y_axes, label=b.size)
+            if b.init_mean != 0:
+                x_axes.append(b.size)
+                y_axes.append(b.init_mean)
+                compiler = b.compiler
+        plt.plot(x_axes, y_axes, 'o-', label=b.type.value)
 
     # generate init plot
     plt.rcParams['pgf.texsystem'] = "pdflatex"
-    plt.legend(loc='upper right', title="Gameboard size")
+    plt.legend(loc='upper left')
     plt.ylabel('time in s')
-    # plt.xlabel('number of threads')
-    # plt.xticks([1, 2, 4, 8, 16, 32])
+    plt.xlabel('gameboard size')
+    # axes
     plt.yscale("log")
-    # plt.xscale("log", base=2)
-    # plt.gca().xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
-    # plt.gca().xaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
+    plt.xscale("log", base=2)
+    plt.gca().xaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
     plt.gca().yaxis.set_major_formatter(mpl.ticker.ScalarFormatter())
     plt.gca().yaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
     plt.gca().yaxis.set_minor_locator(mpl.ticker.LogLocator(base=10, subs='all'))
+    plt.xticks([128, 512, 2048, 8192, 32768])
     plt.gca().grid(True, which="both")
-    plt.title("\n".join(wrap("field_initializer run time in dependence of size and threads", 60)))
-    plt.savefig("pics/{}_all_init.png".format(compiler), dpi=300)
-    plt.savefig("pics/{}_all_init.svg".format(compiler))
+    plt.title("\n".join(wrap("field_initializer mean run time in dependence of size", 60)))
+    plt.savefig("pics/png/{}_all_init.png".format(compiler), dpi=300)
+    plt.savefig("pics/svg/{}_all_init.svg".format(compiler))
     plt.savefig('Bericht/{}_all_init.pgf'.format(compiler), format='pgf')
     plt.close()
