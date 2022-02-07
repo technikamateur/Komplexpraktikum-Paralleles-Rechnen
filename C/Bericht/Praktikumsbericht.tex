@@ -85,7 +85,7 @@
 	
 	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
-	\subsection{Daten Initialisierung}
+	\subsection{Daten Initialisierung} \label{data_init}
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
 	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
 	
@@ -297,38 +297,34 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entschieden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
 	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
 	
-	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an. Ansonsten wären die Werte der Feldgrößen unter 8192 im Diagramm nicht unterscheidbar.
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
+	
+	\textbf{Anmerkung zur Notation:}
+	Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
 	\newpage
 	\section{Testergebnisse} \label{erg}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
-	\subsection{GCC kompilierte Version}
-	Zuerst möchte ich auf die \texttt{GCC} kompilierte Version des Spiels eingehen.\\
+	\subsection{Dateninitialisierung}
+	Zuerst möchte ich auf die Ausführungszeiten der Funktion \texttt{field\_initializer()} des Spiels eingehen.\\
+	Diese Funktion füllt das Spielfeld mit zufälligen Werten. Wie Eingangs in \ref{data_init} beschrieben, lässt sich diese Funktion nicht mit SIMD Instruktionen parallelisieren.\\
+	Ich implementierte jedoch einen \texttt{Xorshift128+} Pseudozufallszahlengenerator, um das Problem SIMD parallel auszuführen.
+	Die Ergebnisse habe ich hier dargestellt.
 	
 	\begin{figure}[h]
-		\begin{center}
-			\input{gcc_all_calc.pgf}
-		\end{center}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
-	\end{figure}
-	Die gezeigte Grafik berücksichtigt nur die Ausführung der Funktion \texttt{calculate\_next\_gen()}. Da sich sowohl die Feldgröße, als auch die Anzahl der Wiederholungen exponentiell erhöht, bietet sich eine doppellogarithmische Darstellung an.\\
-	Man erkennt eindeutig die zu erwartende Tendenz: Mehr Threads bewirken eine Verkürzung der Laufzeit. Allerdings lässt sich bei den Feldgrößen 128 deutlich und 512 in abgeschwächter Form erkennen, dass ab einer gewissen Thread Anzahl kein Speedup mehr erreicht werden kann. Schlimmer noch: Bei der Größe 128 steigt die Ausführungszeit mit 32 Threads wieder an.\\
-	Eine Begründung ist, dass die einzelnen Schleifendurchläufe dieser Feldgrößen sehr schnell abgeschlossen sind. Mit steigender Anzahl an Threads steigt auch der Overhead durch Thread spawning, Synchronisation und Zuteilung der Arbeit. Ab einem gewissen Punkt ist dieser Overhead im Vergleich zu dem zu lösenden Problem nicht mehr vernachlässigbar klein und wirkt sich negativ auf den Speedup aus.\\
-	Wie in allen folgenden Grafiken zeichnet sich das Bild ab, dass eine Verdopplung der Threads, aus den genannten Gründen, nicht zur Halbierung der Laufzeit führt. Das ist eine theoretische Annahme, die in der Praxis nie erreicht werden kann.\\
-	
-	Ein anderes Bild zeichnet sich jedoch beim Ausführen der Funktion \texttt{field\_initializer()} ab.
-	\begin{figure}[h]
-		\begin{center}
-			\input{gcc_all_init.pgf}
-		\end{center}
+		\centering
+		\input{gcc_all_init.pgf}
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{GCC}.}
 	\end{figure}
-	\newline
-	Erwartungsgemäß benötigt ein großes Feld mehr Zeit zum Initialisieren, als ein kleines Feld. Betrachtet man, dass ein 32768 Spielfeld 16 mal so groß ist wie 8192 und nach den Daten auch etwa 16 mal so viel Zeit in Anspruch nimmt, sind die Zeiten sehr plausibel und skalieren etwa linear mit der Feldgröße. Ausnahmen bilden hier wieder die kleinen Feldgrößen, bei denen die Werte auch extrem schwanken.\\
-	Erklären lässt sich das mit der äußerst kurzen Ausführungszeit von teilweise deutlich unter 10 ms bei einer Feldgröße von 128. Vermutlich ist hier wieder der Overhead im Verhältnis zum zu lösenden Problem deutlich größer.
-	Bei einer großen Problemgröße benötigt die Initialisierung etwa gleich viel Zeit unabhängig von der Zahl der Threads.\\
-	Die Parallelisierung bietet an dieser Stelle keinen nennenswerten Geschwindigkeitsvorteil.
+	\begin{figure}[h]
+		\centering
+		\input{icc_all_init.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
+	\end{figure}
+
+	Speedup berechnen
+	
 	\newpage
-	\subsection{ICC kompilierte Version}
+	\subsection{Berechnung}
 	\begin{figure}[h]
 		\begin{center}
 			\input{icc_all_calc.pgf}
@@ -351,143 +347,62 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	\appendix
 	\section{Tabellen} \label{tables}
 	\begin{table}[h]
-		\begin{center}
-			\begin{tabular}{||c c c c c c||}
+		\centering
+			\begin{tabular}{||c r l c l||}
 				\hline
-				Compiler & Size  & \#Threads & Repetitions & Initialization in s & Calculation in s \\ [1ex]
+				Compiler & Size  & SIMD & Repetitions & Initialization in s \\ [1ex]
 				\hline\hline
-				GCC      & 128   & 1         & 100 000     & 0.0003              & 30.7874          \\
-				\hline
-				GCC      & 128   & 2         & 100 000     & 0.0007              & 17.171           \\
-				\hline
-				GCC      & 128   & 4         & 100 000     & 0.0011              & 9.5063           \\
-				\hline
-				GCC      & 128   & 8         & 100 000     & 0.0036              & 6.8678           \\
-				\hline
-				GCC      & 128   & 16        & 100 000     & 0.0032              & 5.4929           \\
-				\hline
-				GCC      & 128   & 32        & 100 000     & 0.0038              & 5.8989           \\
-				\hline\hline
-				GCC      & 512   & 1         & 10 000      & 0.0039              & 48.383           \\
-				\hline
-				GCC      & 512   & 2         & 10 000      & 0.0181              & 25.4004          \\
-				\hline
-				GCC      & 512   & 4         & 10 000      & 0.0147              & 12.9686          \\
-				\hline
-				GCC      & 512   & 8         & 10 000      & 0.0088              & 7.1592           \\
-				\hline
-				GCC      & 512   & 16        & 10 000      & 0.0088              & 4.0574           \\
-				\hline
-				GCC      & 512   & 32        & 10 000      & 0.0115              & 2.6117           \\
-				\hline\hline
-				GCC      & 2048  & 1         & 1 000       & 0.0623              & 77.1689          \\
-				\hline
-				GCC      & 2048  & 2         & 1 000       & 0.0791              & 39.0673          \\
-				\hline
-				GCC      & 2048  & 4         & 1 000       & 0.0692              & 19.6133          \\
-				\hline
-				GCC      & 2048  & 8         & 1 000       & 0.1033              & 10.0464          \\
-				\hline
-				GCC      & 2048  & 16        & 1 000       & 0.0971              & 5.174            \\
-				\hline
-				GCC      & 2048  & 32        & 1 000       & 0.1038              & 2.7467           \\
-				\hline\hline
-				GCC      & 8192  & 1         & 100         & 0.9902              & 125.295          \\
-				\hline
-				GCC      & 8192  & 2         & 100         & 1.1225              & 63.2725          \\
-				\hline
-				GCC      & 8192  & 4         & 100         & 1.0953              & 31.7264          \\
-				\hline
-				GCC      & 8192  & 8         & 100         & 1.1748              & 15.8625          \\
-				\hline
-				GCC      & 8192  & 16        & 100         & 1.2046              & 7.9815           \\
-				\hline
-				GCC      & 8192  & 32        & 100         & 1.2601              & 4.0859           \\
-				\hline\hline
-				GCC      & 32768 & 1         & 10          & 15.8826             & 199.181          \\
-				\hline
-				GCC      & 32768 & 2         & 10          & 20.1785             & 100.1272         \\
-				\hline
-				GCC      & 32768 & 4         & 10          & 18.0209             & 50.0713          \\
-				\hline
-				GCC      & 32768 & 8         & 10          & 17.1956             & 25.0854          \\
-				\hline
-				GCC      & 32768 & 16        & 10          & 17.4827             & 12.5836          \\
-				\hline
-				GCC      & 32768 & 32        & 10          & 17.7285             & 6.3286           \\
-				\hline
+				gcc & 128   & without SIMD & 100 & 0.0      \\ \hline
+				gcc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 512   & without SIMD & 100 & 0.0      \\ \hline
+				gcc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.0455   \\ \hline
+				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
+				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
+				gcc & 32768 & without SIMD & 100 & 12.5835  \\ \hline
+				gcc & 32768 & SIMDxorshift & 100 & 1.3995   \\ \hline \hline
+				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
+				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
+				icc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 2048  & without SIMD & 100 & 0.0495   \\ \hline
+				icc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 8192  & without SIMD & 100 & 0.849    \\ \hline
+				icc & 8192  & SIMDxorshift & 100 & 0.079    \\ \hline
+				icc & 32768 & without SIMD & 100 & 13.84588 \\ \hline
+				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:gcc}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
-		\end{center}
+			\caption{\label{tab:init}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
 	\end{table}
 	\begin{table}
 		\begin{center}
-			\begin{tabular}{||c c c c c c||}
+			\begin{tabular}{||c r l c l||}
 				\hline
-				Compiler & Size  & \#Threads & Repetitions & Initialization in s & Calculation in s \\ [1ex]
+				Compiler & Size  & SIMD & Repetitions & Calculation in s \\ [1ex]
 				\hline\hline
-				ICC      & 128   & 1         & 100 000     & 0.0021                   & 8.5322                \\
-				\hline
-				ICC      & 128   & 2         & 100 000     & 0.0022                   & 4.5041                \\
-				\hline
-				ICC      & 128   & 4         & 100 000     & 0.0025                   & 2.5492                \\
-				\hline
-				ICC      & 128   & 8         & 100 000     & 0.0035                   & 1.9608                \\
-				\hline
-				ICC      & 128   & 16        & 100 000     & 0.0054                   & 1.8089                \\
-				\hline
-				ICC      & 128   & 32        & 100 000     & 0.0127                   & 1.9434                \\
-				\hline\hline
-				ICC      & 512   & 1         & 10 000      & 0.0061                   & 13.4002                \\
-				\hline
-				ICC      & 512   & 2         & 10 000      & 0.0063                   & 6.742                \\
-				\hline
-				ICC      & 512   & 4         & 10 000      & 0.0072                   & 3.4289                \\
-				\hline
-				ICC      & 512   & 8         & 10 000      & 0.0082                   & 1.7867                \\
-				\hline
-				ICC      & 512   & 16        & 10 000      & 0.0099                   & 0.9776                \\
-				\hline
-				ICC      & 512   & 32        & 10 000      & 0.0195                   & 0.5929                \\
-				\hline\hline
-				ICC      & 2048  & 1         & 1 000       & 0.0496                   & 21.5322                \\
-				\hline
-				ICC      & 2048  & 2         & 1 000       & 0.0485                   & 10.7675                \\
-				\hline
-				ICC      & 2048  & 4         & 1 000       & 0.052                   & 5.4267                \\
-				\hline
-				ICC      & 2048  & 8         & 1 000       & 0.0519                   & 2.7251                \\
-				\hline
-				ICC      & 2048  & 16        & 1 000       & 0.0546                  & 1.3692                \\
-				\hline
-				ICC      & 2048  & 32        & 1 000       & 0.0638                  & 0.6911                \\
-				\hline\hline
-				ICC      & 8192  & 1         & 100         & 0.7441                   & 37.5091                \\
-				\hline
-				ICC      & 8192  & 2         & 100         & 0.7437                   & 19.5603                \\
-				\hline
-				ICC      & 8192  & 4         & 100         & 0.7483                   & 9.9158                \\
-				\hline
-				ICC      & 8192  & 8         & 100         & 0.7696                   & 5.1219                \\
-				\hline
-				ICC      & 8192  & 16        & 100         & 0.7756                   & 2.5619                \\
-				\hline
-				ICC      & 8192  & 32        & 100         & 0.7851                   & 1.2802                \\
-				\hline\hline
-				ICC      & 32768 & 1         & 10          & 11.8049                   & 55.2352                \\
-				\hline
-				ICC      & 32768 & 2         & 10          & 11.8445                   & 27.6332                \\
-				\hline
-				ICC      & 32768 & 4         & 10          & 11.8567                   & 13.8855                \\
-				\hline
-				ICC      & 32768 & 8         & 10          & 12.2583                   & 6.9565                \\
-				\hline
-				ICC      & 32768 & 16        & 10          & 12.2543                   & 3.4985                \\
-				\hline
-				ICC      & 32768 & 32        & 10          & 12.3533                   & 1.7492                \\
-				\hline
+				gcc & 128   & without SIMD & 100 & 0.0       \\ \hline
+				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
+				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
+				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.0825    \\ \hline
+				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
+				gcc & 8192  & without SIMD & 100 & 1.3805    \\ \hline
+				gcc & 8192  & SIMD         & 100 & 1.4895    \\ \hline
+				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
+				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
+				icc & 128   & without SIMD & 100 & 0.0025    \\ \hline
+				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
+				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
+				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
+				icc & 2048  & without SIMD & 100 & 2.47      \\ \hline
+				icc & 2048  & SIMD         & 100 & 0.09      \\ \hline
+				icc & 8192  & without SIMD & 100 & 42.0535   \\ \hline
+				icc & 8192  & SIMD         & 100 & 1.7215    \\ \hline
+				icc & 32768 & without SIMD & 100 & 633.28882 \\ \hline
+				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:calc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\clearpage

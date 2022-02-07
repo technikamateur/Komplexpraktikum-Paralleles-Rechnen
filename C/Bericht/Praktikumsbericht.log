@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.1.8)  4 FEB 2022 17:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.2.6)  7 FEB 2022 14:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -335,7 +335,7 @@ Class scrartcl Info: longtable captions redefined on input line 459.
 Package: babel 2021/11/29 3.67 The Babel package
 \babel@savecnt=\count279
 \U@D=\dimen158
-\l@unhyphenated=\language12
+\l@unhyphenated=\language8
 
 (/usr/share/texlive/texmf-dist/tex/generic/babel/txtbabel.def)
 \bbl@readstream=\read3
@@ -1097,65 +1097,82 @@ Underfull \hbox (badness 10000) in paragraph at lines 286--287
  []
 
 
+LaTeX Warning: Reference `tab:gcc' on page 9 undefined on input line 295.
+
+
+LaTeX Warning: Reference `tab:icc' on page 9 undefined on input line 296.
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 294--299
 
  []
 
-[9] [10]
-Underfull \hbox (badness 10000) in paragraph at lines 305--306
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 300--301
 
  []
 
-(./gcc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1625--310
- [] 
+[10]
+Overfull \hbox (1.53133pt too wide) in paragraph at lines 308--312
+\T1/ptm/m/n/10.95 Ich im-ple-men-tier-te je-doch einen \T1/pcr/m/n/10.95 Xorshi
+ft128+ \T1/ptm/m/n/10.95 Pseu-do-zu-falls-zah-len-ge-ne-ra-tor, um das Pro-blem
+ SIMD
+ []
+
+(./gcc_all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1348--316
+ [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 311--311
+Underfull \hbox (badness 10000) in paragraph at lines 316--316
+[][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
+t der Funk-ti-on
+ []
+
+(./icc_all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1348--321
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 321--321
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 313--317
+LaTeX Warning: `h' float specifier changed to `ht'.
 
- []
-
-[11] (./gcc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1446--322
+[11] (./icc_all_calc.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 2314--331
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--323
+Underfull \hbox (badness 10000) in paragraph at lines 332--332
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[12] (./icc_all_calc.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 2314--335
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[12] (./icc_all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1348--341
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 336--336
+Underfull \hbox (badness 10000) in paragraph at lines 342--342
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[13] (./icc_all_init.pgf)
-Overfull \hbox (7.28348pt too wide) in paragraph at lines 1446--345
- [] 
- []
 
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-Underfull \hbox (badness 10000) in paragraph at lines 346--346
-[][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
-t der Funk-ti-on
- []
-
-[14] [15
+[13] [14] [15
 
 
 
@@ -1168,16 +1185,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 24--28
 ) [17
 
 ] (./Praktikumsbericht.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 26972 strings out of 480187
- 494214 string characters out of 5893507
- 1652181 words of memory out of 5000000
- 44208 multiletter control sequences out of 15000+600000
+ 26972 strings out of 480260
+ 494189 string characters out of 5895089
+ 1652056 words of memory out of 5000000
+ 44202 multiletter control sequences out of 15000+600000
  467945 words of font info for 107 fonts, out of 8000000 for 9000
- 59 hyphenation exceptions out of 8191
+ 14 hyphenation exceptions out of 8191
  122i,12n,120p,10644b,1913s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf
@@ -1188,10 +1208,10 @@ hvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></
 usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/f
 onts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (18 pages, 161130 bytes).
+Output written on Praktikumsbericht.pdf (18 pages, 159656 bytes).
 PDF statistics:
- 407 PDF objects out of 1000 (max. 8388607)
- 365 compressed objects within 4 object streams
+ 406 PDF objects out of 1000 (max. 8388607)
+ 364 compressed objects within 4 object streams
  165 named destinations out of 1000 (max. 500000)
  165 words of extra memory for PDF output out of 10000 (max. 10000000)
 

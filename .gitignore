@@ -56,3 +56,6 @@ dkms.conf
 .idea
 *.mp4
 *.pbm
+
+#my
+venv
