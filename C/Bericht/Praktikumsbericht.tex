@@ -299,15 +299,19 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	
 	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
 	
-	\textbf{Anmerkung zur Notation:}
-	Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
+	\begin{description}
+		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
+		\item[Anmerkung zu den Diagrammen:] In den Diagrammen finden sich bei einigen Feldgrößen keine Datenpunkte. Ist das der Fall, war das Ergebnis der Zeitmessung 0 Sekunden. Da der Logarithmus von 0 jedoch $-\infty$ entspricht, ist eine Darstellung nicht sinnvoll.\\
+		Das Ergebnis von 0 Sekunden entspricht natürlich nicht ganz der Realität, aber es lässt sich festhalten, dass die Berechnung so schnell abgeschlossen war, dass diese faktisch nicht messbar war.
+	\end{description}
+
 	\newpage
 	\section{Testergebnisse} \label{erg}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
 	\subsection{Dateninitialisierung}
 	Zuerst möchte ich auf die Ausführungszeiten der Funktion \texttt{field\_initializer()} des Spiels eingehen.\\
 	Diese Funktion füllt das Spielfeld mit zufälligen Werten. Wie Eingangs in \ref{data_init} beschrieben, lässt sich diese Funktion nicht mit SIMD Instruktionen parallelisieren.\\
-	Ich implementierte jedoch einen \texttt{Xorshift128+} Pseudozufallszahlengenerator, um das Problem SIMD parallel auszuführen.
+	Ich implementierte jedoch einen \texttt{Xorshift128+} Pseudozufallszahlengenerator, um das Problem SIMD parallel auszuführen.\\
 	Die Ergebnisse habe ich hier dargestellt.
 	
 	\begin{figure}[h]
@@ -320,6 +324,10 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\input{icc_all_init.pgf}
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
 	\end{figure}
+	Betrachtet man die Werte zwischen der Version seriellen und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 (bei Feldgröße 32768) auf. Diese Parallelisierung war folglich sehr effektiv.\\
+	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
+
+	
 
 	Speedup berechnen
 	
