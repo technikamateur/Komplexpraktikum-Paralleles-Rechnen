@@ -6,16 +6,16 @@
 \contentsline {subsection}{\numberline {2.1}Daten Initialisierung}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Berechnung der nächsten Generation}{5}{subsection.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.1}Inneres Feld}{5}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2}Kanten}{6}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.2}Kanten}{7}{subsubsection.2.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.3}Ecken}{7}{subsubsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.3}Zeitmessung}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.3}Zeitmessung}{8}{subsection.2.3}%
 \contentsline {subsection}{\numberline {2.4}Ein- und Ausgabe}{8}{subsection.2.4}%
 \contentsline {section}{\numberline {3}Zeitmessung auf Taurus}{9}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Testumgebung}{9}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Testmethode}{9}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Testergebnisse}{11}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Dateninitialisierung}{11}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Berechnung}{12}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.2}Berechnung}{13}{subsection.4.2}%
 \contentsline {section}{\numberline {A}Tabellen}{15}{appendix.A}%
 \contentsline {section}{\nonumberline Literatur}{17}{section*.10}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -151,9 +151,9 @@ void field_initializer(uint8_t *state) {
 }\end{lstlisting}
 	\begin{figure}[h]
 		\begin{center}
-			%\includegraphics[scale=5.0]{initialized_board.pdf}
+			\includegraphics[scale=5.0]{initialized_board.pdf}
 		\end{center}
-		\caption{Generiertes Spielfeld der Größe: $64\times 64$}
+		\caption{Mit \texttt{Xorshift128+} generiertes Spielfeld der Größe: $64\times 64$}
 	\end{figure}
 	
 	\subsection{Berechnung der nächsten Generation}
@@ -198,7 +198,7 @@ for (int i = 1; i < rows - 1; i++) {
 	verwendet.\\
 	Dabei wird jedoch nur die innere Schleife parallelisiert. Das bewirkt, dass die Spalten jeweils parallel berechnet werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren. In meinen Tests führte dies zu einer Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
 	Zum anderen kann der Compiler, bei meiner Implementierung, die äußere Schleife modifizieren und so eventuelle Optimierungen vornehmen.
-	
+	\newpage
 	\subsubsection{Kanten}
 	
 	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
@@ -249,7 +249,6 @@ void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
 	Die \texttt{clock()} Funktion misst dabei die CPU Zeit des Prozesses und nicht die reale vergangene Zeit (\textit{wall-clock time}). Das Ergebnis ist also die aufaddierte Zeit aller Threads in der Funktion. Da dieses Programm jedoch nur von einem Thread ausgeführt wird, stellt es kein Problem dar.\\
 	
 	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sondern auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems treffen. Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
-	\newpage
 	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
 double time_calc = 0;
 for (int i = 0; i < repetitions; i++) {
@@ -279,16 +278,17 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	\begin{itemize}
 		\item \texttt{O3} - Optimierungsflag des Compilers
 		\item \texttt{mavx2} - Verwendung von AVX2
-		\item \texttt{fma} - Verwendung von FMA
+		\item \texttt{mfma}/\texttt{fma} - Verwendung von FMA
 		\item \texttt{fopenmp} - Verwendung nur für Tests mit OpenMP
 	\end{itemize}
 	
 	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
 	
-	\textbf{Bemerkung zur \texttt{O3} Flag:}\\
-	Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
-	Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
-	Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
+	\begin{description}
+		\item[Bemerkung zur \texttt{O3} Flag:] Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
+		Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
+		Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
+	\end{description}
 	
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
@@ -324,36 +324,32 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\input{icc_all_init.pgf}
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
 	\end{figure}
-	Betrachtet man die Werte zwischen der Version seriellen und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 (bei Feldgröße 32768) auf. Diese Parallelisierung war folglich sehr effektiv.\\
-	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
-
-	
-
-	Speedup berechnen
-	
 	\newpage
+	Betrachtet man die Werte zwischen der Version seriellen und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 auf. Diese Parallelisierung war folglich sehr effektiv.\\
+	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
+	\clearpage
 	\subsection{Berechnung}
 	\begin{figure}[h]
-		\begin{center}
-			\input{icc_all_calc.pgf}
-		\end{center}
+		\centering
+		\input{gcc_all_calc.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
+	\end{figure}
+	Betrachtet man die Ergebnisse des \texttt{GCC}, fällt auf, dass sich die beiden Graphen kaum unterschieden. Das hängt damit zusammen, dass der \texttt{GCC} unabhängig von der \texttt{OpenMP} Compiler Direktive immer SIMD Instruktionen verwendet (Vergleiche \ref{umgebung}).\\
+	Die Verwendung von \texttt{OpenMP} verschlechtert allerdings die Ausführungszeiten minimal. -> objdump -> Robert fragen
+	\clearpage
+	\begin{figure}[h]
+		\centering
+		\input{icc_all_calc.pgf}
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{ICC}.}
 	\end{figure}
-	Ähnlich zur \texttt{GCC} kompilierten Version des Spiels sind hier die selben Effekte erkennbar. Mehr Threads verkürzen generell die Ausführungszeit und bei kleinen Feldgrößen verringert sich zunehmend der Speedup.\\
-	Auffällig ist, dass die Version des Intel Compilers bei der jeweilig selben Anzahl von Threads und Feldgröße nur ca. 25\% der Zeit benötigt, also zu jeder Zeit etwa vier mal so schnell ist. Der Intel Compiler produziert folglich besser optimierten Code.\\
-	Ich habe mir mittels \texttt{objdump} den disassemblierten Code beider Binaries angeschaut, da ich vermutete, dass der Intel Compiler möglicherweise \texttt{SIMD}-Instruktionen verwendet. Das ist jedoch nicht der Fall.
-	\newpage
-	\begin{figure}[h]
-		\begin{center}
-			\input{icc_all_init.pgf}
-		\end{center}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
-	\end{figure}
-	Bei der Dateninitialisierung zeigt sich beim Intel Compiler ein etwas anderes Bild. Im Allgemeinen schwanken die Werte der \texttt{ICC} Version weniger stark.\\
-	Bei Feldgrößen ab 2048 ist er ebenfalls schneller als die Version des \texttt{GCC} Compilers. Bei den Werten darunter ist ein Vergleich aufgrund der Schwankungen schwierig. Tendenziell lässt sich wieder ein Anstieg der Zeit mit steigender Zahl an Threads verbuchen.
+	Beim \texttt{ICC} wird erstmals deutlich, dass die Verwendung von SIMD Instruktionen einen erheblichen Performance Vorteil bewirkt. Der Speedup liegt bei ca. 24.\\
+	Vergleicht man die Zeiten des \texttt{ICC} mit denen des \texttt{GCC}, fällt auf, dass der Programmcode des \texttt{GCC} etwas schneller ist.
 	\newpage
 	\appendix
 	\section{Tabellen} \label{tables}
+	\begin{description}
+		\item[Hinweis zur Notation:] \textit{without SIMD} bedeutet nicht, dass keine SIMD Instruktionen verwendet werden. Es bedeutet, dass das Programm gemäß der Aufgabenstellung ohne \texttt{OpenMP} Compiler Direktiven compiliert wurde. Wie bereits in \ref{umgebung} festgestellt, verwendet der \texttt{GCC} dennoch SIMD Instruktionen.
+	\end{description}
 	\begin{table}[h]
 		\centering
 			\begin{tabular}{||c r l c l||}
@@ -364,24 +360,24 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				gcc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
 				gcc & 512   & without SIMD & 100 & 0.0      \\ \hline
 				gcc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.0455   \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.046   \\ \hline
 				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
 				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
 				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 12.5835  \\ \hline
-				gcc & 32768 & SIMDxorshift & 100 & 1.3995   \\ \hline \hline
+				gcc & 32768 & without SIMD & 100 & 12.584  \\ \hline
+				gcc & 32768 & SIMDxorshift & 100 & 1.4   \\ \hline \hline
 				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
 				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
 				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
 				icc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 2048  & without SIMD & 100 & 0.0495   \\ \hline
+				icc & 2048  & without SIMD & 100 & 0.05   \\ \hline
 				icc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
 				icc & 8192  & without SIMD & 100 & 0.849    \\ \hline
 				icc & 8192  & SIMDxorshift & 100 & 0.079    \\ \hline
-				icc & 32768 & without SIMD & 100 & 13.84588 \\ \hline
+				icc & 32768 & without SIMD & 100 & 13.846 \\ \hline
 				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:init}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:init}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf 3 Nachkommastellen.}
 	\end{table}
 	\begin{table}
 		\begin{center}
@@ -393,24 +389,24 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
 				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
 				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.0825    \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.083    \\ \hline
 				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
-				gcc & 8192  & without SIMD & 100 & 1.3805    \\ \hline
-				gcc & 8192  & SIMD         & 100 & 1.4895    \\ \hline
+				gcc & 8192  & without SIMD & 100 & 1.381    \\ \hline
+				gcc & 8192  & SIMD         & 100 & 1.49    \\ \hline
 				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
 				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.0025    \\ \hline
+				icc & 128   & without SIMD & 100 & 0.003    \\ \hline
 				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
 				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
 				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
 				icc & 2048  & without SIMD & 100 & 2.47      \\ \hline
 				icc & 2048  & SIMD         & 100 & 0.09      \\ \hline
-				icc & 8192  & without SIMD & 100 & 42.0535   \\ \hline
-				icc & 8192  & SIMD         & 100 & 1.7215    \\ \hline
-				icc & 32768 & without SIMD & 100 & 633.28882 \\ \hline
+				icc & 8192  & without SIMD & 100 & 42.054   \\ \hline
+				icc & 8192  & SIMD         & 100 & 1.722    \\ \hline
+				icc & 32768 & without SIMD & 100 & 633.289 \\ \hline
 				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:calc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:calc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf 3 Nachkommastellen.}
 		\end{center}
 	\end{table}
 	\clearpage

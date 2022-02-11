@@ -71,6 +71,7 @@ for file in glob.glob('./results/*cc_S*_*.txt'):
             icc_list.append(bench)
         bench.fetch_data(lines)
 
+"""
 for measurement in [gcc_list, icc_list]:
     measurement.sort(key=lambda x: x.size, reverse=False)
     for m in measurement:
@@ -84,8 +85,7 @@ for measurement in [gcc_list, icc_list]:
     for m in measurement:
         if m.type.value != Type.CEXTREM.value:
             print("{},{},{},{}".format(m.size, m.compiler, round(m.calc_mean, 5), m.type.value))
-import sys
-sys.exit(0)
+"""
 
 # create beautiful graphs
 print("Creating beautiful graphs")
