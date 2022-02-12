@@ -12,6 +12,7 @@ static u_int64_t columns = 128;
 static u_int64_t rows = 128;
 static u_int8_t show_progress = 0;
 static u_int8_t produce_output = 0;
+static int rank, cluster;
 static char output_fname[255] = "life_";
 // getopt
 static struct option long_options[] =
@@ -131,8 +132,17 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old) {
     calculate_left_right(state, state_old);
     // top and bottom edge
     calculate_top_bottom(state, state_old);
+    // devide rows
+    u_int64_t block_size = rows / cluster;
+    u_int64_t first_row = block_size * rank;
+    u_int64_t last_row = first_row + block_size;
+    if (first_row == 0) {
+        first_row = 1;
+    } else if (last_row == rows) {
+        last_row = rows - 1;
+    }
     // middle
-    for (int i = 1; i < rows - 1; i++) {
+    for (int i = first_row; i < last_row; i++) {
         for (int j = 1; j < columns - 1; j++) {
             //count up a number (8)
             u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
@@ -218,7 +228,6 @@ void argments(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     // MPI
-    int rank, cluster;
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &cluster);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -270,8 +279,8 @@ int main(int argc, char *argv[]) {
         calculate_next_gen(state_out, state_in);
         MPI_Barrier(MPI_COMM_WORLD);
         if (rank == 0) {
-        t = clock() - t;
-        time_calc += ((double) t) / CLOCKS_PER_SEC;
+            t = clock() - t;
+            time_calc += ((double) t) / CLOCKS_PER_SEC;
         }
         state_tmp = state_in;
         state_in = state_out;
