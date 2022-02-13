@@ -149,9 +149,9 @@ void calculate_top_bottom(uint8_t *state, uint8_t *state_old) {
     for (int i = 1; i < columns - 1; i++) {
         uint8_t sum_of_t_edge = state_old[i - 1] +
                                 state_old[i + 1] +
-                                state_old[2 * columns + (i - 1)] +
-                                state_old[2 * columns + i] +
-                                state_old[2 * columns + (i + 1)] +
+                                state_old[columns + (i - 1)] +
+                                state_old[columns + i] +
+                                state_old[columns + (i + 1)] +
                                 state_old[(rows - 1) * columns + i] +
                                 state_old[(rows - 1) * columns + i + 1] +
                                 state_old[(rows - 1) * columns + i - 1];
