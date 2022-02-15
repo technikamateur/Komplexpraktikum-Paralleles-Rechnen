@@ -9,15 +9,19 @@
 
 // defaults
 static int repetitions = 100;
-static u_int64_t columns = 128;
-static u_int64_t rows = 128;
+static u_int32_t columns = 128;
+static u_int32_t rows = 128;
 static u_int8_t show_progress = 0;
 static u_int8_t produce_output = 0;
-static int rank, cluster;
-// works only for square
-static u_int64_t block_rc;
-static double blocks_per_side;
 static char output_fname[255] = "life_";
+
+// MPI
+// works only for square
+static int rank, cluster;
+static u_int32_t block_rc;
+static u_int32_t blocks_per_side;
+static u_int32_t rank_index;
+
 // getopt
 static struct option long_options[] =
         {
@@ -38,119 +42,104 @@ void field_initializer(u_int8_t *state) {
     }
 }
 
-void calculate_corners(u_int8_t *state, u_int8_t *state_old) {
-    u_int8_t corner_sum;
-    // top left
-    corner_sum = state_old[1] +
-                 state_old[columns] +
-                 state_old[columns + 1] +
-                 state_old[(rows - 1) * columns] +
-                 state_old[(rows - 1) * columns + 1] +
-                 state_old[columns - 1] +
-                 state_old[2 * columns - 1] +
-                 state_old[rows * columns - 1];
-    state[0] = (corner_sum == 3) | ((corner_sum == 2) & state_old[0]);
-    // top right
-    corner_sum = state_old[columns - 2] +
-                 state_old[2 * columns - 1] +
-                 state_old[2 * columns - 2] +
-                 state_old[rows * columns - 1] +
-                 state_old[rows * columns - 2] +
-                 state_old[0] +
-                 state_old[columns] +
-                 state_old[(rows - 1) * columns];
-    state[columns - 1] = (corner_sum == 3) | ((corner_sum == 2) & state_old[columns - 1]);
+void init_neighbour(u_int32_t *neighbour_matrix) {
+    for (int i = 1; i < blocks_per_side + 1; i++) {
+        for (int j = 1; j < blocks_per_side + 1; j++) {
+            neighbour_matrix[i * (blocks_per_side + 2) + j] = (i - 1) * blocks_per_side + (j - 1);
+        }
+    }
+    for (int i = 1; i < blocks_per_side + 1; i++) {
+        //left
+        neighbour_matrix[i * (blocks_per_side + 2)] = neighbour_matrix[(i + 1) * (blocks_per_side + 2) - 2];
+        //right
+        neighbour_matrix[(i + 1) * (blocks_per_side + 2) - 1] = neighbour_matrix[i * (blocks_per_side + 2) + 1];
+        //top
+        neighbour_matrix[i] = neighbour_matrix[blocks_per_side * (blocks_per_side + 2) + i];
+        //bottom
+        neighbour_matrix[(blocks_per_side + 1) * (blocks_per_side + 2) + i] = neighbour_matrix[(blocks_per_side + 2) +
+                                                                                               i];
+    }
+    //top left corner
+    neighbour_matrix[0] = neighbour_matrix[blocks_per_side * (blocks_per_side + 2)];
+    //top right corner
+    neighbour_matrix[blocks_per_side + 1] = neighbour_matrix[(blocks_per_side + 1) * (blocks_per_side + 2) - 1];
     // bottom left
-    corner_sum = state_old[(rows - 2) * columns] +
-                 state_old[(rows - 2) * columns + 1] +
-                 state_old[(rows - 1) * columns + 1] +
-                 state_old[0] +
-                 state_old[1] +
-                 state_old[columns - 1] +
-                 state_old[(rows - 1) * columns - 1] +
-                 state_old[(rows * columns - 1)];
-    state[(rows - 1) * columns] = (corner_sum == 3) | ((corner_sum == 2) & state_old[(rows - 1) * columns]);
-    // bottom right
-    corner_sum = state_old[0] +
-                 state_old[columns - 1] +
-                 state_old[columns - 2] +
-                 state_old[(rows - 2) * columns] +
-                 state_old[(rows - 1) * columns] +
-                 state_old[(rows - 1) * columns - 1] +
-                 state_old[(rows - 1) * columns - 2] +
-                 state_old[(rows * columns - 2)];
-    state[rows * columns - 1] = (corner_sum == 3) | ((corner_sum == 2) & state_old[rows * columns - 1]);
+    neighbour_matrix[(blocks_per_side + 1) * (blocks_per_side + 2)] = neighbour_matrix[blocks_per_side + 2];
+    //bottom right
+    neighbour_matrix[(blocks_per_side + 2) * (blocks_per_side + 2) - 1] = neighbour_matrix[(blocks_per_side + 2) + 1];
+    return;
 }
 
-void calculate_left_right(u_int8_t *state, u_int8_t *state_old) {
-    for (int i = 1; i < rows - 1; i++) {
-        u_int8_t sum_of_l_edge = state_old[i * columns + 1] +
-                                 state_old[(i - 1) * columns] +
-                                 state_old[(i - 1) * columns + 1] +
-                                 state_old[(i + 1) * columns] +
-                                 state_old[(i + 1) * columns + 1] +
-                                 state_old[i * columns - 1] +
-                                 state_old[(i + 1) * columns - 1] +
-                                 state_old[(i + 2) * columns - 1];
-        state[i * columns] = (sum_of_l_edge == 3) | ((sum_of_l_edge == 2) & state_old[i * columns]);
-        u_int8_t sum_of_r_edge = state_old[(i + 1) * columns - 2] +
-                                 state_old[i * columns - 2] +
-                                 state_old[i * columns - 1] +
-                                 state_old[(i + 2) * columns - 2] +
-                                 state_old[(i + 2) * columns - 1] +
-                                 state_old[(i - 1) * columns] +
-                                 state_old[i * columns] +
-                                 state_old[(i + 1) * columns];
-        state[(i + 1) * columns - 1] = (sum_of_r_edge == 3) | ((sum_of_r_edge == 2) & state_old[(i + 1) * columns - 1]);
-    }
-}
-
-void calculate_top_bottom(u_int8_t *state, u_int8_t *state_old) {
-    for (int i = 1; i < columns - 1; i++) {
+void edge_maker(u_int8_t *state, u_int8_t *state_old) {
+    // top and bottom + corners
+    for (int i = 1; i < block_rc - 1; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
-                                 state_old[i + 1] +
-                                 state_old[columns + (i - 1)] +
-                                 state_old[columns + i] +
-                                 state_old[columns + (i + 1)] +
-                                 state_old[(rows - 1) * columns + i] +
-                                 state_old[(rows - 1) * columns + i + 1] +
-                                 state_old[(rows - 1) * columns + i - 1];
-        state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
-        u_int8_t sum_of_b_edge = state_old[(rows - 1) * columns + (i - 1)] +
-                                 state_old[(rows - 1) * columns + (i + 1)] +
-                                 state_old[(rows - 2) * columns + (i - 1)] +
-                                 state_old[(rows - 2) * columns + i] +
-                                 state_old[(rows - 2) * columns + (i + 1)] +
                                  state_old[i] +
-                                 state_old[i - 1] +
-                                 state_old[i + 1];
-        state[(rows - 1) * columns + i] =
-                (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(rows - 1) * columns + i]);
+                                 state_old[i + 1] +
+                                 state_old[block_rc + i - 1] +
+                                 state_old[block_rc + i + 1] +
+                                 state_old[2 * block_rc + i - 1] +
+                                 state_old[2 * block_rc + i] +
+                                 state_old[2 * block_rc + i + 1];
+        state[block_rc + i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[block_rc + i]);
+
+        u_int8_t sum_of_b_edge = state_old[(block_rc - 3) * block_rc + i - 1] +
+                                 state_old[(block_rc - 3) * block_rc + i] +
+                                 state_old[(block_rc - 3) * block_rc + i + 1] +
+                                 state_old[(block_rc - 2) * block_rc + i - 1] +
+                                 state_old[(block_rc - 2) * block_rc + i + 1] +
+                                 state_old[(block_rc - 1) * block_rc + i - 1] +
+                                 state_old[(block_rc - 1) * block_rc + i] +
+                                 state_old[(block_rc - 1) * block_rc + i + 1];
+        state[(block_rc - 2) * block_rc + i] =
+                (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(block_rc - 2) * block_rc + i]);
     }
+
+    for (int i = 2; i < block_rc - 2; i++) {
+        u_int8_t sum_of_l_edge = state_old[(i - 1) * block_rc] +
+                                 state_old[(i - 1) * block_rc + 1] +
+                                 state_old[(i - 1) * block_rc + 2] +
+                                 state_old[i * block_rc] +
+                                 state_old[i * block_rc + 2] +
+                                 state_old[(i + 1) * block_rc] +
+                                 state_old[(i + 1) * block_rc + 1] +
+                                 state_old[(i + 1) * block_rc + 2];
+        state[i * block_rc + 1] = (sum_of_l_edge == 3) | ((sum_of_l_edge == 2) & state_old[i * block_rc + 1]);
+
+        u_int8_t sum_of_r_edge = state_old[i * block_rc - 3] +
+                                 state_old[i * block_rc - 2] +
+                                 state_old[i * block_rc - 1] +
+                                 state_old[(i + 1) * block_rc - 3] +
+                                 state_old[(i + 1) * block_rc - 1] +
+                                 state_old[(i + 2) * block_rc - 3] +
+                                 state_old[(i + 2) * block_rc - 2] +
+                                 state_old[(i + 2) * block_rc - 1];
+
+        state[(i + 1) * block_rc - 2] =
+                (sum_of_r_edge == 3) | ((sum_of_r_edge == 2) & state_old[(i + 1) * block_rc - 2]);
+    }
+    return;
 }
 
 void calculate_next_gen(u_int8_t *state, u_int8_t *state_old) {
     //i = row, j = column
 
-    // corners
-    calculate_corners(state, state_old);
-    // left and right edge
-    calculate_left_right(state, state_old);
-    // top and bottom edge
-    calculate_top_bottom(state, state_old);
-    // middle
-    for (int i = 1; i < rows - 1; i++) {
-        for (int j = 1; j < columns - 1; j++) {
+    // edges and corners first
+    edge_maker(state, state_old);
+    // send everything
+    // middle; two because: -1 overlap, -1 edge. Could be calculated here, but for performance done before.
+    for (int i = 2; i < block_rc - 2; i++) {
+        for (int j = 2; j < block_rc - 2; j++) {
             //count up a number (8)
-            u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
-                                state_old[(i - 1) * columns + j] +
-                                state_old[(i - 1) * columns + (j + 1)] +
-                                state_old[i * columns + (j - 1)] +
-                                state_old[i * columns + (j + 1)] +
-                                state_old[(i + 1) * columns + (j - 1)] +
-                                state_old[(i + 1) * columns + j] +
-                                state_old[(i + 1) * columns + (j + 1)];
-            state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
+            u_int8_t sum_of_8 = state_old[(i - 1) * block_rc + (j - 1)] +
+                                state_old[(i - 1) * block_rc + j] +
+                                state_old[(i - 1) * block_rc + (j + 1)] +
+                                state_old[i * block_rc + (j - 1)] +
+                                state_old[i * block_rc + (j + 1)] +
+                                state_old[(i + 1) * block_rc + (j - 1)] +
+                                state_old[(i + 1) * block_rc + j] +
+                                state_old[(i + 1) * block_rc + (j + 1)];
+            state[i * block_rc + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * block_rc + j]);
         }
     }
     return;
@@ -242,8 +231,12 @@ int main(int argc, char *argv[]) {
         printf("Starting now...\n");
     }
     // calc number of blocks per side
-    blocks_per_side = sqrt((double) cluster);
+    blocks_per_side = (u_int32_t) sqrt((double) cluster);
     block_rc = rows / blocks_per_side + 2;
+    // position in neighbour_matrix
+    rank_index = (rank / blocks_per_side + 1) * (blocks_per_side + 2) + (rank % blocks_per_side + 1);
+    u_int32_t *neighbour_matrix = (u_int32_t *) malloc(
+            (blocks_per_side + 2) * (blocks_per_side + 2) * sizeof(u_int32_t));
     // initializing states and pointers
     u_int8_t *state_1 = (u_int8_t *) malloc(block_rc * block_rc * sizeof(u_int8_t));
     u_int8_t *state_2 = (u_int8_t *) malloc(block_rc * block_rc * sizeof(u_int8_t));
@@ -280,13 +273,15 @@ int main(int argc, char *argv[]) {
             double percentage = 100.0 * (i + 1) / repetitions;
             printf("%.1lf%c\n", percentage, 37);
         }
-        if (produce_output && rank == 0) {
+        if (produce_output) {
             // wait for all processes to finish
             MPI_Barrier(MPI_COMM_WORLD);
-            t = clock();
-            write_pbm_file(state_in, i);
-            t = clock() - t;
-            time_out += ((double) t) / CLOCKS_PER_SEC;
+            if (rank == 0) {
+                t = clock();
+                write_pbm_file(state_in, i);
+                t = clock() - t;
+                time_out += ((double) t) / CLOCKS_PER_SEC;
+            }
         }
     }
     if (rank == 0) {
