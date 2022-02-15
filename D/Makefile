@@ -3,10 +3,13 @@ CFLAGS=-O3 -mavx2 -mfma
 HEADERS=simdxorshift128plus.h
 RM=rm -r
 
-all: gof_mpi.o
+all: gof_mpi.o gof_mpi_chessboard.o
 
 clean:
 	$(RM) *.o
+
+gof_mpi_chessboard.o: gof_mpi_chessboard.c
+	$(CC) $(CFLAGS) $< -o $@ -lm
 
 gof_mpi.o: gof_mpi.c $(HEADERS) simdxorshift128plus.o Makefile
 	$(CC) $(CFLAGS) $< -o $@ simdxorshift128plus.o
