@@ -95,8 +95,8 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
 }
 
 void edge_maker(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t *send_r) {
-    // top and bottom + corners
-    for (int i = 1; i < block_col - 1; i++) {
+    // top and bottom
+    for (int i = 2; i < block_col - 2; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
                                  state_old[i] +
                                  state_old[i + 1] +
@@ -118,7 +118,7 @@ void edge_maker(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t
         state[(block_col - 2) * block_col + i] =
                 (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(block_col - 2) * block_col + i]);
     }
-
+    //+ corners
     for (int i = 1; i < block_row - 1; i++) {
         u_int8_t sum_of_l_edge = state_old[(i - 1) * block_col] +
                                  state_old[(i - 1) * block_col + 1] +
@@ -368,7 +368,6 @@ int main(int argc, char *argv[]) {
             time_out += ((double) t) / CLOCKS_PER_SEC;
         }
     }
-    MPI_Barrier(MPI_COMM_WORLD);
     if (rank == 0) {
         printf("Field initializer took %f seconds to execute.\n", time_rand);
         printf("Calculation took %f seconds to execute.\n", time_calc);
