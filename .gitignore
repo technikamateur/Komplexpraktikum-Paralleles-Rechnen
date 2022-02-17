@@ -60,3 +60,4 @@ dkms.conf
 #my
 venv
 *.7z
+*.md5
