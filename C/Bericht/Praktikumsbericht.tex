@@ -48,7 +48,7 @@
 \begin{document}
 	\section{Aufgabenbeschreibung}
 	In dieser Aufgabe soll eine SIMD-parallele Version von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.\\
-	Anschließend soll die Simulation mit verschieden großen Feldgrößen und Compilern durchgeführt und verglichen werden.
+	Anschließend soll die Simulation mit verschieden großen Feldern und Compilern durchgeführt und verglichen werden.
 	
 	\subsection{Conway’s Game-of-Life}
 	Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein zweidimensionales Spielfeld, jedoch ist auch eine dreidimensionale Simulation möglich.
@@ -72,7 +72,7 @@
 	Weitere Besonderheiten sind:
 	\begin{itemize}
 		\item Die Simulation soll variabel mit Feldgrößen von $128\times 128$ bis $32768\times 32768$ erfolgen.
-		\item Es sollen Messungen mit aktiviertem und inaktivem \texttt{OpenMP} durchgeführt werden.
+		\item Es sollen Messungen sowohl mit aktivem als auch mit inaktivem \texttt{OpenMP} durchgeführt werden.
 		\item Das Programm soll mit dem \texttt{GCC} und \texttt{ICC} kompiliert und anschließend getestet werden.
 	\end{itemize}
 	\newpage
@@ -83,7 +83,7 @@
 	
 	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
 	
-	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beide Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beiden Speicherbereiche, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{Daten Initialisierung} \label{data_init}
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
@@ -92,7 +92,7 @@
 	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand()}. Den \texttt{seed} setzte ich mit der \texttt{time()} Funktion auf die aktuelle Uhrzeit. Damit beginnt das Spiel bei jedem Programmstart mit einer zufälligen Generation.\\
 
 	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Die \texttt{Xorshift} Generatoren sind eine Familie von Pseudozufallszahlengeneratoren, die sich durch eine hohe Geschwindigkeit und einer anpassbaren Periodenlänge auszeichnen.
-	\texttt{Xorshift128+} verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger Rechenintensiv ist.\\
+	\texttt{Xorshift128+} verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger rechenintensiv ist.\\
 	Die von mir verwendete Implementierung ist auf \href{https://github.com/lemire/SIMDxorshift}{GitHub} verfügbar.\\
 	
 	Da die AMD Rome EPYC 7702 Prozessoren nur AVX2 und nicht AVX512 unterstützen (vergleiche \ref{umgebung}), verwende ich die Funktion \texttt{avx\_xorshift128plus}, welche auf 256 Bit Registern arbeitet.\\
@@ -166,7 +166,7 @@ for (int i = 0; i < repetitions; i++) {
 	state_in = state_out;
 	state_out = state_tmp;
 }\end{lstlisting}
-	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterschiedet sich nur unwesentlich von der Berechnung des inneren Feldes.
+	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterscheidet sich nur unwesentlich von der Berechnung des inneren Feldes.
 	
 	\subsubsection{Inneres Feld}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
@@ -191,7 +191,7 @@ for (int i = 1; i < rows - 1; i++) {
 	}
 }\end{lstlisting}
 	
-	Die erste Schleife iteriert dabei über jede Zeile und in jeder Zeile die Zweite durch jede Zelle. Ich habe dafür die \texttt{OpenMP} Direktive\\
+	Die erste Schleife iteriert dabei über jede Zeile und die Zweite in jeder Zeile durch jede Zelle. Ich habe dafür die \texttt{OpenMP} Direktive\\
 	
 	\texttt{\#pragma omp simd}\\
 	
@@ -224,7 +224,7 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 }\end{lstlisting}
 
 	\subsubsection{Ecken}
-	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Felder nicht ins Gewicht fallen.\\
+	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Zellen nicht ins Gewicht fallen.\\
 	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
 	
 	\begin{lstlisting}[language=C, caption=Berechnung der Ecke oben links]
@@ -271,8 +271,8 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
 	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	
-	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance, sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
-	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einen kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
+	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
+	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einem kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
 	
 	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.5.281); jeweils mit den Compiler-Flags:
 	\begin{itemize}
@@ -282,7 +282,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\item \texttt{fopenmp} - Verwendung nur für Tests mit OpenMP
 	\end{itemize}
 	
-	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
+	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig, Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
 	
 	\begin{description}
 		\item[Bemerkung zur \texttt{O3} Flag:] Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
@@ -292,9 +292,8 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
-	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
-	\ref{tab:icc} entnehmen.\\
-	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entschieden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
+	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:init} und \ref{tab:calc} entnehmen.\\
+	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entscheiden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
 	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
 	
 	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
@@ -325,7 +324,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
 	\end{figure}
 	\newpage
-	Betrachtet man die Werte zwischen der Version seriellen und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 auf. Diese Parallelisierung war folglich sehr effektiv.\\
+	Betrachtet man die Werte zwischen der seriellen Version und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 auf. Diese Parallelisierung war folglich sehr effektiv.\\
 	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
 	\clearpage
 	\subsection{Berechnung}
@@ -342,7 +341,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\input{icc_all_calc.pgf}
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{ICC}.}
 	\end{figure}
-	Beim \texttt{ICC} wird erstmals deutlich, dass die Verwendung von SIMD Instruktionen einen erheblichen Performance Vorteil bewirkt. Der Speedup liegt bei ca. 24.\\
+	Beim \texttt{ICC} wird erstmals deutlich, dass die Verwendung von SIMD Instruktionen einen erheblichen Performance Vorteil bewirkt. Der Speedup liegt bei circa 24.\\
 	Vergleicht man die Zeiten des \texttt{ICC} mit denen des \texttt{GCC}, fällt auf, dass der Programmcode des \texttt{GCC} etwas schneller ist.
 	\newpage
 	\appendix
