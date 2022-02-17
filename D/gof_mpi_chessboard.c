@@ -30,14 +30,61 @@ static struct option long_options[] =
                 {"size",        optional_argument, NULL, 's'},
                 {NULL,          0,                 NULL, 0}};
 
-void field_initializer(u_int8_t *state) {
+void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
     //fills fields with random numbers 0 = dead, 1 = alive
     unsigned seed = time(0) + rank;
-    for (int i = 0; i < block_row; i++) {
-        for (int j = 0; j < block_col; j++) {
+    for (int i = 1; i < block_row - 1; i++) {
+        for (int j = 1; j < block_col - 1; j++) {
             state[i * block_col + j] = rand_r(&seed) % 2;
         }
     }
+    // send everything
+    MPI_Status status[16];
+    MPI_Request request[16];
+    // left and right row
+    MPI_Datatype mpi_col;
+    MPI_Type_vector(block_row - 2, 1, block_col, MPI_UINT8_T, &mpi_col);
+    MPI_Type_commit(&mpi_col);
+    //edges
+    //bottom
+    MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
+              neighbour_matrix[rank_index + neighbour_row], 0,
+              MPI_COMM_WORLD, &request[0]);
+    MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
+              neighbour_matrix[rank_index - neighbour_row], 0, MPI_COMM_WORLD, &request[1]);
+    //top
+    MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row], 1,
+              MPI_COMM_WORLD, &request[2]);
+    MPI_Irecv(&state[(block_row - 1) * block_col + 1], block_col - 2, MPI_UINT8_T,
+              neighbour_matrix[rank_index + neighbour_row], 1, MPI_COMM_WORLD, &request[3]);
+    //left
+    MPI_Isend(&state[block_col + 1], 1, mpi_col, neighbour_matrix[rank_index - 1], 6, MPI_COMM_WORLD, &request[12]);
+    MPI_Irecv(&state[2 * block_col - 1], 1, mpi_col, neighbour_matrix[rank_index + 1], 6, MPI_COMM_WORLD, &request[13]);
+    //right
+    MPI_Isend(&state[2 * block_col - 2], 1, mpi_col, neighbour_matrix[rank_index + 1], 7, MPI_COMM_WORLD, &request[14]);
+    MPI_Irecv(&state[block_col], 1, mpi_col, neighbour_matrix[rank_index - 1], 7, MPI_COMM_WORLD, &request[15]);
+    //corners
+    //top left
+    MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 2,
+              MPI_COMM_WORLD, &request[4]);
+    MPI_Irecv(&state[block_row * block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1], 2,
+              MPI_COMM_WORLD, &request[5]);
+    //top right
+    MPI_Isend(&state[2 * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 3,
+              MPI_COMM_WORLD, &request[6]);
+    MPI_Irecv(&state[(block_row - 1) * block_col], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1], 3,
+              MPI_COMM_WORLD, &request[7]);
+    //bottom left
+    MPI_Isend(&state[(block_row - 2) * block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1],
+              4, MPI_COMM_WORLD, &request[8]);
+    MPI_Irecv(&state[block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 4,
+              MPI_COMM_WORLD, &request[9]);
+    //bottom right
+    MPI_Isend(&state[(block_row - 1) * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1],
+              5, MPI_COMM_WORLD, &request[10]);
+    MPI_Irecv(&state[0], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 5, MPI_COMM_WORLD,
+              &request[11]);
+    MPI_Waitall(16, request, status);
 }
 
 void init_chessboard() {
@@ -94,7 +141,7 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
     return;
 }
 
-void edge_maker(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t *send_r) {
+void edge_maker(u_int8_t *state, u_int8_t *state_old) {
     // top and bottom
     for (int i = 2; i < block_col - 2; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
@@ -128,8 +175,7 @@ void edge_maker(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t
                                  state_old[(i + 1) * block_col] +
                                  state_old[(i + 1) * block_col + 1] +
                                  state_old[(i + 1) * block_col + 2];
-        state[i * block_col + 1] = send_l[i - 1] =
-                (sum_of_l_edge == 3) | ((sum_of_l_edge == 2) & state_old[i * block_col + 1]);
+        state[i * block_col + 1] = (sum_of_l_edge == 3) | ((sum_of_l_edge == 2) & state_old[i * block_col + 1]);
 
         u_int8_t sum_of_r_edge = state_old[i * block_col - 3] +
                                  state_old[i * block_col - 2] +
@@ -140,23 +186,24 @@ void edge_maker(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t
                                  state_old[(i + 2) * block_col - 2] +
                                  state_old[(i + 2) * block_col - 1];
 
-        state[(i + 1) * block_col - 2] = send_r[i - 1] =
+        state[(i + 1) * block_col - 2] =
                 (sum_of_r_edge == 3) | ((sum_of_r_edge == 2) & state_old[(i + 1) * block_col - 2]);
     }
     return;
 }
 
-void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, u_int8_t *send_r, u_int8_t *recv_l,
-                        u_int8_t *recv_r, u_int32_t *neighbour_matrix) {
+void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int32_t *neighbour_matrix) {
     //i = row, j = column
-    //initialize l+r buffer
     // edges and corners first
-    edge_maker(state, state_old, send_l, send_r);
+    edge_maker(state, state_old);
 
     // send everything
-    MPI_Status status[cluster];
-    MPI_Request request[cluster];
-
+    MPI_Status status[16];
+    MPI_Request request[16];
+    // left and right row
+    MPI_Datatype mpi_col;
+    MPI_Type_vector(block_row - 2, 1, block_col, MPI_UINT8_T, &mpi_col);
+    MPI_Type_commit(&mpi_col);
     //edges
     //bottom
     MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
@@ -164,19 +211,17 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, 
               MPI_COMM_WORLD, &request[0]);
     MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
               neighbour_matrix[rank_index - neighbour_row], 0, MPI_COMM_WORLD, &request[1]);
-
     //top
     MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row], 1,
               MPI_COMM_WORLD, &request[2]);
     MPI_Irecv(&state[(block_row - 1) * block_col + 1], block_col - 2, MPI_UINT8_T,
               neighbour_matrix[rank_index + neighbour_row], 1, MPI_COMM_WORLD, &request[3]);
     //left
-    MPI_Isend(&send_l[0], block_row - 2, MPI_UINT8_T, neighbour_matrix[rank_index - 1], 6, MPI_COMM_WORLD, &request[12]);
-    MPI_Irecv(&recv_r[0], block_row - 2, MPI_UINT8_T, neighbour_matrix[rank_index + 1], 6, MPI_COMM_WORLD, &request[13]);
+    MPI_Isend(&state[block_col + 1], 1, mpi_col, neighbour_matrix[rank_index - 1], 6, MPI_COMM_WORLD, &request[12]);
+    MPI_Irecv(&state[2 * block_col - 1], 1, mpi_col, neighbour_matrix[rank_index + 1], 6, MPI_COMM_WORLD, &request[13]);
     //right
-    MPI_Isend(&send_r[0], block_row - 2, MPI_UINT8_T, neighbour_matrix[rank_index + 1], 7, MPI_COMM_WORLD, &request[13]);
-    MPI_Irecv(&recv_l[0], block_row - 2, MPI_UINT8_T, neighbour_matrix[rank_index - 1], 7, MPI_COMM_WORLD, &request[14]);
-
+    MPI_Isend(&state[2 * block_col - 2], 1, mpi_col, neighbour_matrix[rank_index + 1], 7, MPI_COMM_WORLD, &request[14]);
+    MPI_Irecv(&state[block_col], 1, mpi_col, neighbour_matrix[rank_index - 1], 7, MPI_COMM_WORLD, &request[15]);
     //corners
     //top left
     MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 2,
@@ -214,14 +259,7 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int8_t *send_l, 
             state[i * block_col + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * block_col + j]);
         }
     }
-    MPI_Waitall(cluster, request, status);
-    // now, copy l and right back
-    for (int i = 0; i < block_row - 2; ++i) {
-        //left
-        state[(i + 1) * block_col] = recv_l[i];
-        //right
-        state[(i + 2) * block_col - 1] = recv_r[i];
-    }
+    MPI_Waitall(16, request, status);
     return;
 }
 
@@ -324,35 +362,29 @@ int main(int argc, char *argv[]) {
     u_int8_t *state_in = state_1;
     u_int8_t *state_out = state_2;
     u_int8_t *state_tmp = NULL;
-    // l+r buffer
-    u_int8_t *send_l = (u_int8_t *) malloc((block_row - 2) * sizeof(u_int8_t));
-    u_int8_t *send_r = (u_int8_t *) malloc((block_row - 2) * sizeof(u_int8_t));
-    u_int8_t *recv_l = (u_int8_t *) malloc((block_row - 2) * sizeof(u_int8_t));
-    u_int8_t *recv_r = (u_int8_t *) malloc((block_row - 2) * sizeof(u_int8_t));
-    // starting clock
-    clock_t t;
-    double time_rand;
-    double time_calc = 0;
-    double time_out = 0;
+    // init clock
+    struct timespec rand_s, rand_e, calc_s, calc_e, out_s, out_e;
+    clockid_t clk_id = CLOCK_MONOTONIC;
+    double time_rand, time_calc = 0, time_out = 0;
     // filling with random numbers
-    t = clock();
-    field_initializer(state_1);
-    t = clock() - t;
-    time_rand = ((double) t) / CLOCKS_PER_SEC; // in seconds
+    clock_gettime(clk_id, &rand_s);
+    field_initializer(state_1, neighbour_matrix);
+    clock_gettime(clk_id, &rand_e);
+    time_rand += (double) (rand_e.tv_nsec-rand_s.tv_nsec) / 1000000000 + (double) (rand_e.tv_sec-rand_s.tv_sec);
     // write random pattern as -1 file
     if (produce_output) {
-        t = clock();
+        clock_gettime(clk_id, &out_s);
         write_pbm_file(state_in, -1);
-        t = clock() - t;
-        time_out += ((double) t) / CLOCKS_PER_SEC;
+        clock_gettime(clk_id, &out_e);
+        time_out += (double) (out_e.tv_nsec-out_s.tv_nsec) / 1000000000 + (double) (out_e.tv_sec-out_s.tv_sec);
     }
     MPI_Barrier(MPI_COMM_WORLD);
     //calculation
     for (int i = 0; i < repetitions; i++) {
-        t = clock();
-        calculate_next_gen(state_out, state_in, send_l, send_r, recv_l, recv_r, neighbour_matrix);
-        t = clock() - t;
-        time_calc += ((double) t) / CLOCKS_PER_SEC;
+        clock_gettime(clk_id, &calc_s);
+        calculate_next_gen(state_out, state_in, neighbour_matrix);
+        clock_gettime(clk_id, &calc_e);
+        time_calc += (double) (calc_e.tv_nsec-calc_s.tv_nsec) / 1000000000 + (double) (calc_e.tv_sec-calc_s.tv_sec);
         state_tmp = state_in;
         state_in = state_out;
         state_out = state_tmp;
@@ -361,11 +393,10 @@ int main(int argc, char *argv[]) {
             printf("%.1lf%c\n", percentage, 37);
         }
         if (produce_output) {
-            // wait for all processes to finish
-            t = clock();
+            clock_gettime(clk_id, &out_s);
             write_pbm_file(state_in, i);
-            t = clock() - t;
-            time_out += ((double) t) / CLOCKS_PER_SEC;
+            clock_gettime(clk_id, &out_e);
+            time_out += (double) (out_e.tv_nsec-out_s.tv_nsec) / 1000000000 + (double) (out_e.tv_sec-out_s.tv_sec);
         }
     }
     if (rank == 0) {
