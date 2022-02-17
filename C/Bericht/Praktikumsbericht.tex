@@ -335,7 +335,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
 	\end{figure}
 	Betrachtet man die Ergebnisse des \texttt{GCC}, fällt auf, dass sich die beiden Graphen kaum unterschieden. Das hängt damit zusammen, dass der \texttt{GCC} unabhängig von der \texttt{OpenMP} Compiler Direktive immer SIMD Instruktionen verwendet (Vergleiche \ref{umgebung}).\\
-	Die Verwendung von \texttt{OpenMP} verschlechtert allerdings die Ausführungszeiten minimal. -> objdump -> Robert fragen
+	Die Verwendung von \texttt{OpenMP} verschlechterte die Ausführungszeiten in diesem Fall minimal.
 	\clearpage
 	\begin{figure}[h]
 		\centering
@@ -364,8 +364,8 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
 				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
 				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 12.584  \\ \hline
-				gcc & 32768 & SIMDxorshift & 100 & 1.4   \\ \hline \hline
+				gcc & 32768 & without SIMD & 100 & 12.583  \\ \hline
+				gcc & 32768 & SIMDxorshift & 100 & 1.399   \\ \hline \hline
 				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
 				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
 				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
@@ -377,7 +377,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				icc & 32768 & without SIMD & 100 & 13.846 \\ \hline
 				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:init}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf 3 Nachkommastellen.}
+			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 3 Nachkommastellen.}
 	\end{table}
 	\begin{table}
 		\begin{center}
@@ -389,13 +389,13 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
 				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
 				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.083    \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.082    \\ \hline
 				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
-				gcc & 8192  & without SIMD & 100 & 1.381    \\ \hline
+				gcc & 8192  & without SIMD & 100 & 1.38    \\ \hline
 				gcc & 8192  & SIMD         & 100 & 1.49    \\ \hline
 				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
 				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.003    \\ \hline
+				icc & 128   & without SIMD & 100 & 0.002    \\ \hline
 				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
 				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
 				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
@@ -406,7 +406,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				icc & 32768 & without SIMD & 100 & 633.289 \\ \hline
 				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
 			\end{tabular}
-			\caption{\label{tab:calc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf 3 Nachkommastellen.}
+			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 3 Nachkommastellen.}
 		\end{center}
 	\end{table}
 	\clearpage

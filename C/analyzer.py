@@ -71,22 +71,6 @@ for file in glob.glob('./results/*cc_S*_*.txt'):
             icc_list.append(bench)
         bench.fetch_data(lines)
 
-"""
-for measurement in [gcc_list, icc_list]:
-    measurement.sort(key=lambda x: x.size, reverse=False)
-    for m in measurement:
-        if m.type.value != Type.BSIMD.value:
-            print("{},{},{},{}".format(m.size, m.compiler, round(m.init_mean, 5), m.type.value))
-
-print("\n")
-
-for measurement in [gcc_list, icc_list]:
-    measurement.sort(key=lambda x: x.size, reverse=False)
-    for m in measurement:
-        if m.type.value != Type.CEXTREM.value:
-            print("{},{},{},{}".format(m.size, m.compiler, round(m.calc_mean, 5), m.type.value))
-"""
-
 # create beautiful graphs
 print("Creating beautiful graphs")
 for measurement in [gcc_list, icc_list]:
@@ -161,3 +145,19 @@ for measurement in [gcc_list, icc_list]:
     plt.savefig("pics/svg/{}_all_init.svg".format(compiler))
     plt.savefig('Bericht/{}_all_init.pgf'.format(compiler), format='pgf')
     plt.close()
+
+print("Output for tables\n")
+print("Init time\n")
+for measurement in [gcc_list, icc_list]:
+    measurement.sort(key=lambda x: x.size, reverse=False)
+    for m in measurement:
+        if m.type.value != Type.BSIMD.value:
+            print("{},{},{},{}".format(m.size, m.compiler, round(m.init_mean, 3), m.type.value))
+
+print("\n")
+print("Calc time\n")
+for measurement in [gcc_list, icc_list]:
+    measurement.sort(key=lambda x: x.size, reverse=False)
+    for m in measurement:
+        if m.type.value != Type.CEXTREM.value:
+            print("{},{},{},{}".format(m.size, m.compiler, round(m.calc_mean, 3), m.type.value))

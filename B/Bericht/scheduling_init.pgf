@@ -694,7 +694,7 @@
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=3.280000in,y=4.307333in,,base]{\color{textcolor}\sffamily\fontsize{14.400000}{17.280000}\selectfont field\_initializer run time in dependence of schedule}%
+\pgftext[x=3.280000in,y=4.307333in,,base]{\color{textcolor}\sffamily\fontsize{14.400000}{17.280000}\selectfont field\_initializer mean run time in dependence of schedule}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

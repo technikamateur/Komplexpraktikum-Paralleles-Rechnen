@@ -105,7 +105,7 @@ for measurement in [gcc_list, icc_list]:
             x_axes.append(b.threads)
             y_axes.append(b.calc_mean)
             compiler = b.compiler
-        plt.plot(x_axes, y_axes, label=b.size)
+        plt.plot(x_axes, y_axes, 'o-', label=b.size)
 
     # generate calc plot
     plt.rcParams['pgf.texsystem'] = "pdflatex"
@@ -121,8 +121,8 @@ for measurement in [gcc_list, icc_list]:
     plt.gca().yaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
     plt.gca().yaxis.set_minor_locator(mpl.ticker.LogLocator(base=10, subs='all'))
     plt.gca().grid(True, which="both")
-    plt.title("\n".join(wrap("calculate_next_gen run time in dependence of size and threads", 60)))
-    plt.savefig("pics/{}_all_calc.png".format(compiler), dpi=300)
+    plt.title("\n".join(wrap("calculate_next_gen mean run time in dependence of size and threads", 60)))
+#    plt.savefig("pics/{}_all_calc.png".format(compiler), dpi=300)
     plt.savefig("pics/{}_all_calc.svg".format(compiler))
     plt.savefig('Bericht/{}_all_calc.pgf'.format(compiler), format='pgf')
     plt.close()
@@ -137,7 +137,7 @@ for measurement in [gcc_list, icc_list]:
             x_axes.append(b.threads)
             y_axes.append(b.init_mean)
             compiler = b.compiler
-        plt.plot(x_axes, y_axes, label=b.size)
+        plt.plot(x_axes, y_axes, 'o-', label=b.size)
 
     # generate init plot
     plt.rcParams['pgf.texsystem'] = "pdflatex"
@@ -153,8 +153,8 @@ for measurement in [gcc_list, icc_list]:
     plt.gca().yaxis.set_major_formatter(mpl.ticker.EngFormatter(places=0))
     plt.gca().yaxis.set_minor_locator(mpl.ticker.LogLocator(base=10, subs='all'))
     plt.gca().grid(True, which="both")
-    plt.title("\n".join(wrap("field_initializer run time in dependence of size and threads", 60)))
-    plt.savefig("pics/{}_all_init.png".format(compiler), dpi=300)
+    plt.title("\n".join(wrap("field_initializer mean run time in dependence of size and threads", 60)))
+#    plt.savefig("pics/{}_all_init.png".format(compiler), dpi=300)
     plt.savefig("pics/{}_all_init.svg".format(compiler))
     plt.savefig('Bericht/{}_all_init.pgf'.format(compiler), format='pgf')
     plt.close()
@@ -179,8 +179,8 @@ plt.rcParams['pgf.texsystem'] = "pdflatex"
 plt.ylabel('time in s')
 plt.xlabel('schedule')
 plt.gca().grid(True, which="both")
-plt.title("\n".join(wrap("calculate_next_gen run time in dependence of schedule", 60)))
-plt.savefig("pics/scheduling_calc.png", dpi=300)
+plt.title("\n".join(wrap("calculate_next_gen mean run time in dependence of schedule", 60)))
+#plt.savefig("pics/scheduling_calc.png", dpi=300)
 plt.savefig("pics/scheduling_calc.svg")
 plt.savefig('Bericht/scheduling_calc.pgf', format='pgf')
 plt.close()
@@ -198,8 +198,8 @@ plt.rcParams['pgf.texsystem'] = "pdflatex"
 plt.ylabel('time in ms')
 plt.xlabel('schedule')
 plt.gca().grid(True, which="both")
-plt.title("\n".join(wrap("field_initializer run time in dependence of schedule", 60)))
-plt.savefig("pics/scheduling_init.png", dpi=300)
+plt.title("\n".join(wrap("field_initializer mean run time in dependence of schedule", 60)))
+#plt.savefig("pics/scheduling_init.png", dpi=300)
 plt.savefig("pics/scheduling_init.svg")
 plt.savefig('Bericht/scheduling_init.pgf', format='pgf')
 plt.close()

@@ -133,9 +133,9 @@ void field_initializer(u_int8_t *state) {
 		\caption{Generiertes Spielfeld der Größe: $64\times 64$}
 	\end{figure}
 	\newpage
-	\textbf{Anmerkung zu rand\_r():}
-	
-	\texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf und Rechenaufwand nicht von der Güte des Zufallsgenerators abhängt.
+	\begin{description}
+		\item[Anmerkung zu \texttt{rand\_r()}:] \texttt{rand\_r()} wird in den \texttt{Linux Man Pages} als schwacher Pseudo-Zufallszahlengenerator geführt \cite{lmp}. Das soll an dieser Stelle keine Relevanz haben, da der Spielverlauf nicht von der Güte des Zufallsgenerators abhängt.
+	\end{description}
 	
 	\subsection{Berechnung der nächsten Generation}
 	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
@@ -148,7 +148,7 @@ for (int i = 0; i < repetitions; i++) {
 	state_out = state_tmp;
 }\end{lstlisting}
 	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterschiedet sich nur unwesentlich von der Berechnung des inneren Feldes.
-	
+	\newpage
 	\subsubsection{Inneres Feld}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
@@ -208,7 +208,7 @@ void calculate_top(u_int8_t *state, u_int8_t *state_old) {
 		state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
 	}
 }\end{lstlisting}
-
+	\newpage
 	\subsubsection{Ecken}
 	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Felder nicht ins Gewicht fallen.\\
 	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
@@ -236,7 +236,7 @@ void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
 	
 	Die \texttt{omp\_get\_wtime()} Funktion gibt hingegen die \textit{wall-clock time} zurück; unabhängig von der Anzahl der Threads.\\
 	
-	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sonder auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems treffen. Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock()} und \texttt{omp\_get\_wtime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
+	Ich entschied mich dafür, nicht nur die Funktion \texttt{calculate\_next\_gen()} zu messen, sondern auch die \texttt{field\_initializer()} Funktion. Dadurch lässt sich später eine genauere Aussage über die Parallelisierbarkeit des Problems treffen. Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock()} und \texttt{omp\_get\_wtime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
 	\newpage
 	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
 double time_calc = 0;
@@ -283,7 +283,13 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	Um herauszufinden, wie lang ein Test durchgeführt werden muss, habe ich eine Messung mit einer Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
 	\ref{tab:icc} entnehmen.\\
-	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt. Damit bleiben die Ausführungszeiten für alle Feldgrößen in etwa konstant.
+	Ich entschied mich dabei für einen exponentiellen Anstieg der Wiederholungen. Der Grund dafür ist, dass die Feldgröße ebenfalls exponentiell ansteigt. Damit bleiben die Ausführungszeiten für alle Feldgrößen in etwa konstant.\\
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
+	
+	\begin{description}
+		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
+	\end{description}
+
 	\newpage
 	\section{Testergebnisse} \label{erg}
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
@@ -297,9 +303,9 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
 	\end{figure}
 	Die gezeigte Grafik berücksichtigt nur die Ausführung der Funktion \texttt{calculate\_next\_gen()}. Da sich sowohl die Feldgröße, als auch die Anzahl der Wiederholungen exponentiell erhöht, bietet sich eine doppellogarithmische Darstellung an.\\
-	Man erkennt eindeutig die zu erwartende Tendenz: Mehr Threads bewirken eine Verkürzung der Laufzeit. Allerdings lässt sich bei den Feldgrößen 128 deutlich und 512 in abgeschwächter Form erkennen, dass ab einer gewissen Thread Anzahl kein Speedup mehr erreicht werden kann. Schlimmer noch: Bei der Größe 128 steigt die Ausführungszeit mit 32 Threads wieder an.\\
+	Man erkennt eindeutig die zu erwartende Tendenz: Mehr Threads bewirken eine Verkürzung der Laufzeit. Allerdings lässt sich bei den Feldgrößen 128 deutlich und 512 in abgeschwächter Form erkennen, dass ab einer gewissen Thread Anzahl kein Speedup mehr erreicht werden kann. Es kommt zu einer Sättigung. Schlimmer noch: Bei der Größe 128 steigt die Ausführungszeit mit 32 Threads wieder an.\\
 	Eine Begründung ist, dass die einzelnen Schleifendurchläufe dieser Feldgrößen sehr schnell abgeschlossen sind. Mit steigender Anzahl an Threads steigt auch der Overhead durch Thread spawning, Synchronisation und Zuteilung der Arbeit. Ab einem gewissen Punkt ist dieser Overhead im Vergleich zu dem zu lösenden Problem nicht mehr vernachlässigbar klein und wirkt sich negativ auf den Speedup aus.\\
-	Wie in allen folgenden Grafiken zeichnet sich das Bild ab, dass eine Verdopplung der Threads, aus den genannten Gründen, nicht zur Halbierung der Laufzeit führt. Das ist eine theoretische Annahme, die in der Praxis nie erreicht werden kann.\\
+	Wie in allen folgenden Grafiken zeichnet sich das Bild ab, dass eine Verdopplung der Threads, aus den eben genannten Gründen, nicht zur Halbierung der Laufzeit führt. Das ist eine theoretische Annahme, die in der Praxis nie erreicht werden kann.\\
 	
 	Ein anderes Bild zeichnet sich jedoch beim Ausführen der Funktion \texttt{field\_initializer()} ab.
 	\begin{figure}[h]
