@@ -347,7 +347,8 @@ int main(int argc, char *argv[]) {
     // welcome information
     if (rank == 0) {
         printf("Welcome to the MPI game of life!\n");
-        printf("We are running with %d ranks\n", cluster);
+        printf("We are doing %d repetitions.\n", repetitions);
+        printf("Running with %d ranks.\n", cluster);
         printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
         printf("Blocks: per Column: %d, per Row: %d.\n", blocks_per_col, blocks_per_row);
         printf("Block size: Columns: %d, Rows: %d.\n", block_col - 2, block_row - 2);
