@@ -33,10 +33,15 @@ static struct option long_options[] =
 void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
     //fills fields with random numbers 0 = dead, 1 = alive
     unsigned seed = time(0) + rank;
+    // top & bottom
+    for (int i = 2; i < block_col - 2; i++) {
+        state[block_col + i] = rand_r(&seed) % 2;
+        state[(block_row - 2) * block_col + i] = rand_r(&seed) % 2;
+    }
+    //left & right + corners
     for (int i = 1; i < block_row - 1; i++) {
-        for (int j = 1; j < block_col - 1; j++) {
-            state[i * block_col + j] = rand_r(&seed) % 2;
-        }
+        state[i * block_col + 1] = rand_r(&seed) % 2;
+        state[(i + 1) * block_col - 2] = rand_r(&seed) % 2;
     }
     // send everything
     MPI_Status status[16];
@@ -48,15 +53,15 @@ void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
     //edges
     //bottom
     MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index + neighbour_row], 0,
+              neighbour_matrix[rank_index + neighbour_col], 0,
               MPI_COMM_WORLD, &request[0]);
     MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index - neighbour_row], 0, MPI_COMM_WORLD, &request[1]);
+              neighbour_matrix[rank_index - neighbour_col], 0, MPI_COMM_WORLD, &request[1]);
     //top
-    MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row], 1,
+    MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col], 1,
               MPI_COMM_WORLD, &request[2]);
     MPI_Irecv(&state[(block_row - 1) * block_col + 1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index + neighbour_row], 1, MPI_COMM_WORLD, &request[3]);
+              neighbour_matrix[rank_index + neighbour_col], 1, MPI_COMM_WORLD, &request[3]);
     //left
     MPI_Isend(&state[block_col + 1], 1, mpi_col, neighbour_matrix[rank_index - 1], 6, MPI_COMM_WORLD, &request[12]);
     MPI_Irecv(&state[2 * block_col - 1], 1, mpi_col, neighbour_matrix[rank_index + 1], 6, MPI_COMM_WORLD, &request[13]);
@@ -65,25 +70,31 @@ void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
     MPI_Irecv(&state[block_col], 1, mpi_col, neighbour_matrix[rank_index - 1], 7, MPI_COMM_WORLD, &request[15]);
     //corners
     //top left
-    MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 2,
+    MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col - 1], 2,
               MPI_COMM_WORLD, &request[4]);
-    MPI_Irecv(&state[block_row * block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1], 2,
+    MPI_Irecv(&state[block_row * block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col + 1], 2,
               MPI_COMM_WORLD, &request[5]);
     //top right
-    MPI_Isend(&state[2 * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 3,
+    MPI_Isend(&state[2 * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col + 1], 3,
               MPI_COMM_WORLD, &request[6]);
-    MPI_Irecv(&state[(block_row - 1) * block_col], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1], 3,
+    MPI_Irecv(&state[(block_row - 1) * block_col], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col - 1], 3,
               MPI_COMM_WORLD, &request[7]);
     //bottom left
-    MPI_Isend(&state[(block_row - 2) * block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1],
+    MPI_Isend(&state[(block_row - 2) * block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col - 1],
               4, MPI_COMM_WORLD, &request[8]);
-    MPI_Irecv(&state[block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 4,
+    MPI_Irecv(&state[block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col + 1], 4,
               MPI_COMM_WORLD, &request[9]);
     //bottom right
-    MPI_Isend(&state[(block_row - 1) * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1],
+    MPI_Isend(&state[(block_row - 1) * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col + 1],
               5, MPI_COMM_WORLD, &request[10]);
-    MPI_Irecv(&state[0], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 5, MPI_COMM_WORLD,
+    MPI_Irecv(&state[0], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col - 1], 5, MPI_COMM_WORLD,
               &request[11]);
+    // do the rest
+    for (int i = 2; i < block_row - 2; i++) {
+        for (int j = 2; j < block_col - 2; j++) {
+            state[i * block_col + j] = rand_r(&seed) % 2;
+        }
+    }
     MPI_Waitall(16, request, status);
 }
 
@@ -105,9 +116,11 @@ void init_chessboard() {
 }
 
 void init_neighbour(u_int32_t *neighbour_matrix) {
+    u_int32_t z = 0;
     for (int i = 1; i < neighbour_row - 1; i++) {
         for (int j = 1; j < neighbour_col - 1; j++) {
-            neighbour_matrix[i * neighbour_row + j] = (i - 1) * blocks_per_row + (j - 1);
+            neighbour_matrix[i * neighbour_col + j] = z;
+            z++;
         }
     }
     for (int i = 1; i < neighbour_row - 1; i++) {
@@ -134,7 +147,7 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
 }
 
 void edge_maker(u_int8_t *state, u_int8_t *state_old) {
-    // top and bottom
+    // top & bottom
     for (int i = 2; i < block_col - 2; i++) {
         u_int8_t sum_of_t_edge = state_old[i - 1] +
                                  state_old[i] +
@@ -154,10 +167,10 @@ void edge_maker(u_int8_t *state, u_int8_t *state_old) {
                                  state_old[(block_col - 1) * block_col + i - 1] +
                                  state_old[(block_col - 1) * block_col + i] +
                                  state_old[(block_col - 1) * block_col + i + 1];
-        state[(block_col - 2) * block_col + i] =
-                (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(block_col - 2) * block_col + i]);
+        state[(block_row - 2) * block_col + i] =
+                (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(block_row - 2) * block_col + i]);
     }
-    //+ corners
+    //left & right + corners
     for (int i = 1; i < block_row - 1; i++) {
         u_int8_t sum_of_l_edge = state_old[(i - 1) * block_col] +
                                  state_old[(i - 1) * block_col + 1] +
@@ -199,15 +212,15 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int32_t *neighbo
     //edges
     //bottom
     MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index + neighbour_row], 0,
+              neighbour_matrix[rank_index + neighbour_col], 0,
               MPI_COMM_WORLD, &request[0]);
     MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index - neighbour_row], 0, MPI_COMM_WORLD, &request[1]);
+              neighbour_matrix[rank_index - neighbour_col], 0, MPI_COMM_WORLD, &request[1]);
     //top
-    MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row], 1,
+    MPI_Isend(&state[block_col + 1], block_col - 2, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col], 1,
               MPI_COMM_WORLD, &request[2]);
     MPI_Irecv(&state[(block_row - 1) * block_col + 1], block_col - 2, MPI_UINT8_T,
-              neighbour_matrix[rank_index + neighbour_row], 1, MPI_COMM_WORLD, &request[3]);
+              neighbour_matrix[rank_index + neighbour_col], 1, MPI_COMM_WORLD, &request[3]);
     //left
     MPI_Isend(&state[block_col + 1], 1, mpi_col, neighbour_matrix[rank_index - 1], 6, MPI_COMM_WORLD, &request[12]);
     MPI_Irecv(&state[2 * block_col - 1], 1, mpi_col, neighbour_matrix[rank_index + 1], 6, MPI_COMM_WORLD, &request[13]);
@@ -216,24 +229,24 @@ void calculate_next_gen(u_int8_t *state, u_int8_t *state_old, u_int32_t *neighbo
     MPI_Irecv(&state[block_col], 1, mpi_col, neighbour_matrix[rank_index - 1], 7, MPI_COMM_WORLD, &request[15]);
     //corners
     //top left
-    MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 2,
+    MPI_Isend(&state[block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col - 1], 2,
               MPI_COMM_WORLD, &request[4]);
-    MPI_Irecv(&state[block_row * block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1], 2,
+    MPI_Irecv(&state[block_row * block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col + 1], 2,
               MPI_COMM_WORLD, &request[5]);
     //top right
-    MPI_Isend(&state[2 * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 3,
+    MPI_Isend(&state[2 * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col + 1], 3,
               MPI_COMM_WORLD, &request[6]);
-    MPI_Irecv(&state[(block_row - 1) * block_col], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1], 3,
+    MPI_Irecv(&state[(block_row - 1) * block_col], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col - 1], 3,
               MPI_COMM_WORLD, &request[7]);
     //bottom left
-    MPI_Isend(&state[(block_row - 2) * block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row - 1],
+    MPI_Isend(&state[(block_row - 2) * block_col + 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col - 1],
               4, MPI_COMM_WORLD, &request[8]);
-    MPI_Irecv(&state[block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row + 1], 4,
+    MPI_Irecv(&state[block_col - 1], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col + 1], 4,
               MPI_COMM_WORLD, &request[9]);
     //bottom right
-    MPI_Isend(&state[(block_row - 1) * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_row + 1],
+    MPI_Isend(&state[(block_row - 1) * block_col - 2], 1, MPI_UINT8_T, neighbour_matrix[rank_index + neighbour_col + 1],
               5, MPI_COMM_WORLD, &request[10]);
-    MPI_Irecv(&state[0], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_row - 1], 5, MPI_COMM_WORLD,
+    MPI_Irecv(&state[0], 1, MPI_UINT8_T, neighbour_matrix[rank_index - neighbour_col - 1], 5, MPI_COMM_WORLD,
               &request[11]);
 
     // middle; two because: -1 overlap, -1 edge. Could be calculated here, but for performance done before.
@@ -336,18 +349,19 @@ int main(int argc, char *argv[]) {
         printf("Welcome to the MPI game of life!\n");
         printf("We are running with %d ranks\n", cluster);
         printf("Game size: Columns: %lu, Rows: %lu.\n", columns, rows);
-        printf("Blocks: Columns: %d, Rows: %d.\n", blocks_per_col, blocks_per_row);
+        printf("Blocks: per Column: %d, per Row: %d.\n", blocks_per_col, blocks_per_row);
         printf("Block size: Columns: %d, Rows: %d.\n", block_col - 2, block_row - 2);
-        if (columns != rows) {
-            printf("Warning: Your field is not square.\n");
-            exit(2);
-        }
         printf("Starting now...\n");
     }
     // position in neighbour_matrix
-    rank_index = (rank / blocks_per_row + 1) * (blocks_per_row + 2) + (rank % blocks_per_col + 1);
+    rank_index = (rank / blocks_per_col + 1) * neighbour_col + (rank % blocks_per_col + 1);
     u_int32_t *neighbour_matrix = (u_int32_t *) malloc((blocks_per_row + 2) * (blocks_per_col + 2) * sizeof(u_int32_t));
     init_neighbour(neighbour_matrix);
+    // short test
+    if (rank != neighbour_matrix[rank_index]) {
+        printf("Error: rank %d in neighbour matrix is %d. Aborting.\n", rank, neighbour_matrix[rank_index]);
+        exit(2);
+    }
     // initializing states and pointers
     u_int8_t *state_1 = (u_int8_t *) malloc(block_row * block_col * sizeof(u_int8_t));
     u_int8_t *state_2 = (u_int8_t *) malloc(block_row * block_col * sizeof(u_int8_t));
@@ -370,7 +384,6 @@ int main(int argc, char *argv[]) {
         clock_gettime(clk_id, &out_e);
         time_out += (double) (out_e.tv_nsec-out_s.tv_nsec) / 1000000000 + (double) (out_e.tv_sec-out_s.tv_sec);
     }
-    MPI_Barrier(MPI_COMM_WORLD);
     //calculation
     for (int i = 0; i < repetitions; i++) {
         clock_gettime(clk_id, &calc_s);
