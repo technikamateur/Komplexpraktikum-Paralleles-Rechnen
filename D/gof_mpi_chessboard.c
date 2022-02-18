@@ -130,14 +130,6 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
     neighbour_matrix[(neighbour_row - 1) * neighbour_col] = neighbour_matrix[neighbour_col];
     //bottom right
     neighbour_matrix[neighbour_row * neighbour_col - 1] = neighbour_matrix[neighbour_col + 1];
-    if (rank == 0) {
-        for (int i = 0; i < neighbour_row; i++) {
-            for (int j = 0; j < neighbour_col; j++) {
-                printf("%d  ", neighbour_matrix[i * neighbour_col + j]);
-            }
-            printf("\n");
-        }
-    }
     return;
 }
 
