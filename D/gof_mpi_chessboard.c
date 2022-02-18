@@ -92,7 +92,7 @@ void init_chessboard() {
     if (exponent & 1) {
         // ungerade
         blocks_per_col = pow(2, (exponent / 2));
-        blocks_per_row = blocks_per_row * 2;
+        blocks_per_row = blocks_per_col * 2;
     } else {
         // gerade
         blocks_per_row = blocks_per_col = pow(2, (exponent / 2));
