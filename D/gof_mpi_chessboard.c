@@ -159,14 +159,14 @@ void edge_maker(u_int8_t *state, u_int8_t *state_old) {
                                  state_old[2 * block_col + i + 1];
         state[block_col + i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[block_col + i]);
 
-        u_int8_t sum_of_b_edge = state_old[(block_col - 3) * block_col + i - 1] +
-                                 state_old[(block_col - 3) * block_col + i] +
-                                 state_old[(block_col - 3) * block_col + i + 1] +
-                                 state_old[(block_col - 2) * block_col + i - 1] +
-                                 state_old[(block_col - 2) * block_col + i + 1] +
-                                 state_old[(block_col - 1) * block_col + i - 1] +
-                                 state_old[(block_col - 1) * block_col + i] +
-                                 state_old[(block_col - 1) * block_col + i + 1];
+        u_int8_t sum_of_b_edge = state_old[(block_row - 3) * block_col + i - 1] +
+                                 state_old[(block_row - 3) * block_col + i] +
+                                 state_old[(block_row - 3) * block_col + i + 1] +
+                                 state_old[(block_row - 2) * block_col + i - 1] +
+                                 state_old[(block_row - 2) * block_col + i + 1] +
+                                 state_old[(block_row - 1) * block_col + i - 1] +
+                                 state_old[(block_row - 1) * block_col + i] +
+                                 state_old[(block_row - 1) * block_col + i + 1];
         state[(block_row - 2) * block_col + i] =
                 (sum_of_b_edge == 3) | ((sum_of_b_edge == 2) & state_old[(block_row - 2) * block_col + i]);
     }
