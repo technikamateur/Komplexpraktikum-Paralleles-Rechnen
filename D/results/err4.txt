@@ -1,0 +1,246 @@
+Die folgenden Module wurden nicht entladen:
+  (Benutzen Sie "module --force purge" um alle Module zu entladen):
+
+  1) modenv/scs5
+Module OpenMPI/4.1.2-GCC-11.2.0 and 14 dependencies unloaded.
+Module OpenMPI/4.1.2-GCC-11.2.0 and 14 dependencies loaded.
+
+real	0m47.357s
+user	0m0.032s
+sys	0m0.020s
+
+real	1m24.582s
+user	0m0.028s
+sys	0m0.018s
+
+real	0m43.796s
+user	0m0.029s
+sys	0m0.014s
+
+real	0m49.517s
+user	0m0.029s
+sys	0m0.016s
+
+real	0m44.103s
+user	0m0.036s
+sys	0m0.008s
+
+real	0m43.702s
+user	0m0.033s
+sys	0m0.012s
+
+real	0m43.811s
+user	0m0.027s
+sys	0m0.013s
+
+real	0m48.202s
+user	0m0.032s
+sys	0m0.018s
+
+real	0m43.536s
+user	0m0.033s
+sys	0m0.018s
+
+real	0m53.665s
+user	0m0.034s
+sys	0m0.011s
+
+real	0m43.362s
+user	0m0.032s
+sys	0m0.013s
+
+real	0m48.989s
+user	0m0.032s
+sys	0m0.011s
+
+real	0m48.143s
+user	0m0.029s
+sys	0m0.014s
+
+real	0m43.498s
+user	0m0.028s
+sys	0m0.010s
+
+real	0m43.522s
+user	0m0.031s
+sys	0m0.015s
+
+real	0m43.469s
+user	0m0.035s
+sys	0m0.012s
+
+real	0m43.360s
+user	0m0.032s
+sys	0m0.015s
+
+real	0m42.937s
+user	0m0.030s
+sys	0m0.013s
+
+real	0m55.532s
+user	0m0.032s
+sys	0m0.010s
+
+real	0m43.419s
+user	0m0.030s
+sys	0m0.015s
+
+real	1m19.646s
+user	0m0.034s
+sys	0m0.011s
+
+real	1m6.976s
+user	0m0.029s
+sys	0m0.015s
+
+real	1m9.681s
+user	0m0.027s
+sys	0m0.019s
+
+real	1m10.926s
+user	0m0.029s
+sys	0m0.016s
+
+real	1m17.420s
+user	0m0.032s
+sys	0m0.012s
+
+real	1m6.963s
+user	0m0.032s
+sys	0m0.019s
+
+real	1m7.143s
+user	0m0.034s
+sys	0m0.035s
+
+real	1m6.823s
+user	0m0.029s
+sys	0m0.017s
+
+real	1m6.986s
+user	0m0.033s
+sys	0m0.032s
+
+real	1m6.946s
+user	0m0.031s
+sys	0m0.015s
+
+real	1m6.955s
+user	0m0.033s
+sys	0m0.014s
+
+real	1m6.999s
+user	0m0.031s
+sys	0m0.010s
+
+real	1m7.070s
+user	0m0.036s
+sys	0m0.012s
+
+real	1m6.835s
+user	0m0.030s
+sys	0m0.015s
+
+real	1m6.842s
+user	0m0.028s
+sys	0m0.015s
+
+real	1m7.297s
+user	0m0.035s
+sys	0m0.019s
+
+real	1m6.855s
+user	0m0.028s
+sys	0m0.021s
+
+real	1m6.929s
+user	0m0.032s
+sys	0m0.010s
+
+real	1m6.772s
+user	0m0.034s
+sys	0m0.014s
+
+real	1m6.601s
+user	0m0.034s
+sys	0m0.016s
+
+real	1m58.164s
+user	0m0.027s
+sys	0m0.018s
+
+real	1m58.227s
+user	0m0.035s
+sys	0m0.018s
+
+real	1m58.503s
+user	0m0.034s
+sys	0m0.025s
+
+real	1m58.455s
+user	0m0.026s
+sys	0m0.021s
+
+real	1m58.286s
+user	0m0.027s
+sys	0m0.031s
+
+real	1m58.210s
+user	0m0.027s
+sys	0m0.017s
+
+real	1m58.765s
+user	0m0.030s
+sys	0m0.014s
+
+real	1m58.120s
+user	0m0.029s
+sys	0m0.013s
+
+real	1m58.355s
+user	0m0.029s
+sys	0m0.027s
+
+real	2m0.048s
+user	0m0.026s
+sys	0m0.015s
+
+real	2m2.318s
+user	0m0.027s
+sys	0m0.018s
+
+real	2m0.849s
+user	0m0.031s
+sys	0m0.016s
+
+real	2m6.480s
+user	0m0.041s
+sys	0m0.021s
+
+real	2m0.935s
+user	0m0.036s
+sys	0m0.010s
+
+real	2m5.091s
+user	0m0.027s
+sys	0m0.015s
+
+real	2m2.000s
+user	0m0.033s
+sys	0m0.018s
+
+real	2m6.940s
+user	0m0.034s
+sys	0m0.020s
+
+real	1m59.115s
+user	0m0.032s
+sys	0m0.014s
+
+real	1m58.309s
+user	0m0.040s
+sys	0m0.014s
+
+real	1m58.594s
+user	0m0.035s
+sys	0m0.015s

@@ -1,0 +1,220 @@
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.183569 seconds to execute.
+Calculation took 12.101025 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.182106 seconds to execute.
+Calculation took 12.091858 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.176363 seconds to execute.
+Calculation took 12.111313 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.181029 seconds to execute.
+Calculation took 12.102378 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.174491 seconds to execute.
+Calculation took 12.102564 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.182387 seconds to execute.
+Calculation took 12.089359 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.266315 seconds to execute.
+Calculation took 12.007884 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.182142 seconds to execute.
+Calculation took 12.091452 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.191319 seconds to execute.
+Calculation took 12.110120 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.178044 seconds to execute.
+Calculation took 12.164457 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.195288 seconds to execute.
+Calculation took 12.077134 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.169423 seconds to execute.
+Calculation took 12.099210 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.170018 seconds to execute.
+Calculation took 12.118906 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.201377 seconds to execute.
+Calculation took 12.067441 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.175304 seconds to execute.
+Calculation took 12.121098 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.180521 seconds to execute.
+Calculation took 12.087989 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.190120 seconds to execute.
+Calculation took 12.088272 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.171193 seconds to execute.
+Calculation took 12.100876 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.178843 seconds to execute.
+Calculation took 12.091227 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)
+Welcome to the MPI game of life!
+We are doing 10 repetitions.
+Running with 64 ranks.
+Game size: Columns: 131072, Rows: 131072.
+Blocks: per Column: 8, per Row: 8.
+Block size: Columns: 16384, Rows: 16384.
+Starting now...
+Field initializer took 3.176906 seconds to execute.
+Calculation took 12.127176 seconds to execute.
+Writing pbm files took 0.000000 seconds to execute.
+Done :)

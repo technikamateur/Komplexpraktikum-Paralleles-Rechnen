@@ -1,0 +1,12 @@
+gcc (GCC) 11.2.0
+Copyright (C) 2021 Free Software Foundation, Inc.
+Dies ist freie Software; die Kopierbedingungen stehen in den Quellen. Es
+gibt KEINE Garantie; auch nicht für MARKTGÄNGIGKEIT oder FÜR SPEZIELLE ZWECKE.
+
+mpirun (Open MPI) 4.1.2
+
+Report bugs to http://www.open-mpi.org/community/help/
+started
+Sa 19. Feb 12:58:51 CET 2022
+done
+Sa 19. Feb 13:38:39 CET 2022
