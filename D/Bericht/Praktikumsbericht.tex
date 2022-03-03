@@ -1,0 +1,515 @@
+\documentclass[german,plainarticle,hyperref,utf8]{zihpub}
+\author{Daniel Körsten}
+\title{Komplexpraktikum Paralleles Rechnen - MPI parallele Programmierung}
+\matno{4690396}
+\betreuer{Dr. Robert Schöne}
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{pgf}
+\usepackage{appendix}
+\usepackage{svg}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ 
+	backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+	basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	deletekeywords={...},            % if you want to delete keywords from the given language
+	escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	firstnumber=1,                % start line enumeration with line 1000
+	frame=single,	                   % adds a frame around the code
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language=Octave,                 % the language of the code
+	morekeywords={*,...},            % if you want to add more keywords to the set
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=2,	                   % sets default tabsize to 2 spaces
+	title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\begin{document}
+	\section{Aufgabenbeschreibung}
+	In dieser Aufgabe soll eine MPI-parallele Variante von \texttt{Conway’s Game-of-Life} in der Programmiersprache \texttt{C} implementiert werden.\\
+	Anschließend soll die Simulation mit verschieden großen Feldern und Anzahl von ranks durchgeführt und verglichen werden.
+	
+	\subsection{Conway’s Game-of-Life}
+	Das Game-of-Life ist ein vom Mathematiker John Horton Conway entworfenes Simulationsspiel \cite{gardner}. Es basiert auf einem zellulären Automaten. Häufig handelt es sich um ein zweidimensionales Spielfeld, jedoch ist auch eine dreidimensionale Simulation möglich.
+	
+	Das Spiel besteht dabei aus einem Feld mit einer festgelegten, möglichst großen, Anzahl an Zeilen und Spalten. Eine Zelle kann dabei entweder Tot oder Lebendig sein. Dieses Spielfeld wird mit einer zufälligen Anfangspopulation initialisiert.
+	
+	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass das Spielfeld Torus-förmig sein soll. Alles, was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
+	
+	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
+	\begin{enumerate}
+		\item Eine lebende Zelle mit zwei oder drei Nachbarn überlebt in der Folgegeneration.
+		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
+		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
+	\end{enumerate}
+	Wichtig ist, dass die Folgegeneration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich, die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
+	
+	\subsection{Besonderheiten der Aufgabenstellung}
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{MPI} erfolgen soll. \texttt{MPI} ist eine API, die die parallele Berechnung über mehrere getrennte Computer ermöglicht. Ich verwendete in diesem Praktikum die Open-Source Implementierung \texttt{OpenMPI}.\\
+	Im Gegensatz zu \texttt{OpenMP} benötigt MPI kein \textit{Shared-Memory System}, sondern kann auf dedizierten Rechnern innerhalb eines Clusters ausgeführt werden.\\
+	
+	\texttt{MPI} steht dabei für \textit{Message Passing Interface}. Konkret bedeutet das, dass die parallel laufenden Prozesse Daten über Nachrichten austauschen. Dadurch wird es möglich, das Problem aufzuteilen "\textit{divide and conquer}". Der Datenaustausch geschieht nicht automatisch, sondern der Programmierer muss explizit angeben, welcher Prozesse zu welchem Zeitpunkt Daten an einen anderen Prozess sendet.\\
+	
+	Der Nachrichtenaustausch kann dabei über verschiedene Wege erfolgen.\\
+	Innerhalb eines Sockets, oder auch zwischen Sockets auf einem Dual Socket Board, können Nachrichten über den gemeinsamen Speicher oder Interconnects, wie Infiniband oder Infinity Fabric mit sehr hoher Geschwindigkeit und geringer Latenz ausgetauscht werden.\\
+	Kommen mehrere Compute Nodes in einem Cluster zum Einsatz, kann die Kommunikation über das Netzwerk, in der Regel über TCP/IP, erfolgen.\\
+	Die genaue Testumgebung mit Kommunikationsmöglichkeiten wird später in \ref{umgebung} diskutiert.BELEGE\\
+	
+	Weitere Besonderheiten:
+	\begin{itemize}
+		\item Für 1, 4, 16, 64, 128 und 256 ranks die Ausführungszeiten messen und vergleichen
+		\item Quadratische Feldgrößen von $2048\times 2048$, $8192\times 8192$, $32768\times 32768$ und $131072\times 131072$
+		\item Die Felder sollen auf die ranks aufgeteilt werden
+		\item benachbarte ranks sollen möglichst nah beieinander gescheduled sein
+	\end{itemize}
+
+	\begin{description}
+		\item[Begriffsklärung rank:] Jeder Prozess, der am Nachrichtenaustausch teilnimmt, muss eine eindeutige Kennung besitzen, um gezielt Nachrichten versenden und empfangen zu können.\\ \texttt{MPI} erstellt dabei Prozessgruppen (typischerweise eine, wenn nicht anders spezifiziert), in der ein Prozess über seinen \textit{rank} identifiziert wird.\\ Der rank ist dabei eine Zahl im Intervall $\left[0, N-1\right]$, $N\dotso$ Anzahl der gestarteten Prozesse.
+		
+	\end{description}
+	\newpage
+	\section{Implementierung}
+	Bei Aufgabe B \& C allokierte ich einen Speicherbereichs der Größe\\ \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}.\\
+	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
+	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein chessboard Layout, also der Aufteilung des Feldes in gleich große Quadrate.\\
+	Der Grund ist, dass hier der Kommunikationsaufwand minimal wird, da jeder Prozess seinen direkten Nachbarn nur die äußerste Reihe senden (und umgekehrt von ihnen empfangen) muss.\\
+	Im ersten Schritt muss MPI initialisiert werden. Das erfolgt direkt am Anfang:
+	\begin{lstlisting}[language=C, caption=MPI Initialisierung mit Bestimmung von rank und cluster]
+static int rank, cluster;
+
+int main(int argc, char *argv[]) {
+	// MPI
+	MPI_Init(&argc, &argv);
+	MPI_Comm_size(MPI_COMM_WORLD, &cluster);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+}\end{lstlisting}
+
+	Die beiden Variablen rank und cluster enthalten dabei direkt die wichtigsten Informationen: Den rank des Prozesses und die Gesamtzahl der Prozesse.\\
+	Da die Größe des Feldes ebenfalls bekannt ist, lässt sich nun das Feld aufteilen.\\
+	
+	Es gilt nun zu bestimmen, in wie viel Zeilen und Spalten das Feld zerlegt werden muss. Da die Felder quadratisch sind und genau wie die ranks mit einer Zweierpotenz ausgedrückt werden können, ist eine Aufteilung immer möglich.\\
+	Dafür verwendete ich eine Funktion, die den \textit{Logarithmus Dualis} der rank Größe berechnet und so die Zeilen und Spalten berechnet.\\
+	Dabei stellt sich ein Problem: Besitzt die Zweierpotenz einer rank Größe einen ungeraden Exponenten, bspw. $128 = 2^7$, entspricht die Anzahl der Zeilen nicht der der Spalten.\\
+	In diesem Fall entschied ich mich mehr Blocks pro Zeile statt Spalte zu verwenden. Dies ist eine willkürliche Festlegung und sollte keinen Einfluss auf die Performance haben.\\
+	\begin{lstlisting}[language=C, caption=Bestimmung der Zeilen und Spalten des chessboard Layouts]
+void init_chessboard() {
+	u_int32_t exponent = (u_int32_t) log2((double) cluster);
+	if (exponent & 1) {
+		// ungerade
+		blocks_per_col = pow(2, (exponent / 2));
+		blocks_per_row = blocks_per_col * 2;
+	} else {
+		// gerade
+		blocks_per_row = blocks_per_col = pow(2, (exponent / 2));
+	}
+	block_row = rows / blocks_per_row + 2;
+	block_col = columns / blocks_per_col + 2;
+	return;
+}\end{lstlisting}
+
+	In Zeile 11 und 12 bestimme ich nun direkt die Zeilen und Spalten jedes Blockes, in dem ich die Zeilen und Spalten des Feldes durch die jeweilige Anzahl der Blöcke teile.\\
+	Anschließend addiere ich noch 2. Wie eingangs erwähnt, benötigt jeder Block die äußerste Reihe seiner Nachbarn, um das Game-of-Life spielen zu können.\\
+	Deshalb vergrößere ich das Feld um jeweils 2 Zeilen und 2 Spalten.\\
+	
+	Auf dieser Grundlage kann jeder rank nun sein eigenen Spielfelder initialisieren:
+	\begin{lstlisting}[language=C, caption=Initialisierung der Spielfelder]
+// initializing states and pointers
+u_int8_t *state_1 = (u_int8_t *) malloc(block_row * block_col * sizeof(u_int8_t));
+u_int8_t *state_2 = (u_int8_t *) malloc(block_row * block_col * sizeof(u_int8_t));
+u_int8_t *state_in = state_1;
+u_int8_t *state_out = state_2;
+u_int8_t *state_tmp = NULL;
+	\end{lstlisting}
+	
+	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beiden Pointer, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	
+	\subsection{MPI Kommunikation}
+	\subsubsection{Nachrichtenaustausch}
+	MPI Isend usw erklären
+	\subsubsection{Neighbour Matrix}
+	
+	Für den späteren Datenaustausch über MPI ist es notwendig, dass ein Prozess mit einem gegeben rank seine Nachbarn kennt. Da es sich um ein Torus-förmiges Spielfeld handelt, hat ein rank in der letzten Spalte als rechten Nachbarn nicht den $rank + 1$, da dieser in der ersten Spalte der nächsten Zeile liegt usw.\\
+	Um dieses Problem zu lösen und die Kommunikation später zu erleichtern, generiere ich eine \textit{Neighbour Matrix}, bei der die Kanten und Ecken entsprechend gespiegelt werden.
+	\begin{lstlisting}[language=C, caption=Generierung der Neighbour Matrix]
+// Generierung der Matrix
+// 2 Zeilen und 2 Spalten groesser, um die Spiegelung zu ermoeglichen
+nb_row = blocks_per_row + 2;
+nb_col = blocks_per_col + 2;
+u_int32_t *neighbour_matrix = (u_int32_t *) malloc(nb_row * nb_col * sizeof(u_int32_t));
+
+// position in neighbour_matrix
+rank_index = (rank / blocks_per_col + 1) * nb_col + (rank % blocks_per_col + 1);
+init_neighbour(neighbour_matrix);
+
+// Initialisieren der Matrik mit den ranks
+void init_neighbour(u_int32_t *neighbour_matrix) {
+	u_int32_t z = 0;
+	for (int i = 1; i < nb_row - 1; i++) {
+		for (int j = 1; j < nb_col - 1; j++) {
+			neighbour_matrix[i * nb_col + j] = z;
+			z++;
+		}
+		//left
+		neighbour_matrix[i * nb_col] = neighbour_matrix[(i + 1) * nb_col - 2];
+		//right
+		neighbour_matrix[(i + 1) * nb_col - 1] = neighbour_matrix[i * nb_col + 1];
+	}
+	for (int i = 1; i < nb_col - 1; i++) {
+		//top
+		neighbour_matrix[i] = neighbour_matrix[(nb_row - 2) * nb_col + i];
+		//bottom
+		neighbour_matrix[(nb_row - 1) * nb_col + i] = neighbour_matrix[nb_col + i];
+	}
+	// top left corner
+	neighbour_matrix[0] = neighbour_matrix[(nb_row - 1) * nb_col - 2];
+	// top right corner
+	neighbour_matrix[nb_col - 1] = neighbour_matrix[(nb_row - 2) * nb_col + 1];
+	// bottom left
+	neighbour_matrix[(nb_row - 1) * nb_col] = neighbour_matrix[nb_col];
+	// bottom right
+	neighbour_matrix[nb_row * nb_col - 1] = neighbour_matrix[nb_col + 1];
+	return;
+}\end{lstlisting}
+
+	Die Variable \textit{rank\_index} enthält dabei den Index des ranks innerhalb der Matrix. Dieser Index fungiert später als konstantes Offset, um Nachrichten an seine Nachbarn adressieren zu können.
+
+
+	\subsection{Daten Initialisierung} \label{data_init}
+	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
+	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
+	
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand()}. Den \texttt{seed} setzte ich mit der \texttt{time()} Funktion auf die aktuelle Uhrzeit. Damit beginnt das Spiel bei jedem Programmstart mit einer zufälligen Generation.\\
+
+	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Die \texttt{Xorshift} Generatoren sind eine Familie von Pseudozufallszahlengeneratoren, die sich durch eine hohe Geschwindigkeit und einer anpassbaren Periodenlänge auszeichnen.
+	\texttt{Xorshift128+} verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger rechenintensiv ist.\\
+	Die von mir verwendete Implementierung ist auf \href{https://github.com/lemire/SIMDxorshift}{GitHub} verfügbar.\\
+	
+	Da die AMD Rome EPYC 7702 Prozessoren nur AVX2 und nicht AVX512 unterstützen (vergleiche \ref{umgebung}), verwende ich die Funktion \texttt{avx\_xorshift128plus}, welche auf 256 Bit Registern arbeitet.\\
+	Meine Idee war, die 256 generierten Bits auf die 8 Bit großen Zellen des Spiels aufzuteilen. Damit lassen sich pro Durchgang 32 Zellen mit Zufallszahlen füllen, was zu einer deutlichen Geschwindigkeitssteigerung führen sollte.
+	
+	Zusammengesetzt ergibt sich daraus folgender Code:\\
+	
+	\begin{lstlisting}[language=C, caption=Daten Initialisierung]
+void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
+	//fills fields with random numbers 0 = dead, 1 = alive
+	// use diffrent seed for every rank
+	unsigned seed = time(0) + rank;
+	// top & bottom
+	for (int i = 2; i < block_col - 2; i++) {
+		state[block_col + i] = rand_r(&seed) % 2;
+		state[(block_row - 2) * block_col + i] = rand_r(&seed) % 2;
+	}
+	//left & right + corners
+	for (int i = 1; i < block_row - 1; i++) {
+		state[i * block_col + 1] = rand_r(&seed) % 2;
+		state[(i + 1) * block_col - 2] = rand_r(&seed) % 2;
+	}
+	// send everything
+	MPI_Status status[16];
+	MPI_Request request[16];
+	//bottom
+	MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
+	          neighbour_matrix[rank_index + neighbour_col], 0, 
+	          MPI_COMM_WORLD, &request[0]);
+	MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
+	          neighbour_matrix[rank_index - neighbour_col], 0,
+	          MPI_COMM_WORLD, &request[1]);
+	// and so on for every edge and corner
+	
+	// do the middle, while sending/receiving
+	for (int i = 2; i < block_row - 2; i++) {
+		for (int j = 2; j < block_col - 2; j++) {
+			state[i * block_col + j] = rand_r(&seed) % 2;
+		}
+	}
+	// Wait for all IPC to complete
+	MPI_Waitall(16, request, status);
+}\end{lstlisting}
+	\begin{figure}[h]
+		\begin{center}
+			\includegraphics[scale=5.0]{initialized_board.pdf}
+		\end{center}
+		\caption{Mit \texttt{Xorshift128+} generiertes Spielfeld der Größe: $64\times 64$}
+	\end{figure}
+	
+	\subsection{Berechnung der nächsten Generation}
+	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
+	Bei jedem Simulationsschritt werden die Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.
+	\begin{lstlisting}[language=C, caption=Vertauschen der Pointer vor jedem Funktionsaufruf (vereinfacht)]
+for (int i = 0; i < repetitions; i++) {
+	calculate_next_gen(state_out, state_in);
+	state_tmp = state_in;
+	state_in = state_out;
+	state_out = state_tmp;
+}\end{lstlisting}
+	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterscheidet sich nur unwesentlich von der Berechnung des inneren Feldes.
+	
+	\subsubsection{Inneres Feld}
+	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
+	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
+	Der Grund liegt darin, dass diese bitweisen Operatoren sich gut bei SIMD Operationen verwenden lassen.\\
+	
+	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
+	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
+for (int i = 1; i < rows - 1; i++) {
+	#pragma omp simd
+	for (int j = 1; j < columns - 1; j++) {
+		//count up the neighbours
+		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
+												state_old[(i - 1) * columns + j] +
+												state_old[(i - 1) * columns + (j + 1)] +
+												state_old[i * columns + (j - 1)] +
+												state_old[i * columns + (j + 1)] +
+												state_old[(i + 1) * columns + (j - 1)] +
+												state_old[(i + 1) * columns + j] +
+												state_old[(i + 1) * columns + (j + 1)];
+		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
+	}
+}\end{lstlisting}
+	
+	Die erste Schleife iteriert dabei über jede Zeile und die Zweite in jeder Zeile durch jede Zelle. Ich habe dafür die \texttt{OpenMP} Direktive\\
+	
+	\texttt{\#pragma omp simd}\\
+	
+	verwendet.\\
+	Dabei wird jedoch nur die innere Schleife parallelisiert. Das bewirkt, dass die Spalten jeweils parallel berechnet werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren. In meinen Tests führte dies zu einer Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
+	Zum anderen kann der Compiler, bei meiner Implementierung, die äußere Schleife modifizieren und so eventuelle Optimierungen vornehmen.
+	\newpage
+	\subsubsection{Kanten}
+	
+	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
+	Auch hier wurden die Kanten wieder mit\\
+	
+	\texttt{\#pragma omp simd}\\
+	
+	parallelisiert.	
+	\begin{lstlisting}[language=C, caption=Berechnung der obersten Zeile]
+void calculate_top(u_int8_t *state, u_int8_t *state_old) {
+	#pragma omp simd
+	for (int i = 1; i < columns - 1; i++) {
+		u_int8_t sum_of_t_edge = state_old[i - 1] +
+														 state_old[i + 1] +
+														 state_old[2 * columns + (i - 1)] +
+														 state_old[2 * columns + i] +
+														 state_old[2 * columns + (i + 1)] +
+														 state_old[(rows - 1) * columns + i] +
+														 state_old[(rows - 1) * columns + i + 1] +
+														 state_old[(rows - 1) * columns + i - 1];
+		state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
+	}
+}\end{lstlisting}
+
+	\subsubsection{Ecken}
+	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Zellen nicht ins Gewicht fallen.\\
+	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
+	
+	\begin{lstlisting}[language=C, caption=Berechnung der Ecke oben links]
+void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
+	u_int8_t corner_sum;
+	// top left
+	corner_sum = state_old[1] +
+	state_old[columns] +
+	state_old[columns + 1] +
+	state_old[(rows - 1) * columns] +
+	state_old[(rows - 1) * columns + 1] +
+	state_old[columns - 1] +
+	state_old[2 * columns - 1] +
+	state_old[rows * columns - 1];
+	state[0] = (corner_sum == 3) | ((corner_sum == 2) & state_old[0]);
+}\end{lstlisting}
+	
+	\subsection{Zeitmessung}
+	Ich habe mich für eine Zweistufige Zeitmessung entschieden.\\
+	
+	In erster Instanz messe ich die Ausführungszeiten der Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()}.\\
+	Die vergangene Zeit messe ich mit der Funktion \texttt{clock\_gettime()}.\\
+	Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock\_gettime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
+	
+	Zusätzlich messe ich die Ausführungszeit des kompletten Programms mit dem Linux Befehl \textit{time}. Da die Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()} den größten Abteil der Programm haben, lässt sich, zumindest näherungsweise, der MPI Overhead zum spawnen initialisieren der Prozesse berechnen.
+	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
+clockid_t clk_id = CLOCK_MONOTONIC;
+double time_calc = 0;
+struct timespec calc_s, calc_e;
+for (int i = 0; i < repetitions; i++) {
+	clock_gettime(clk_id, &calc_s);
+	// function call
+	clock_gettime(clk_id, &calc_e);
+	time_calc += (double) (calc_e.tv_nsec-calc_s.tv_nsec) / 1000000000 +
+	             (double) (calc_e.tv_sec-calc_s.tv_sec);
+}
+printf("Calculation took %f seconds to execute.\n", time_calc);
+\end{lstlisting}
+	
+	\subsection{Ein- und Ausgabe}
+	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht, die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.\\
+	Ebenso lässt sich das Ergebnis über \textit{pbm}-Files visualisieren. Dabei fügt jeder rank seiner Ausgabedatei seinen rank an. Das Bild ließe sich aus diesen Einzelbildern konstruieren, ist jedoch nicht Schwerpunkt dieser Aufgabe.\\
+	Alle Funktionen sowie die Syntax lassen sich über den Parameter \texttt{-{}-help} ausgeben.\\
+	
+	Um mehrfache Ausgaben auf der Konsole zu vermeiden, werden Ausgaben nur vom Prozess mit dem rank 0 ausgeführt.
+	\newpage
+	\section{Zeitmessung auf Taurus}
+	\subsection{Testumgebung} \label{umgebung}
+	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
+	
+	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
+	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einem kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
+	
+	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.5.281); jeweils mit den Compiler-Flags:
+	\begin{itemize}
+		\item \texttt{O3} - Optimierungsflag des Compilers
+		\item \texttt{mavx2} - Verwendung von AVX2
+		\item \texttt{mfma}/\texttt{fma} - Verwendung von FMA
+		\item \texttt{fopenmp} - Verwendung nur für Tests mit OpenMP
+	\end{itemize}
+	
+	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig, Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
+	
+	\begin{description}
+		\item[Bemerkung zur \texttt{O3} Flag:] Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
+		Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
+		Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
+	\end{description}
+	
+	\subsection{Testmethode}
+	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
+	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:init} und \ref{tab:calc} entnehmen.\\
+	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entscheiden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
+	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
+	
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
+	
+	\begin{description}
+		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
+		\item[Anmerkung zu den Diagrammen:] In den Diagrammen finden sich bei einigen Feldgrößen keine Datenpunkte. Ist das der Fall, war das Ergebnis der Zeitmessung 0 Sekunden. Da der Logarithmus von 0 jedoch $-\infty$ entspricht, ist eine Darstellung nicht sinnvoll.\\
+		Das Ergebnis von 0 Sekunden entspricht natürlich nicht ganz der Realität, aber es lässt sich festhalten, dass die Berechnung so schnell abgeschlossen war, dass diese faktisch nicht messbar war.
+	\end{description}
+
+	\newpage
+	\section{Testergebnisse} \label{erg}
+	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
+	\subsection{Dateninitialisierung}
+	Zuerst möchte ich auf die Ausführungszeiten der Funktion \texttt{field\_initializer()} des Spiels eingehen.\\
+	Diese Funktion füllt das Spielfeld mit zufälligen Werten. Wie Eingangs in \ref{data_init} beschrieben, lässt sich diese Funktion nicht mit SIMD Instruktionen parallelisieren.\\
+	Ich implementierte jedoch einen \texttt{Xorshift128+} Pseudozufallszahlengenerator, um das Problem SIMD parallel auszuführen.\\
+	Die Ergebnisse habe ich hier dargestellt.
+	
+	\begin{figure}[h]
+		\centering
+		%\input{gcc_all_init.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{GCC}.}
+	\end{figure}
+	\begin{figure}[h]
+		\centering
+		%\input{icc_all_init.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
+	\end{figure}
+	\newpage
+	Betrachtet man die Werte zwischen der seriellen Version und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 auf. Diese Parallelisierung war folglich sehr effektiv.\\
+	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
+	\clearpage
+	\subsection{Berechnung}
+	\begin{figure}[h]
+		\centering
+		%\input{gcc_all_calc.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
+	\end{figure}
+	Betrachtet man die Ergebnisse des \texttt{GCC}, fällt auf, dass sich die beiden Graphen kaum unterschieden. Das hängt damit zusammen, dass der \texttt{GCC} unabhängig von der \texttt{OpenMP} Compiler Direktive immer SIMD Instruktionen verwendet (Vergleiche \ref{umgebung}).\\
+	Die Verwendung von \texttt{OpenMP} verschlechterte die Ausführungszeiten in diesem Fall minimal.
+	\clearpage
+	\begin{figure}[h]
+		\centering
+		%\input{icc_all_calc.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{ICC}.}
+	\end{figure}
+	Beim \texttt{ICC} wird erstmals deutlich, dass die Verwendung von SIMD Instruktionen einen erheblichen Performance Vorteil bewirkt. Der Speedup liegt bei circa 24.\\
+	Vergleicht man die Zeiten des \texttt{ICC} mit denen des \texttt{GCC}, fällt auf, dass der Programmcode des \texttt{GCC} etwas schneller ist.
+	\newpage
+	\appendix
+	\section{Tabellen} \label{tables}
+	\begin{description}
+		\item[Hinweis zur Notation:] \textit{without SIMD} bedeutet nicht, dass keine SIMD Instruktionen verwendet werden. Es bedeutet, dass das Programm gemäß der Aufgabenstellung ohne \texttt{OpenMP} Compiler Direktiven compiliert wurde. Wie bereits in \ref{umgebung} festgestellt, verwendet der \texttt{GCC} dennoch SIMD Instruktionen.
+	\end{description}
+	\begin{table}[h]
+		\centering
+			\begin{tabular}{||c r l c l||}
+				\hline
+				Compiler & Size  & SIMD & Repetitions & Initialization in s \\ [1ex]
+				\hline\hline
+				gcc & 128   & without SIMD & 100 & 0.0      \\ \hline
+				gcc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 512   & without SIMD & 100 & 0.0      \\ \hline
+				gcc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.046   \\ \hline
+				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
+				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
+				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
+				gcc & 32768 & without SIMD & 100 & 12.583  \\ \hline
+				gcc & 32768 & SIMDxorshift & 100 & 1.399   \\ \hline \hline
+				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
+				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
+				icc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 2048  & without SIMD & 100 & 0.05   \\ \hline
+				icc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
+				icc & 8192  & without SIMD & 100 & 0.849    \\ \hline
+				icc & 8192  & SIMDxorshift & 100 & 0.079    \\ \hline
+				icc & 32768 & without SIMD & 100 & 13.846 \\ \hline
+				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
+			\end{tabular}
+			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 3 Nachkommastellen.}
+	\end{table}
+	\begin{table}
+		\begin{center}
+			\begin{tabular}{||c r l c l||}
+				\hline
+				Compiler & Size  & SIMD & Repetitions & Calculation in s \\ [1ex]
+				\hline\hline
+				gcc & 128   & without SIMD & 100 & 0.0       \\ \hline
+				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
+				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
+				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
+				gcc & 2048  & without SIMD & 100 & 0.082    \\ \hline
+				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
+				gcc & 8192  & without SIMD & 100 & 1.38    \\ \hline
+				gcc & 8192  & SIMD         & 100 & 1.49    \\ \hline
+				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
+				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
+				icc & 128   & without SIMD & 100 & 0.002    \\ \hline
+				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
+				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
+				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
+				icc & 2048  & without SIMD & 100 & 2.47      \\ \hline
+				icc & 2048  & SIMD         & 100 & 0.09      \\ \hline
+				icc & 8192  & without SIMD & 100 & 42.054   \\ \hline
+				icc & 8192  & SIMD         & 100 & 1.722    \\ \hline
+				icc & 32768 & without SIMD & 100 & 633.289 \\ \hline
+				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
+			\end{tabular}
+			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 3 Nachkommastellen.}
+		\end{center}
+	\end{table}
+	\clearpage
+	\bibliography{Praktikumsbericht}
+\end{document}

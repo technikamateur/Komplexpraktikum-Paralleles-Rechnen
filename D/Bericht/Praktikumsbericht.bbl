@@ -1,0 +1,22 @@
+\begin{thebibliography}{Mar21}
+
+\bibitem[Gar70]{gardner}
+\textsc{Gardner}, Martin.
+\newblock \emph{MATHEMATICAL GAMES - The fantastic combinations of John
+  Conway's new solitaire game "life"}.
+\newblock \\\url{https://web.stanford.edu/class/sts145/Library/life.pdf}.
+\newblock 1970
+
+\bibitem[Mar21]{hpc}
+\textsc{Markwardt}, Dr.~U.
+\newblock \emph{Introduction to HPC at ZIH}.
+\newblock \\\url{https://doc.zih.tu-dresden.de/misc/HPC-Introduction.pdf}.
+\newblock 2021
+
+\bibitem[Vig17]{xor}
+\textsc{Vigna}, Sebastiano.
+\newblock \emph{Further scramblings of Marsaglia’s xorshift generators}.
+\newblock \\\url{https://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf}.
+\newblock 2017
+
+\end{thebibliography}

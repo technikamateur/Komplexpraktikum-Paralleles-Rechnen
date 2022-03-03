@@ -110,8 +110,6 @@ void init_chessboard() {
     }
     block_row = rows / blocks_per_row + 2;
     block_col = columns / blocks_per_col + 2;
-    neighbour_row = blocks_per_row + 2;
-    neighbour_col = blocks_per_col + 2;
     return;
 }
 
@@ -122,8 +120,6 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
             neighbour_matrix[i * neighbour_col + j] = z;
             z++;
         }
-    }
-    for (int i = 1; i < neighbour_row - 1; i++) {
         //left
         neighbour_matrix[i * neighbour_col] = neighbour_matrix[(i + 1) * neighbour_col - 2];
         //right
@@ -135,13 +131,13 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
         //bottom
         neighbour_matrix[(neighbour_row - 1) * neighbour_col + i] = neighbour_matrix[neighbour_col + i];
     }
-    //top left corner
+    // top left corner
     neighbour_matrix[0] = neighbour_matrix[(neighbour_row - 1) * neighbour_col - 2];
-    //top right corner
+    // top right corner
     neighbour_matrix[neighbour_col - 1] = neighbour_matrix[(neighbour_row - 2) * neighbour_col + 1];
     // bottom left
     neighbour_matrix[(neighbour_row - 1) * neighbour_col] = neighbour_matrix[neighbour_col];
-    //bottom right
+    // bottom right
     neighbour_matrix[neighbour_row * neighbour_col - 1] = neighbour_matrix[neighbour_col + 1];
     return;
 }
@@ -355,8 +351,10 @@ int main(int argc, char *argv[]) {
         printf("Starting now...\n");
     }
     // position in neighbour_matrix
+    neighbour_row = blocks_per_row + 2;
+    neighbour_col = blocks_per_col + 2;
+    u_int32_t *neighbour_matrix = (u_int32_t *) malloc(neighbour_row * neighbour_col * sizeof(u_int32_t));
     rank_index = (rank / blocks_per_col + 1) * neighbour_col + (rank % blocks_per_col + 1);
-    u_int32_t *neighbour_matrix = (u_int32_t *) malloc((blocks_per_row + 2) * (blocks_per_col + 2) * sizeof(u_int32_t));
     init_neighbour(neighbour_matrix);
     // short test
     if (rank != neighbour_matrix[rank_index]) {
@@ -377,7 +375,7 @@ int main(int argc, char *argv[]) {
     clock_gettime(clk_id, &rand_s);
     field_initializer(state_1, neighbour_matrix);
     clock_gettime(clk_id, &rand_e);
-    time_rand += (double) (rand_e.tv_nsec-rand_s.tv_nsec) / 1000000000 + (double) (rand_e.tv_sec-rand_s.tv_sec);
+    time_rand = (double) (rand_e.tv_nsec-rand_s.tv_nsec) / 1000000000 + (double) (rand_e.tv_sec-rand_s.tv_sec);
     // write random pattern as -1 file
     if (produce_output) {
         clock_gettime(clk_id, &out_s);
