@@ -7,15 +7,15 @@ Database file #1: Praktikumsbericht.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 You've used 3 entries,
             3183 wiz_defined-function locations,
-            657 strings with 4907 characters,
-and the built_in function-call counts, 1042 in all, are:
-= -- 105
+            658 strings with 4882 characters,
+and the built_in function-call counts, 965 in all, are:
+= -- 94
 > -- 24
-< -- 32
-+ -- 32
+< -- 21
++ -- 21
 - -- 7
 * -- 52
-:= -- 211
+:= -- 200
 add.period$ -- 9
 call.type$ -- 3
 change.case$ -- 12
@@ -24,7 +24,7 @@ cite$ -- 3
 duplicate$ -- 33
 empty$ -- 55
 format.name$ -- 15
-if$ -- 176
+if$ -- 165
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 0
@@ -34,9 +34,9 @@ pop$ -- 6
 preamble$ -- 1
 purify$ -- 18
 quote$ -- 0
-skip$ -- 56
+skip$ -- 45
 stack$ -- 0
-substring$ -- 64
+substring$ -- 53
 swap$ -- 6
 text.length$ -- 6
 text.prefix$ -- 3

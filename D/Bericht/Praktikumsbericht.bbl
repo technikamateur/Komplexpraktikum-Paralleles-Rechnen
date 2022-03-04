@@ -1,4 +1,10 @@
-\begin{thebibliography}{Mar21}
+\begin{thebibliography}{AMD18}
+
+\bibitem[AMD18]{amd}
+\textsc{AMD}.
+\newblock \emph{HPC Tuning Guide for AMD EPYC Processors}.
+\newblock \\\url{http://developer.amd.com/wp-content/resources/56420.pdf}.
+\newblock 2018
 
 \bibitem[Gar70]{gardner}
 \textsc{Gardner}, Martin.
@@ -12,11 +18,5 @@
 \newblock \emph{Introduction to HPC at ZIH}.
 \newblock \\\url{https://doc.zih.tu-dresden.de/misc/HPC-Introduction.pdf}.
 \newblock 2021
-
-\bibitem[Vig17]{xor}
-\textsc{Vigna}, Sebastiano.
-\newblock \emph{Further scramblings of Marsaglia’s xorshift generators}.
-\newblock \\\url{https://vigna.di.unimi.it/ftp/papers/xorshiftplus.pdf}.
-\newblock 2017
 
 \end{thebibliography}

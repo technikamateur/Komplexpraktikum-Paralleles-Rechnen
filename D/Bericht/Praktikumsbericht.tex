@@ -74,7 +74,7 @@
 	Der Nachrichtenaustausch kann dabei über verschiedene Wege erfolgen.\\
 	Innerhalb eines Sockets, oder auch zwischen Sockets auf einem Dual Socket Board, können Nachrichten über den gemeinsamen Speicher oder Interconnects, wie Infiniband oder Infinity Fabric mit sehr hoher Geschwindigkeit und geringer Latenz ausgetauscht werden.\\
 	Kommen mehrere Compute Nodes in einem Cluster zum Einsatz, kann die Kommunikation über das Netzwerk, in der Regel über TCP/IP, erfolgen.\\
-	Die genaue Testumgebung mit Kommunikationsmöglichkeiten wird später in \ref{umgebung} diskutiert.BELEGE\\
+	Die genaue Testumgebung mit Kommunikationsmöglichkeiten wird später in \ref{cpu_layout} diskutiert.\\
 	
 	Weitere Besonderheiten:
 	\begin{itemize}
@@ -92,7 +92,7 @@
 	\section{Implementierung}
 	Bei Aufgabe B \& C allokierte ich einen Speicherbereichs der Größe\\ \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}.\\
 	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
-	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein chessboard Layout, also der Aufteilung des Feldes in gleich große Quadrate.\\
+	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein chessboard Layout, also der Aufteilung des Spielfeldes in gleich große Teilfelder.\\
 	Der Grund ist, dass hier der Kommunikationsaufwand minimal wird, da jeder Prozess seinen direkten Nachbarn nur die äußerste Reihe senden (und umgekehrt von ihnen empfangen) muss.\\
 	Im ersten Schritt muss MPI initialisiert werden. Das erfolgt direkt am Anfang:
 	\begin{lstlisting}[language=C, caption=MPI Initialisierung mit Bestimmung von rank und cluster]
@@ -145,11 +145,45 @@ u_int8_t *state_tmp = NULL;
 	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beiden Pointer, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{MPI Kommunikation}
-	\subsubsection{Nachrichtenaustausch}
-	MPI Isend usw erklären
+	\subsubsection{Nachrichtenaustausch} \label{message}
+	Für den Nachrichtenaustausch zwischen den Prozessen verwende ich asynchrone (\textit{non-blocking}) Kommunikation. Asynchrone Kommunikation bedeutet, dass nicht auf die Zustellung bzw. den Empfang der Nachricht gewartet wird. Die Funktionsaufrufe blockieren also nicht.\\
+	Das bietet sich aus mehren Gründen an:\\
+	Zum einen benötigen die Kanten und Ecken aufgrund des Torus-förmigen Spielfeldes eine separate Behandlung. Gleichzeit müssen aber auch nur Kanten und Ecken an andere Prozesse gesendet werden.\\
+	Zum anderen benötigt die Kommunikation viel Zeit, da jeder Prozess zu seinen 8 Nachbarn einen \textit{send} und \textit{receive} Aufruf pro Generation und einmalig für die Initialisierung durchführen muss.
+	Daher bietet sich folgender Ablauf an:
+	\begin{enumerate}
+		\item Kanten und Ecken berechnen
+		\item Berechnete Kanten und Ecken an die 8 Nachbarn senden (umgekehrt 4 Kanten und 4 Ecken empfangen)
+		\item Während der Kommunikation im Hintergrund das innere Feld berechnen
+		\item Vor der Rückkehr aus der Funktion warten, bis die Kommunikation abgeschlossen ist
+	\end{enumerate}
+	
+	MPI bietet für die asynchrone Kommunikation die Funktionen \texttt{MPI\_Isend()} und \texttt{MPI\_Irecv()} an. Für das Warten auf den Abschluss der Kommunikation verwende ich \texttt{MPI\_Waitall()}.\\
+	Beispiel für den Austausch einer Kante zwischen zwei ranks (vereinfacht dargestellt):
+		\begin{lstlisting}[language=C, caption=Asynchrone Kommunikation zwischen 2 ranks]
+		// calculate edges and corners
+		...
+		// afterwards, send and receive
+		MPI_Status status[16];
+		MPI_Request request[16];
+		//bottom edge
+		MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
+		          neighbour_matrix[rank_index + neighbour_col], 0,
+		          MPI_COMM_WORLD, &request[0]);
+		MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
+		          neighbour_matrix[rank_index - neighbour_col], 0,
+		          MPI_COMM_WORLD, &request[1]);
+		// do this for the remaining 3 edges and 4 corners
+		...
+		// calculate inner part
+		...
+		// wait for communication to complete
+		MPI_Waitall(16, request, status);
+	\end{lstlisting}
+	
 	\subsubsection{Neighbour Matrix}
 	
-	Für den späteren Datenaustausch über MPI ist es notwendig, dass ein Prozess mit einem gegeben rank seine Nachbarn kennt. Da es sich um ein Torus-förmiges Spielfeld handelt, hat ein rank in der letzten Spalte als rechten Nachbarn nicht den $rank + 1$, da dieser in der ersten Spalte der nächsten Zeile liegt usw.\\
+	Für den Datenaustausch über MPI ist es notwendig, dass ein Prozess mit einem gegeben rank seine Nachbarn kennt. Da es sich um ein Torus-förmiges Spielfeld handelt, hat ein rank in der letzten Spalte als rechten Nachbarn nicht den $rank + 1$, da dieser in der ersten Spalte der nächsten Zeile liegt usw.\\
 	Um dieses Problem zu lösen und die Kommunikation später zu erleichtern, generiere ich eine \textit{Neighbour Matrix}, bei der die Kanten und Ecken entsprechend gespiegelt werden.
 	\begin{lstlisting}[language=C, caption=Generierung der Neighbour Matrix]
 // Generierung der Matrix
@@ -162,7 +196,7 @@ u_int32_t *neighbour_matrix = (u_int32_t *) malloc(nb_row * nb_col * sizeof(u_in
 rank_index = (rank / blocks_per_col + 1) * nb_col + (rank % blocks_per_col + 1);
 init_neighbour(neighbour_matrix);
 
-// Initialisieren der Matrik mit den ranks
+// Initialisieren der Matrix mit den ranks
 void init_neighbour(u_int32_t *neighbour_matrix) {
 	u_int32_t z = 0;
 	for (int i = 1; i < nb_row - 1; i++) {
@@ -192,28 +226,22 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
 	return;
 }\end{lstlisting}
 
-	Die Variable \textit{rank\_index} enthält dabei den Index des ranks innerhalb der Matrix. Dieser Index fungiert später als konstantes Offset, um Nachrichten an seine Nachbarn adressieren zu können.
+	Die Variable \textit{rank\_index} enthält dabei den Index des ranks innerhalb der Matrix. Dieser Index fungiert als konstantes Offset, um Nachrichten an seine Nachbarn adressieren zu können.
 
 
 	\subsection{Daten Initialisierung} \label{data_init}
-	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.
-	Um den Code möglichst einfach und effizient zu halten, verwende ich eine \texttt{for}-Schleife zur Iteration über jede Zelle des Arrays.
+	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.\\
+	Wie in \ref{message} erklärt, ist der Ablauf in mehrere Schritte unterteilt.
 	
-	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand()}. Den \texttt{seed} setzte ich mit der \texttt{time()} Funktion auf die aktuelle Uhrzeit. Damit beginnt das Spiel bei jedem Programmstart mit einer zufälligen Generation.\\
-
-	Der Zufallsgenerator kann nicht mit einer einfachen \texttt{OpenMP} Direktive SIMD-parallel ausgeführt werden. Allerdings habe ich mich aus Interesse damit auseinander gesetzt und bin über die \texttt{Xorshift} Generatoren gestoßen, genauer \texttt{Xorshift128+} \cite{xor}. Die \texttt{Xorshift} Generatoren sind eine Familie von Pseudozufallszahlengeneratoren, die sich durch eine hohe Geschwindigkeit und einer anpassbaren Periodenlänge auszeichnen.
-	\texttt{Xorshift128+} verwendet, wie der Name vermuten lässt, Addition statt Multiplikation, die in der Regel weniger rechenintensiv ist.\\
-	Die von mir verwendete Implementierung ist auf \href{https://github.com/lemire/SIMDxorshift}{GitHub} verfügbar.\\
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand\_r()}. Der \texttt{seed} setzt sich aus \texttt{time()+rank} zusammen. Damit verändert sich der \texttt{seed} in Abhängigkeit der Zeit und dem rank.\\
+	Zuerst werden die Kanten und Ecken initialisiert, danach erfolgt Kommunikation. Währenddessen wird das innere Feld initialisiert und auf den Abschluss der Kommunikation gewartet.\\
 	
-	Da die AMD Rome EPYC 7702 Prozessoren nur AVX2 und nicht AVX512 unterstützen (vergleiche \ref{umgebung}), verwende ich die Funktion \texttt{avx\_xorshift128plus}, welche auf 256 Bit Registern arbeitet.\\
-	Meine Idee war, die 256 generierten Bits auf die 8 Bit großen Zellen des Spiels aufzuteilen. Damit lassen sich pro Durchgang 32 Zellen mit Zufallszahlen füllen, was zu einer deutlichen Geschwindigkeitssteigerung führen sollte.
-	
-	Zusammengesetzt ergibt sich daraus folgender Code:\\
+	Zusammengesetzt ergibt sich daraus folgender Code. Da ich den Ablauf der Kommunikation schon in \ref{message} erläutert habe, vereinfache ich das Beispiel an dieser Stelle.\\
 	
 	\begin{lstlisting}[language=C, caption=Daten Initialisierung]
 void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
 	//fills fields with random numbers 0 = dead, 1 = alive
-	// use diffrent seed for every rank
+	// use different seed for every rank
 	unsigned seed = time(0) + rank;
 	// top & bottom
 	for (int i = 2; i < block_col - 2; i++) {
@@ -225,18 +253,8 @@ void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
 		state[i * block_col + 1] = rand_r(&seed) % 2;
 		state[(i + 1) * block_col - 2] = rand_r(&seed) % 2;
 	}
-	// send everything
-	MPI_Status status[16];
-	MPI_Request request[16];
-	//bottom
-	MPI_Isend(&state[(block_row - 2) * block_col + 1], block_col - 2, MPI_UINT8_T,
-	          neighbour_matrix[rank_index + neighbour_col], 0, 
-	          MPI_COMM_WORLD, &request[0]);
-	MPI_Irecv(&state[1], block_col - 2, MPI_UINT8_T,
-	          neighbour_matrix[rank_index - neighbour_col], 0,
-	          MPI_COMM_WORLD, &request[1]);
-	// and so on for every edge and corner
-	
+	// MPI_Isend and MPI_Irecv for every edge and corner
+	...
 	// do the middle, while sending/receiving
 	for (int i = 2; i < block_row - 2; i++) {
 		for (int j = 2; j < block_col - 2; j++) {
@@ -245,100 +263,83 @@ void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
 	}
 	// Wait for all IPC to complete
 	MPI_Waitall(16, request, status);
+	return;
 }\end{lstlisting}
 	\begin{figure}[h]
 		\begin{center}
 			\includegraphics[scale=5.0]{initialized_board.pdf}
 		\end{center}
-		\caption{Mit \texttt{Xorshift128+} generiertes Spielfeld der Größe: $64\times 64$}
+		\caption{Mit \texttt{rand\_r()} generiertes Spielfeld der Größe $64\times 64$}
 	\end{figure}
 	
 	\subsection{Berechnung der nächsten Generation}
-	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old} und einen auf das Array der Folgegeneration \texttt{*state}.\\
+	Die Berechnung der nächsten Generation erfolgt mithilfe beider Spielfelder.\\ Die Funktion \texttt{calculate\_next\_gen()} erhält einen Pointer auf das Array mit der aktuellen Generation \texttt{*state\_old}, einen auf das Array der Folgegeneration \texttt{*state} und einen weiteren für die Neighbour Matrix.\\
 	Bei jedem Simulationsschritt werden die Pointer getauscht und die Funktion erneut aufgerufen. Damit wird die Forderung der Aufgabenstellung nach \textit{double buffering} erfüllt, sprich die Folgegeneration in einem separatem Spielfeld berechnet.
 	\begin{lstlisting}[language=C, caption=Vertauschen der Pointer vor jedem Funktionsaufruf (vereinfacht)]
 for (int i = 0; i < repetitions; i++) {
-	calculate_next_gen(state_out, state_in);
+	calculate_next_gen(state_out, state_in, neighbour_matrix);
 	state_tmp = state_in;
 	state_in = state_out;
 	state_out = state_tmp;
 }\end{lstlisting}
-	Da es sich um ein Torus-förmiges Spielfeld handelt, benötigen die Kanten und Ecken eine separate Behandlung. Diese unterscheidet sich nur unwesentlich von der Berechnung des inneren Feldes.
+
+	\subsubsection{Kanten und Ecken} \label{Kanten}
+	Ähnlich der Feld Initialisierung, werden zuerst die Kanten und Ecken berechnet, damit diese im nächsten Schritt gesendet werden können. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt.\\
+	Ich habe mich willkürlich dazu entschieden, die Ecken mit der linken und rechten Spalte zu berechnen. Man hätte sie aber auch genauso gut mit der obersten und untersten Zeile berechnen können. Vereinfacht habe ich nur die Berechnung der linken und rechten Seite dargestellt.
+	\begin{lstlisting}[language=C, caption=Berechnung der Kanten und Ecken]
+//left & right + corners
+for (int i = 1; i < block_row - 1; i++) {
+	u_int8_t sum_of_l_edge = state_old[(i - 1) * block_col] +
+	state_old[(i - 1) * block_col + 1] +
+	state_old[(i - 1) * block_col + 2] +
+	state_old[i * block_col] +
+	state_old[i * block_col + 2] +
+	state_old[(i + 1) * block_col] +
+	state_old[(i + 1) * block_col + 1] +
+	state_old[(i + 1) * block_col + 2];
+	state[i * block_col + 1] = (sum_of_l_edge == 3) | ((sum_of_l_edge == 2) & state_old[i * block_col + 1]);
 	
-	\subsubsection{Inneres Feld}
+	u_int8_t sum_of_r_edge = state_old[i * block_col - 3] +
+	state_old[i * block_col - 2] +
+	state_old[i * block_col - 1] +
+	state_old[(i + 1) * block_col - 3] +
+	state_old[(i + 1) * block_col - 1] +
+	state_old[(i + 2) * block_col - 3] +
+	state_old[(i + 2) * block_col - 2] +
+	state_old[(i + 2) * block_col - 1];
+	
+	state[(i + 1) * block_col - 2] =
+	(sum_of_r_edge == 3) | ((sum_of_r_edge == 2) & state_old[(i + 1) * block_col - 2]);
+}
+// top & bottom
+for (int i = 2; i < block_col - 2; i++) {
+	...
+}\end{lstlisting}
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
 	Der Grund liegt darin, dass diese bitweisen Operatoren sich gut bei SIMD Operationen verwenden lassen.\\
 	
-	Im ersten Schritt werden alle Zellen berechnet, die nicht Teil einer Kante sind. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
+	\subsubsection{Inneres Feld}
+	Im ersten Schritt werden alle inneren Zellen berechnet. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
 	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
-for (int i = 1; i < rows - 1; i++) {
-	#pragma omp simd
-	for (int j = 1; j < columns - 1; j++) {
-		//count up the neighbours
-		u_int8_t sum_of_8 = state_old[(i - 1) * columns + (j - 1)] +
-												state_old[(i - 1) * columns + j] +
-												state_old[(i - 1) * columns + (j + 1)] +
-												state_old[i * columns + (j - 1)] +
-												state_old[i * columns + (j + 1)] +
-												state_old[(i + 1) * columns + (j - 1)] +
-												state_old[(i + 1) * columns + j] +
-												state_old[(i + 1) * columns + (j + 1)];
-		state[i * columns + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * columns + j]);
-	}
-}\end{lstlisting}
-	
-	Die erste Schleife iteriert dabei über jede Zeile und die Zweite in jeder Zeile durch jede Zelle. Ich habe dafür die \texttt{OpenMP} Direktive\\
-	
-	\texttt{\#pragma omp simd}\\
-	
-	verwendet.\\
-	Dabei wird jedoch nur die innere Schleife parallelisiert. Das bewirkt, dass die Spalten jeweils parallel berechnet werden. \texttt{OpenMP} wäre in der Lage, mit \texttt{collapse(2)} zwei geschachtelte Schleifen zu parallelisieren. In meinen Tests führte dies zu einer Verschlechterung der Performance, weswegen ich es nicht verwendet habe.\\
-	Zum anderen kann der Compiler, bei meiner Implementierung, die äußere Schleife modifizieren und so eventuelle Optimierungen vornehmen.
-	\newpage
-	\subsubsection{Kanten}
-	
-	Wie bereits erwähnt, unterscheidet sich die Art und Weise der Berechnung der Kanten nur unwesentlich von der des inneren Feldes. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt. Außerdem muss in der Berechnung beachtet werden, dass Felder von der gegenüberliegenden Seite benötigt werden.
-	Auch hier wurden die Kanten wieder mit\\
-	
-	\texttt{\#pragma omp simd}\\
-	
-	parallelisiert.	
-	\begin{lstlisting}[language=C, caption=Berechnung der obersten Zeile]
-void calculate_top(u_int8_t *state, u_int8_t *state_old) {
-	#pragma omp simd
-	for (int i = 1; i < columns - 1; i++) {
-		u_int8_t sum_of_t_edge = state_old[i - 1] +
-														 state_old[i + 1] +
-														 state_old[2 * columns + (i - 1)] +
-														 state_old[2 * columns + i] +
-														 state_old[2 * columns + (i + 1)] +
-														 state_old[(rows - 1) * columns + i] +
-														 state_old[(rows - 1) * columns + i + 1] +
-														 state_old[(rows - 1) * columns + i - 1];
-		state[i] = (sum_of_t_edge == 3) | ((sum_of_t_edge == 2) & state_old[i]);
+for (int i = 2; i < block_row - 2; i++) {
+	for (int j = 2; j < block_col - 2; j++) {
+		//count up a number (8)
+		u_int8_t sum_of_8 = state_old[(i - 1) * block_col + (j - 1)] +
+		state_old[(i - 1) * block_col + j] +
+		state_old[(i - 1) * block_col + (j + 1)] +
+		state_old[i * block_col + (j - 1)] +
+		state_old[i * block_col + (j + 1)] +
+		state_old[(i + 1) * block_col + (j - 1)] +
+		state_old[(i + 1) * block_col + j] +
+		state_old[(i + 1) * block_col + (j + 1)];
+		state[i * block_col + j] = (sum_of_8 == 3) | ((sum_of_8 == 2) & state_old[i * block_col + j]);
 	}
 }\end{lstlisting}
 
-	\subsubsection{Ecken}
-	Bei den Ecken ist keine Parallelisierung möglich und auch nicht notwendig, da vier Ecken bei einem Feld mit mehr als 16.000 Zellen nicht ins Gewicht fallen.\\
-	Die Berechnung basiert wieder auf der vorher aufgeführten Methode.\\
-	
-	\begin{lstlisting}[language=C, caption=Berechnung der Ecke oben links]
-void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
-	u_int8_t corner_sum;
-	// top left
-	corner_sum = state_old[1] +
-	state_old[columns] +
-	state_old[columns + 1] +
-	state_old[(rows - 1) * columns] +
-	state_old[(rows - 1) * columns + 1] +
-	state_old[columns - 1] +
-	state_old[2 * columns - 1] +
-	state_old[rows * columns - 1];
-	state[0] = (corner_sum == 3) | ((corner_sum == 2) & state_old[0]);
-}\end{lstlisting}
-	
+	Diese Berechnung findet während der Kommunikation statt und wird nicht mit anderen ranks geteilt. Die Berechnung der Kanten und Ecken wäre auch in diesem Schritt möglich, in dem man die Zählvariablen um eins früher beginnen und eins später enden lassen würde.\\
+	Dann könnte jedoch erst nach Abschluss der Berechnung der Datenaustausch stattfinden, was den Performance Vorteil der asynchronen Kommunikation kaputt machen würde.
+
 	\subsection{Zeitmessung}
 	Ich habe mich für eine Zweistufige Zeitmessung entschieden.\\
 	
@@ -346,7 +347,7 @@ void calculate_corner(u_int8_t *state, u_int8_t *state_old) {
 	Die vergangene Zeit messe ich mit der Funktion \texttt{clock\_gettime()}.\\
 	Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock\_gettime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
 	
-	Zusätzlich messe ich die Ausführungszeit des kompletten Programms mit dem Linux Befehl \textit{time}. Da die Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()} den größten Abteil der Programm haben, lässt sich, zumindest näherungsweise, der MPI Overhead zum spawnen initialisieren der Prozesse berechnen.
+	Zusätzlich messe ich die Ausführungszeit des kompletten Programms mit dem Linux Befehl \textit{time}. Da die Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()} den größten Abteil der Programm haben, lässt sich, zumindest näherungsweise, der MPI Overhead zum spawnen und initialisieren der Prozesse berechnen.
 	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
 clockid_t clk_id = CLOCK_MONOTONIC;
 double time_calc = 0;
@@ -371,29 +372,59 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\section{Zeitmessung auf Taurus}
 	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Ein EPYC 7702 besteht aus 64 physischen Kernen. \textit{Simultaneous Multithreading} ist deaktiviert. Ein Node verwendet 2 EPYC Prozessoren (2x 64 Cores) auf einem Dual-Socket Board und ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	
 	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
 	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einem kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
 	
-	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.5.281); jeweils mit den Compiler-Flags:
+	Ich kompilierte das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) unter Verwendung von OpenMPI (Version 4.1.2) mit den Compiler-Flags:
 	\begin{itemize}
-		\item \texttt{O3} - Optimierungsflag des Compilers
+		\item \texttt{O3} - Optimierungsflag des Compilers (u.a. Verwendung von SIMD Instruktionen)
 		\item \texttt{mavx2} - Verwendung von AVX2
-		\item \texttt{mfma}/\texttt{fma} - Verwendung von FMA
-		\item \texttt{fopenmp} - Verwendung nur für Tests mit OpenMP
+		\item \texttt{mfma} - Verwendung von FMA
+		\item \texttt{lm} - Notwendig für das einbinden der \textit{math library}
 	\end{itemize}
+	Um die NUMA Eigenschaften optimal zu nutzen, verwendete ich bei der Slurm Ausführung die Parameter:
+	\begin{itemize}
+		\item \texttt{{-}{-}cpu\_bind=cores
+			\item {-}{-}distribution=block:block}
+	\end{itemize}
+	Der CPU bind bewirkt, dass jedem Prozess ein (physischer) Core zugewiesen wird.\\
 	
-	Da für die Messungen nur ein Core verwendet werden soll, ist es nicht notwendig, Threads an bestimmte Cores zu pinnen, wie das noch bei Aufgabe B erforderlich war.\\
+	Die \textit{distribution} bestimmt die Verteilung der Prozesse über die Sockets und Nodes.
+	\newcommand*{\captionsource}[2]{%
+		\caption[{#1}]{%
+			#1%
+			\\\hspace{\linewidth}%
+			Quelle: #2%
+		}%
+	}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.5]{mpi_block_block.png}
+		\captionsource{Aufteilung der ranks über mehrere Sockets und Nodes mit \texttt{block:block}.}{\href{https://hpc-wiki.zih.tu-dresden.de/jobs\_and\_resources/binding\_and\_distribution\_of\_tasks/}{ZIH HPC Compendium}}
+	\end{figure}
+
+	Es werden also zuerst alle Cores innerhalb eines Sockets und anschließend innerhalb eines Nodes verwendet. Je näher die ranks beieinander liegen, desto schneller ist die Kommunikation. Darauf möchte ich unter Betrachtung der AMD EPYC CPU einmal genauer eingehen.
 	
-	\begin{description}
-		\item[Bemerkung zur \texttt{O3} Flag:] Die Optimierungsflag teilt dem Compiler mit, dass er die Performance auf Kosten der Programmgröße und Kompilationszeit erhöht. Das schließt SIMD Instruktionen ein. Ohne diese Flag hat der \texttt{GCC} auch mit aktiviertem \texttt{OpenMP} keine SIMD Instruktionen verwendet, was ich mit \texttt{objdump} verifiziert habe. Da die Aufgabenstellung vorgibt, man solle aktiviertes und deaktiviertes \texttt{OpenMP} vergleichen, habe ich die Optimierungsflag bei beiden aktiviert gelassen.\\
-		Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
-		Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
-	\end{description}
+	\subsection{AMD EPYC CPU Layout} \label{cpu_layout}
+	Bevor ich zur Testmethode und den Ergebnissen übergehe, möchte ich erst auf die Struktur der AMD EPYC CPU eingehen, um Ergebnisse später besser deuten zu können.\\
 	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=0.35]{AMD_EPYC.png}
+		\captionsource{CPU Layout eines AMD EPYC.}{\href{http://developer.amd.com/wp-content/resources/56420.pdf}{HPC Tuning Guide for AMD EPYC Processors}}
+	\end{figure}
+	
+	Der verwendete AMD EPYC 7702 ist ein 64 Kern Prozessor. Jeder Socket besteht dabei aus 4 \textit{Zeppelins} (Orange in der Abbildung), die über ein \textit{Infinity Fabric} untereinander und mit den 4 Zeppelins des anderen Sockets sehr schnell Daten austauschen können \cite{amd}. Jeder Zeppelin besteht damit aus 16 Cores.\\
+	
+	Das zu erwartende Ergebnis ist, dass der Geschwindigkeitsvorteil geringer wird, sobald man die 16 Cores übersteigt. Ab da müssen die Zeppelins über Infinity Fabric miteinander kommunizieren, was mehr Zeit benötigen sollte, als die Kommunikation innerhalb eines Zeppelins.\\
+	
+	Die nächste interessante Schwelle liegt bei 64 Cores. Sobald sie überschritten wird, müssen die ranks über den Socket hinweg kommunizieren, was aufgrund der längeren Leitungswege ebenfalls Zeit kostet.\\
+	
+	Mit der Überschreitung von 128 Cores muss dann zwischen zwei Nodes kommuniziert werden. Hier sind die größten Geschwindigkeitseinbrüche zu erwarten, da die Kommunikation über das Netzwerk im Vergleich zur Kommunikation auf einem Board höhere Latenzen mit sich zieht.
 	\subsection{Testmethode}
-	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
+	Die Tests wurden automatisiert mit \texttt{sbatch}-Skripten ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:init} und \ref{tab:calc} entnehmen.\\
 	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entscheiden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
 	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
