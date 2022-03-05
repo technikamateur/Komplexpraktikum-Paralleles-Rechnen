@@ -57,19 +57,19 @@
 	
 	Ein Sonderfall stellen die Ecken und Kanten des Feldes dar, da dort nach den Spielregeln das Verhalten nicht festgelegt ist. Die Aufgabenstellung gibt vor, dass das Spielfeld Torus-förmig sein soll. Alles, was das Spielfeld auf einer Seite verlässt, kommt auf der gegenüberliegenden Seite wieder herein.
 	
-	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre 8 Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
+	Anschließend wird durch die Befolgung der Spielregeln die nächste Generation berechnet. Dafür betrachtet man jede Zelle und ihre acht Nachbarn, um ihre Entwicklung zu berechnen. Es gelten folgende Spielregeln:
 	\begin{enumerate}
 		\item Eine lebende Zelle mit zwei oder drei Nachbarn überlebt in der Folgegeneration.
-		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an der Überpopulation. Bei weniger als zwei Nachbarn stirbt sie an Einsamkeit.
+		\item Eine lebende Zelle mit vier oder mehr Nachbarn stirbt an Überpopulation, bei weniger als zwei Nachbarn an Einsamkeit.
 		\item Jede tote Zelle mit genau drei Nachbarn wird in der nächsten Generation geboren.
 	\end{enumerate}
 	Wichtig ist, dass die Folgegeneration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich, die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
-	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{MPI} erfolgen soll. \texttt{MPI} ist eine API, die die parallele Berechnung über mehrere getrennte Computer ermöglicht. Ich verwendete in diesem Praktikum die Open-Source Implementierung \texttt{OpenMPI}.\\
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{MPI} erfolgen soll. \texttt{MPI} ist eine API, die die parallele Berechnung über mehrere getrennte Computer ermöglicht. Ich habe in diesem Praktikum die Open-Source Implementierung \texttt{OpenMPI} verwendet.\\
 	Im Gegensatz zu \texttt{OpenMP} benötigt MPI kein \textit{Shared-Memory System}, sondern kann auf dedizierten Rechnern innerhalb eines Clusters ausgeführt werden.\\
 	
-	\texttt{MPI} steht dabei für \textit{Message Passing Interface}. Konkret bedeutet das, dass die parallel laufenden Prozesse Daten über Nachrichten austauschen. Dadurch wird es möglich, das Problem aufzuteilen "\textit{divide and conquer}". Der Datenaustausch geschieht nicht automatisch, sondern der Programmierer muss explizit angeben, welcher Prozesse zu welchem Zeitpunkt Daten an einen anderen Prozess sendet.\\
+	\texttt{MPI} steht dabei für \textit{Message Passing Interface}. Konkret bedeutet das, dass die parallel laufenden Prozesse Daten über Nachrichten austauschen. Dadurch wird es möglich, das Problem aufzuteilen ("\textit{divide and conquer}"). Der Datenaustausch geschieht nicht automatisch, sondern der Programmierer muss explizit angeben, welcher Prozess zu welchem Zeitpunkt Daten an einen anderen Prozess sendet.\\
 	
 	Der Nachrichtenaustausch kann dabei über verschiedene Wege erfolgen.\\
 	Innerhalb eines Sockets, oder auch zwischen Sockets auf einem Dual Socket Board, können Nachrichten über den gemeinsamen Speicher oder Interconnects, wie Infiniband oder Infinity Fabric mit sehr hoher Geschwindigkeit und geringer Latenz ausgetauscht werden.\\
@@ -90,7 +90,7 @@
 	\end{description}
 	\newpage
 	\section{Implementierung}
-	Bei Aufgabe B \& C allokierte ich einen Speicherbereichs der Größe\\ \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}.\\
+	Bei Aufgabe B \& C allokierte ich einen Speicherbereich der Größe\\ \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}.\\
 	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
 	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein chessboard Layout, also der Aufteilung des Spielfeldes in gleich große Teilfelder.\\
 	Der Grund ist, dass hier der Kommunikationsaufwand minimal wird, da jeder Prozess seinen direkten Nachbarn nur die äußerste Reihe senden (und umgekehrt von ihnen empfangen) muss.\\
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
 	Die beiden Variablen rank und cluster enthalten dabei direkt die wichtigsten Informationen: Den rank des Prozesses und die Gesamtzahl der Prozesse.\\
 	Da die Größe des Feldes ebenfalls bekannt ist, lässt sich nun das Feld aufteilen.\\
 	
-	Es gilt nun zu bestimmen, in wie viel Zeilen und Spalten das Feld zerlegt werden muss. Da die Felder quadratisch sind und genau wie die ranks mit einer Zweierpotenz ausgedrückt werden können, ist eine Aufteilung immer möglich.\\
+	Es gilt nun zu bestimmen, in wie viele Zeilen und Spalten das Feld zerlegt werden muss. Da die Felder quadratisch sind und genau wie die ranks mit einer Zweierpotenz ausgedrückt werden können, ist eine Aufteilung immer möglich.\\
 	Dafür verwendete ich eine Funktion, die den \textit{Logarithmus Dualis} der rank Größe berechnet und so die Zeilen und Spalten berechnet.\\
 	Dabei stellt sich ein Problem: Besitzt die Zweierpotenz einer rank Größe einen ungeraden Exponenten, bspw. $128 = 2^7$, entspricht die Anzahl der Zeilen nicht der der Spalten.\\
 	In diesem Fall entschied ich mich mehr Blocks pro Zeile statt Spalte zu verwenden. Dies ist eine willkürliche Festlegung und sollte keinen Einfluss auf die Performance haben.\\
@@ -128,11 +128,11 @@ void init_chessboard() {
 	return;
 }\end{lstlisting}
 
-	In Zeile 11 und 12 bestimme ich nun direkt die Zeilen und Spalten jedes Blockes, in dem ich die Zeilen und Spalten des Feldes durch die jeweilige Anzahl der Blöcke teile.\\
+	In Zeile 11 und 12 bestimme ich nun direkt die Zeilen und Spalten jedes Blocks, indem ich die Zeilen und Spalten des Feldes durch die jeweilige Anzahl der Blöcke teile.\\
 	Anschließend addiere ich noch 2. Wie eingangs erwähnt, benötigt jeder Block die äußerste Reihe seiner Nachbarn, um das Game-of-Life spielen zu können.\\
 	Deshalb vergrößere ich das Feld um jeweils 2 Zeilen und 2 Spalten.\\
 	
-	Auf dieser Grundlage kann jeder rank nun sein eigenen Spielfelder initialisieren:
+	Auf dieser Grundlage kann jeder rank nun sein eigenes Spielfeld initialisieren:
 	\begin{lstlisting}[language=C, caption=Initialisierung der Spielfelder]
 // initializing states and pointers
 u_int8_t *state_1 = (u_int8_t *) malloc(block_row * block_col * sizeof(u_int8_t));
@@ -142,18 +142,18 @@ u_int8_t *state_out = state_2;
 u_int8_t *state_tmp = NULL;
 	\end{lstlisting}
 	
-	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung, vertausche ich die beiden Pointer, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
+	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung vertausche ich die beiden Pointer, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
 	
 	\subsection{MPI Kommunikation}
 	\subsubsection{Nachrichtenaustausch} \label{message}
 	Für den Nachrichtenaustausch zwischen den Prozessen verwende ich asynchrone (\textit{non-blocking}) Kommunikation. Asynchrone Kommunikation bedeutet, dass nicht auf die Zustellung bzw. den Empfang der Nachricht gewartet wird. Die Funktionsaufrufe blockieren also nicht.\\
 	Das bietet sich aus mehren Gründen an:\\
-	Zum einen benötigen die Kanten und Ecken aufgrund des Torus-förmigen Spielfeldes eine separate Behandlung. Gleichzeit müssen aber auch nur Kanten und Ecken an andere Prozesse gesendet werden.\\
-	Zum anderen benötigt die Kommunikation viel Zeit, da jeder Prozess zu seinen 8 Nachbarn einen \textit{send} und \textit{receive} Aufruf pro Generation und einmalig für die Initialisierung durchführen muss.
+	Zum einen benötigen die Kanten und Ecken aufgrund des Torus-förmigen Spielfeldes eine separate Behandlung. Gleichzeitig müssen aber auch nur Kanten und Ecken an andere Prozesse gesendet werden.\\
+	Zum anderen benötigt die Kommunikation viel Zeit, da jeder Prozess zu seinen acht Nachbarn einen \textit{send} und \textit{receive} Aufruf pro Generation und einmalig für die Initialisierung durchführen muss.
 	Daher bietet sich folgender Ablauf an:
 	\begin{enumerate}
 		\item Kanten und Ecken berechnen
-		\item Berechnete Kanten und Ecken an die 8 Nachbarn senden (umgekehrt 4 Kanten und 4 Ecken empfangen)
+		\item Berechnete Kanten und Ecken an die acht Nachbarn senden (umgekehrt vier Kanten und vier Ecken empfangen)
 		\item Während der Kommunikation im Hintergrund das innere Feld berechnen
 		\item Vor der Rückkehr aus der Funktion warten, bis die Kommunikation abgeschlossen ist
 	\end{enumerate}
@@ -183,7 +183,7 @@ u_int8_t *state_tmp = NULL;
 	
 	\subsubsection{Neighbour Matrix}
 	
-	Für den Datenaustausch über MPI ist es notwendig, dass ein Prozess mit einem gegeben rank seine Nachbarn kennt. Da es sich um ein Torus-förmiges Spielfeld handelt, hat ein rank in der letzten Spalte als rechten Nachbarn nicht den $rank + 1$, da dieser in der ersten Spalte der nächsten Zeile liegt usw.\\
+	Für den Datenaustausch über MPI ist es notwendig, dass ein Prozess mit einem gegebenen rank seine Nachbarn kennt. Da es sich um ein Torus-förmiges Spielfeld handelt, hat ein rank in der letzten Spalte als rechten Nachbarn nicht den $rank + 1$, da dieser in der ersten Spalte der nächsten Zeile liegt usw.\\
 	Um dieses Problem zu lösen und die Kommunikation später zu erleichtern, generiere ich eine \textit{Neighbour Matrix}, bei der die Kanten und Ecken entsprechend gespiegelt werden.
 	\begin{lstlisting}[language=C, caption=Generierung der Neighbour Matrix]
 // Generierung der Matrix
@@ -233,12 +233,12 @@ void init_neighbour(u_int32_t *neighbour_matrix) {
 	Gemäß den Startbedingungen muss nur eines der beiden Spielfelder mit Zufallswerten initialisiert werden.\\
 	Wie in \ref{message} erklärt, ist der Ablauf in mehrere Schritte unterteilt.
 	
-	Für die Dateninitialisierung jeder Zelle mit Null oder Eins, verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand\_r()}. Der \texttt{seed} setzt sich aus \texttt{time()+rank} zusammen. Damit verändert sich der \texttt{seed} in Abhängigkeit der Zeit und dem rank.\\
-	Zuerst werden die Kanten und Ecken initialisiert, danach erfolgt Kommunikation. Währenddessen wird das innere Feld initialisiert und auf den Abschluss der Kommunikation gewartet.\\
+	Für die Dateninitialisierung jeder Zelle mit Null oder Eins verwende ich den Pseudo-Zufallszahlengenerator \texttt{rand\_r()}. Der \texttt{seed} setzt sich aus \texttt{time()+rank} zusammen. Damit verändert sich der \texttt{seed} in Abhängigkeit der Zeit und dem rank.\\
+	Zuerst werden die Kanten und Ecken initialisiert, danach erfolgt die Kommunikation. Währenddessen wird das innere Feld initialisiert und auf den Abschluss der Kommunikation gewartet.\\
 	
 	Zusammengesetzt ergibt sich daraus folgender Code. Da ich den Ablauf der Kommunikation schon in \ref{message} erläutert habe, vereinfache ich das Beispiel an dieser Stelle.\\
 	
-	\begin{lstlisting}[language=C, caption=Daten Initialisierung]
+	\begin{lstlisting}[language=C, caption=Dateninitialisierung]
 void field_initializer(u_int8_t *state, u_int32_t *neighbour_matrix) {
 	//fills fields with random numbers 0 = dead, 1 = alive
 	// use different seed for every rank
@@ -284,7 +284,7 @@ for (int i = 0; i < repetitions; i++) {
 }\end{lstlisting}
 
 	\subsubsection{Kanten und Ecken} \label{Kanten}
-	Ähnlich der Feld Initialisierung, werden zuerst die Kanten und Ecken berechnet, damit diese im nächsten Schritt gesendet werden können. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird nur eine \texttt{for}-Schleife benötigt.\\
+	Ähnlich der Feldinitialisierung, werden zuerst die Kanten und Ecken berechnet, damit diese im nächsten Schritt gesendet werden können. Da die Kanten jeweils nur aus einer Zeile bzw. Spalte bestehen, wird lediglich eine \texttt{for}-Schleife benötigt.\\
 	Ich habe mich willkürlich dazu entschieden, die Ecken mit der linken und rechten Spalte zu berechnen. Man hätte sie aber auch genauso gut mit der obersten und untersten Zeile berechnen können. Vereinfacht habe ich nur die Berechnung der linken und rechten Seite dargestellt.
 	\begin{lstlisting}[language=C, caption=Berechnung der Kanten und Ecken]
 //left & right + corners
@@ -338,10 +338,10 @@ for (int i = 2; i < block_row - 2; i++) {
 }\end{lstlisting}
 
 	Diese Berechnung findet während der Kommunikation statt und wird nicht mit anderen ranks geteilt. Die Berechnung der Kanten und Ecken wäre auch in diesem Schritt möglich, in dem man die Zählvariablen um eins früher beginnen und eins später enden lassen würde.\\
-	Dann könnte jedoch erst nach Abschluss der Berechnung der Datenaustausch stattfinden, was den Performance Vorteil der asynchronen Kommunikation kaputt machen würde.
+	Dann könnte jedoch erst nach Abschluss der Berechnung der Datenaustausch stattfinden, was den Performancevorteil der asynchronen Kommunikation kaputt machen würde.
 
 	\subsection{Zeitmessung}
-	Ich habe mich für eine Zweistufige Zeitmessung entschieden.\\
+	Ich habe mich für eine zweistufige Zeitmessung entschieden.\\
 	
 	In erster Instanz messe ich die Ausführungszeiten der Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()}.\\
 	Die vergangene Zeit messe ich mit der Funktion \texttt{clock\_gettime()}.\\
@@ -372,7 +372,7 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\section{Zeitmessung auf Taurus}
 	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Ein EPYC 7702 besteht aus 64 physischen Kernen. \textit{Simultaneous Multithreading} ist deaktiviert. Ein Node verwendet 2 EPYC Prozessoren (2x 64 Cores) auf einem Dual-Socket Board und ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Ein EPYC 7702 besteht aus 64 physischen Kernen. \textit{Simultaneous Multithreading} ist deaktiviert. Ein Node verwendet 2 EPYC Prozessoren auf einem Dual-Socket Board und ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	
 	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
 	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einem kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
@@ -424,20 +424,20 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	
 	Mit der Überschreitung von 128 Cores muss dann zwischen zwei Nodes kommuniziert werden. Hier sind die größten Geschwindigkeitseinbrüche zu erwarten, da der Datenaustausch über das Netzwerk im Vergleich zum Datenaustausch auf einem Board höhere Latenzen mit sich bringt.
 	\subsection{Testmethode}
-	Die Tests wurden automatisiert mit \texttt{sbatch}-Skripten ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt. Ich allokierte jeden bei den Messungen den Knoten exklusiv, um Einflüsse durch koexistierende Prozesse auszuschließen.\\
+	Die Tests wurden automatisiert mit \texttt{sbatch}-Skripten ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt. Ich allokierte den Knoten für jede Messreihe exklusiv, um Einflüsse durch koexistierende Prozesse auszuschließen.\\
 	Da nicht genügend Rechenressourcen zur Verfügung standen, machte ich die Anzahl der Simulationsschritte von der Feldgröße abhängig.\\
-	Ich entschied mich dabei für einen exponentielle Abnahme der Wiederholungen, da die Feldgröße exponentiell ansteigt.\\
+	Ich entschied mich dabei für eine exponentielle Abnahme der Wiederholungen, da die Feldgröße exponentiell ansteigt.\\
 	
-	Dafür testete ich die höchste Anzahl an ranks (256) mit der kleinsten Feldgröße (2048). Die minimal Ausführungszeit sollte bei etwa einer Sekunde (ohne den Overhead von MPI) liegen, um verlässliche Werte zu erhalten. Diese wurde bei 10.000 Simulationsschritten erreicht. Mit der nächst höheren Feldgröße sinkt die Anzahl der Wiederholungen um eine Dekade.\\
+	Dafür testete ich die höchste Anzahl an ranks (256) mit der kleinsten Feldgröße (2048). Die minimale Ausführungszeit sollte bei etwa einer Sekunde (ohne den Overhead von MPI) liegen, um verlässliche Werte zu erhalten. Diese wurde bei 10.000 Simulationsschritten erreicht. Mit der nächst höheren Feldgröße sinkt die Anzahl der Wiederholungen um eine Dekade.\\
 	
 	Die Messwerte sind daher ungeeignet, um zu beurteilen, wie sich die Ausführungszeit verändert, wenn man die Anzahl der ranks gleich belässt, aber die Feldgröße ändert.\\
-	Dass die Ausführungsgeschwindigkeit mit der Feldgröße ansteigt ist logisch. Interessanter für das Praktikum ist jedoch das Verhalten bei MPI-paralleler Ausführung, was sich beurteilen lässt.\\
+	Dass die Ausführungsgeschwindigkeit mit der Feldgröße ansteigt, ist logisch. Interessanter für das Praktikum ist jedoch das Verhalten bei MPI-paralleler Ausführung, was sich beurteilen lässt.\\
 	
-	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße und ranks an.
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße und ranks an.
 	\begin{description}
-		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
-		\item[Anmerkung zur exklusiven Nutzung von Knoten:] Aufgrund der begrenzten Rechenressourcen stand ich vor der Entscheidung Knoten exklusiv zu allokieren oder die Anzahl der Simulationsschritte von der Feldgröße abhängig zu machen.\\
-		Ich entschied mich für letzteres, wie oben beschrieben. Warum zeige ich in \ref{exklusiv}.
+		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weshalb ich auch auf diese verzichte.
+		\item[Anmerkung zur exklusiven Nutzung von Knoten:] Aufgrund der begrenzten Rechenressourcen stand ich vor der Entscheidung, Knoten exklusiv zu allokieren oder die Anzahl der Simulationsschritte von der Feldgröße abhängig zu machen.\\
+		Ich entschied mich für letzteres, wie oben beschrieben. Warum, zeige ich in \ref{exklusiv}.
 	\end{description}
 
 	\newpage
@@ -452,9 +452,9 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}.}
 	\end{figure}
 	Die allgemeine Tendenz zeigt, was zu erwarten war: Mehr ranks verbessern die Ausführungsgeschwindigkeit.\\
-	Es ist zu erkennen, dass bei 64 Cores für kleine Feldgrößen ein Minimum erreicht wird. Mehr Cores verschlechtern wieder die Performance. Warum? Die Kommunikation nimmt hier also mehr Zeit in Anspruch, als der eigentliche Vorgang.\\
-	Das zeigt sich auch sehr gut daran, dass die Werte der Feldgrößen 2048 und 8192 bei 256 ranks auf einen Punkt fallen. Dadurch wird deutlich, dass der Datenaustausch die Ausführungszeit dominiert und nicht das füllen der Felder mit Zufallswerten.\\
-	Beim Sprung von 64 auf 128 ranks findet Kommunikation zwischen den Sockets statt, was die Latenz erhöht. Bei 256 ranks wird ein zweiter Node benötigt. Die Zeit steigt hier dramatisch an. Dieses Verhalten habe ich bereits in \ref{cpu_layout} erklärt.
+	Es ist zu erkennen, dass bei 64 Cores für kleine Feldgrößen ein Minimum erreicht wird. Mehr Cores verschlechtern wieder die Performance. Warum? Die Kommunikation nimmt hier mehr Zeit in Anspruch als der eigentliche Vorgang.\\
+	Das zeigt sich auch sehr gut daran, dass die Werte der Feldgrößen 2048 und 8192 bei 256 ranks auf einen Punkt fallen. Dadurch wird deutlich, dass der Datenaustausch die Ausführungszeit dominiert und nicht das Füllen der Felder mit Zufallswerten.\\
+	Beim Sprung von 64 auf 128 ranks findet eine Kommunikation zwischen den Sockets statt, was die Latenz erhöht. Bei 256 ranks wird ein zweiter Node benötigt. Die Zeit steigt hier dramatisch an. Dieses Verhalten habe ich bereits in \ref{cpu_layout} erklärt.
 	\subsection{Berechnung}
 	\begin{figure}[h]
 		\centering
@@ -466,7 +466,7 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	Das ist ein wünschenswertes Verhalten und verdeutlicht, dass das Problem sehr gut mit MPI parallelisiert werden kann.
 	\clearpage
 	\subsection{Komplettes Programm}
-	Hier betrachte ich die benötigte Zeit des Programms, inklusive spawnen der Prozesse die Initialisierung von MPI.
+	Hier betrachte ich die benötigte Zeit des Programms, inklusive Spawnen der Prozesse und der Initialisierung von MPI.
 	\begin{figure}[h]
 		\centering
 		\input{all_total.pgf}
@@ -475,14 +475,14 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 
 	Es zeigt sich, dass die Ausführungszeit ab 16 ranks immer stärker vom Overhead durch MPI dominiert wird. Erkennen lässt sich das daran, dass die Ausführungszeiten ab dieser Grenze stagnieren und anschließend wieder steigen. Gleichzeitig rücken die Feldgrößen immer näher zusammen. Das verdeutlicht, dass sie nicht mehr der dominierende Faktor sind.
 	\clearpage
-	Subtrahiert man von der Ausführungszeit des kompletten Programms die Zeiten der Daten Initialisierung und Berechnung (inklusive der jeweiligen Kommunikation) ergibt sich folgendes Bild.
+	Subtrahiert man von der Ausführungszeit des kompletten Programms die Zeiten der Dateninitialisierung und Berechnung (inklusive der jeweiligen Kommunikation), ergibt sich folgendes Bild.
 	\begin{figure}[h]
 		\centering
 		\input{all_overhead.pgf}
 		\caption{Logarithmische Darstellung des ungefähren Overheads.}
 	\end{figure}
 
-	Es zeigt in etwa den Overhead durch MPI. Der Overhead sollte nur von der Anzahl der ranks abhängen, da die Initialisierung von MPI und das spawnen der Prozesse unabhängig von der Problemgröße ist. Das ist erfüllt, da alle Kurven etwa übereinander liegen.\\
+	Es zeigt in etwa den Overhead durch MPI. Der Overhead sollte nur von der Anzahl der ranks abhängen, da die Initialisierung von MPI und das Spawnen der Prozesse unabhängig von der Problemgröße sind. Das ist erfüllt, da alle Kurven etwa übereinander liegen.\\
 	Bei den ranks 1 und 4 ist der Overhead in etwa konstant und im Vergleich zur kompletten Ausführungszeit weniger als 1\%.\\
 	Danach steigt er drastisch an, bis er bei 256 ranks schon ca. 90\% ausmacht.\\
 	
@@ -492,9 +492,9 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\begin{figure}[h]
 		\centering
 		\input{non_exclusive_overhead.pgf}
-		\caption{Logarithmische Darstellung des ungefähren Overheads bei nicht exklusiver Knoten Nutzung.}
+		\caption{Logarithmische Darstellung des ungefähren Overheads bei nicht exklusiver Knotennutzung.}
 	\end{figure}
-	Diese Berechnung entstand auf der Grundlagen von Messwerten, die auf einem Knoten, der nicht exklusiv allokiert wurde. Erkennbar ist eine deutlich Streuung der Messwerte, besonders bei den ranks 1 und 4, die nur durch den Einfluss koexistierender Prozesse zu erklären ist.\\
+	Diese Berechnung entstand auf der Grundlagen von Messwerten, die auf einem Knoten, der nicht exklusiv allokiert wurde, gemessen wurden. Erkennbar ist eine deutlich Streuung der Messwerte, besonders bei den ranks 1 und 4, die nur durch den Einfluss koexistierender Prozesse zu erklären ist.\\
 	Aufgrund dessen entschied ich mich, die Messungen mit exklusiven Knoten zu wiederholen, da noch Rechenressourcen vorhanden waren. 
 	\newpage
 	\appendix
