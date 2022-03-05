@@ -261,4 +261,8 @@ plt.savefig("pics/all_init+calc.svg")
 plt.savefig('Bericht/all_init+calc.pgf', format='pgf')
 plt.close()
 
-print("Done.")
+print("Done. Here is your Latex table:")
+
+for sub in sub_bench_list:
+    for b in sub:
+        print('{} & {} & {} & {} & {} \\\ \hline'.format(b.size, b.ranks, round(b.init_mean, 4), round(b.calc_mean, 4), round(b.total_mean, 4)))

@@ -499,67 +499,35 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\newpage
 	\appendix
 	\section{Tabellen} \label{tables}
-	\begin{description}
-		\item[Hinweis zur Notation:] \textit{without SIMD} bedeutet nicht, dass keine SIMD Instruktionen verwendet werden. Es bedeutet, dass das Programm gemäß der Aufgabenstellung ohne \texttt{OpenMP} Compiler Direktiven compiliert wurde. Wie bereits in \ref{umgebung} festgestellt, verwendet der \texttt{GCC} dennoch SIMD Instruktionen.
-	\end{description}
 	\begin{table}[h]
 		\centering
-			\begin{tabular}{||c r l c l||}
+			\begin{tabular}{|| r r r r r ||}
 				\hline
-				Compiler & Size  & SIMD & Repetitions & Initialization in s \\ [1ex]
+				Size & Ranks & Initialization in s & Calculation in s & Total time in s \\ [1ex]
 				\hline\hline
-				gcc & 128   & without SIMD & 100 & 0.0      \\ \hline
-				gcc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 512   & without SIMD & 100 & 0.0      \\ \hline
-				gcc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.046   \\ \hline
-				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
-				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 12.583  \\ \hline
-				gcc & 32768 & SIMDxorshift & 100 & 1.399   \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
-				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
-				icc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 2048  & without SIMD & 100 & 0.05   \\ \hline
-				icc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 8192  & without SIMD & 100 & 0.849    \\ \hline
-				icc & 8192  & SIMDxorshift & 100 & 0.079    \\ \hline
-				icc & 32768 & without SIMD & 100 & 13.846 \\ \hline
-				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
+				2048 & 1 & 0.0476 & 159.4984 & 162.3866 \\ \hline
+				2048 & 4 & 0.0117 & 42.9935 & 45.8009 \\ \hline
+				2048 & 16 & 0.0031 & 10.8978 & 15.6966 \\ \hline
+				2048 & 64 & 0.001 & 2.8518 & 18.8994 \\ \hline
+				2048 & 128 & 0.0013 & 1.458 & 26.6152 \\ \hline
+				2048 & 256 & 0.0338 & 0.8018 & 28.8851 \\ \hline \hline
+				8192 & 1 & 0.7524 & 278.2817 & 281.8427 \\ \hline
+				8192 & 4 & 0.1895 & 66.9046 & 69.9164 \\ \hline
+				8192 & 16 & 0.0486 & 16.9429 & 21.6623 \\ \hline
+				8192 & 64 & 0.0124 & 4.2742 & 20.4464 \\ \hline
+				8192 & 128 & 0.0063 & 2.1142 & 27.151 \\ \hline
+				8192 & 256 & 0.0337 & 1.1012 & 29.0222 \\ \hline \hline
+				32768 & 1 & 11.9899 & 444.2583 & 459.1336 \\ \hline
+				32768 & 4 & 3.0087 & 117.4779 & 123.3376 \\ \hline
+				32768 & 16 & 0.7706 & 29.2729 & 34.8168 \\ \hline
+				32768 & 64 & 0.1985 & 6.5923 & 22.8972 \\ \hline
+				32768 & 128 & 0.0991 & 3.233 & 28.5742 \\ \hline
+				32768 & 256 & 0.0833 & 1.66 & 29.7171 \\ \hline \hline
+				131072 & 64 & 3.0897 & 11.8205 & 31.104 \\ \hline
+				131072 & 128 & 1.5304 & 5.6618 & 32.6177 \\ \hline
+				131072 & 256 & 0.796 & 2.8887 & 31.7655 \\ \hline
 			\end{tabular}
-			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 3 Nachkommastellen.}
-	\end{table}
-	\begin{table}
-		\begin{center}
-			\begin{tabular}{||c r l c l||}
-				\hline
-				Compiler & Size  & SIMD & Repetitions & Calculation in s \\ [1ex]
-				\hline\hline
-				gcc & 128   & without SIMD & 100 & 0.0       \\ \hline
-				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
-				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
-				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.082    \\ \hline
-				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
-				gcc & 8192  & without SIMD & 100 & 1.38    \\ \hline
-				gcc & 8192  & SIMD         & 100 & 1.49    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
-				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.002    \\ \hline
-				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
-				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
-				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
-				icc & 2048  & without SIMD & 100 & 2.47      \\ \hline
-				icc & 2048  & SIMD         & 100 & 0.09      \\ \hline
-				icc & 8192  & without SIMD & 100 & 42.054   \\ \hline
-				icc & 8192  & SIMD         & 100 & 1.722    \\ \hline
-				icc & 32768 & without SIMD & 100 & 633.289 \\ \hline
-				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
-			\end{tabular}
-			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 3 Nachkommastellen.}
-		\end{center}
+			\caption{Messergebnisse. \textit{Initialization} und \textit{Calculation} beziehen sich auf die beiden Funktionen \texttt{field\_initializer()} und \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 4 Nachkommastellen.}
 	\end{table}
 	\clearpage
 	\bibliography{Praktikumsbericht}
