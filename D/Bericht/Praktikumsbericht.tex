@@ -413,7 +413,7 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\begin{figure}[h]
 		\centering
 		\includegraphics[scale=0.35]{AMD_EPYC.png}
-		\captionsource{CPU Layout eines AMD EPYC.}{\href{http://developer.amd.com/wp-content/resources/56420.pdf}{HPC Tuning Guide for AMD EPYC Processors}}
+		\captionsource{CPU Layout eines AMD EPYC 7002.}{\href{https://www.amd.com/system/files/documents/amd-epyc-7002-tg-hpc-56827.pdf}{HPC Tuning Guide for AMD EPYC 7002 Series Processors}}
 	\end{figure}
 	
 	Der verwendete AMD EPYC 7702 ist ein 64 Kern Prozessor. Jeder Socket besteht dabei aus 4 \textit{Zeppelins} (Orange in der Abbildung), die über ein \textit{Infinity Fabric} untereinander und mit den 4 Zeppelins des anderen Sockets sehr schnell Daten austauschen können \cite{amd}. Jeder Zeppelin besteht damit aus 16 Cores.\\
@@ -424,17 +424,20 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	
 	Mit der Überschreitung von 128 Cores muss dann zwischen zwei Nodes kommuniziert werden. Hier sind die größten Geschwindigkeitseinbrüche zu erwarten, da die Kommunikation über das Netzwerk im Vergleich zur Kommunikation auf einem Board höhere Latenzen mit sich zieht.
 	\subsection{Testmethode}
-	Die Tests wurden automatisiert mit \texttt{sbatch}-Skripten ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
-	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:init} und \ref{tab:calc} entnehmen.\\
-	Die Anzahl von Simulationsschritten ist auf 100 für alle Feldgrößen festgelegt. Ich habe diese Größe gewählt, da so ein Vergleich zwischen verschiedenen Feldgrößen möglich wird, um zu entscheiden, wie sich die Ausführungszeit in Abhängigkeit dieser verändert.\\
-	Für noch genauere Ergebnisse wären mehr Simulationsschritte nötig gewesen. Bei einer Feldgröße von 128 mit mehr als 100.000 Wiederholungen befindet sich die Ausführungszeit immer noch im Millisekunden Bereich. Aufgrund begrenzter CPU Zeit ist eine so hohe Anzahl an Simulationsschritten nicht möglich.\\
+	Die Tests wurden automatisiert mit \texttt{sbatch}-Skripten ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt. Ich allokierte jeden bei den Messungen den Knoten exklusiv, um Einflüsse durch koexistierende Prozesse auszuschließen.\\
+	Da nicht genügend Rechenressourcen zur Verfügung standen, machte ich die Anzahl der Simulationsschritte von der Feldgröße abhängig.\\
+	Ich entschied mich dabei für einen exponentielle Abnahme der Wiederholungen, da die Feldgröße exponentiell ansteigt.\\
 	
-	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße an.\\
+	Dafür testete ich die höchste Anzahl an ranks (256) mit der kleinsten Feldgröße (2048). Die minimal Ausführungszeit sollte bei etwa einer Sekunde (ohne den Overhead von MPI) liegen, um verlässliche Werte zu erhalten. Diese wurde bei 10.000 Simulationsschritten erreicht. Mit der nächst höheren Feldgröße sinkt die Anzahl der Wiederholungen um eine Dekade.\\
 	
+	Die Messwerte sind daher ungeeignet, um zu beurteilen, wie sich die Ausführungszeit verändert, wenn man die Anzahl der ranks gleich belässt, aber die Feldgröße ändert.\\
+	Dass die Ausführungsgeschwindigkeit mit der Feldgröße ansteigt ist logisch. Interessanter für das Praktikum ist jedoch das Verhalten bei MPI-paralleler Ausführung, was sich beurteilen lässt.\\
+	
+	Aus den 20 Wiederholungen pro Messung habe ich den Mittelwert gebildet und Logarithmische Diagramme erzeugt. Diese Darstellung bietet sich aufgrund der exponentiell ansteigenden Feldgröße und ranks an.
 	\begin{description}
 		\item[Anmerkung zur Notation:] Mit einer Feldgröße von 128 meine ich ein Feld mit $128\times 128$ Zellen. Da hier im Praktikum alle Feldgrößen quadratisch sind, ist die Angabe der zweiten Größe redundant, weswegen ich auch auf diese verzichte.
-		\item[Anmerkung zu den Diagrammen:] In den Diagrammen finden sich bei einigen Feldgrößen keine Datenpunkte. Ist das der Fall, war das Ergebnis der Zeitmessung 0 Sekunden. Da der Logarithmus von 0 jedoch $-\infty$ entspricht, ist eine Darstellung nicht sinnvoll.\\
-		Das Ergebnis von 0 Sekunden entspricht natürlich nicht ganz der Realität, aber es lässt sich festhalten, dass die Berechnung so schnell abgeschlossen war, dass diese faktisch nicht messbar war.
+		\item[Anmerkung zur exklusiven Nutzung von Knoten:] Aufgrund der begrenzten Rechenressourcen stand ich vor der Entscheidung Knoten exklusiv zu allokieren oder die Anzahl der Simulationsschritte von der Feldgröße abhängig zu machen.\\
+		Ich entschied mich für letzteres, wie oben beschrieben. Warum zeige ich X STELLE.
 	\end{description}
 
 	\newpage
@@ -442,40 +445,38 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	In diesem Abschnitt habe ich die Messwerte aus den Tabellen \ref{tables} visualisiert.
 	\subsection{Dateninitialisierung}
 	Zuerst möchte ich auf die Ausführungszeiten der Funktion \texttt{field\_initializer()} des Spiels eingehen.\\
-	Diese Funktion füllt das Spielfeld mit zufälligen Werten. Wie Eingangs in \ref{data_init} beschrieben, lässt sich diese Funktion nicht mit SIMD Instruktionen parallelisieren.\\
-	Ich implementierte jedoch einen \texttt{Xorshift128+} Pseudozufallszahlengenerator, um das Problem SIMD parallel auszuführen.\\
-	Die Ergebnisse habe ich hier dargestellt.
 	
 	\begin{figure}[h]
 		\centering
-		%\input{gcc_all_init.pgf}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{GCC}.}
+		\input{all_init.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}.}
 	\end{figure}
-	\begin{figure}[h]
-		\centering
-		%\input{icc_all_init.pgf}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{field\_initializer()}, kompiliert mit \texttt{ICC}.}
-	\end{figure}
-	\newpage
-	Betrachtet man die Werte zwischen der seriellen Version und der SIMD parallelen Version, fällt ein deutlicher Speedup von etwa 9 auf. Diese Parallelisierung war folglich sehr effektiv.\\
-	Der Unterschied zwischen beiden Compilern ist hingegen vernachlässigbar klein.
-	\clearpage
+	Die allgemeine Tendenz zeigt, was zu erwarten war: Mehr ranks verbessern die Ausführungsgeschwindigkeit.\\
+	Es ist zu erkennen, dass bei 64 Cores für kleine Feldgrößen ein Minimum erreicht wird. Mehr Cores verschlechtern wieder die Performance. Warum? Die Kommunikation nimmt hier also mehr Zeit in Anspruch, als der eigentliche Vorgang.\\
+	Das zeigt sich auch sehr gut daran, dass die Werte der Feldgrößen 2048 und 8192 bei 256 ranks auf einen Punkt fallen. Dadurch wird deutlich, dass der Datenaustausch die Ausführungszeit dominiert und nicht das füllen der Felder mit Zufallswerten.\\
+	Beim Sprung von 64 auf 128 ranks findet Kommunikation zwischen den Sockets statt, was die Latenz erhöht. Bei 256 ranks wird ein zweiter Node benötigt. Die Zeit steigt hier dramatisch an. Dieses Verhalten habe ich bereits in \ref{cpu_layout} erklärt.
 	\subsection{Berechnung}
 	\begin{figure}[h]
 		\centering
-		%\input{gcc_all_calc.pgf}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{GCC}.}
+		\input{all_calc.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}.}
 	\end{figure}
-	Betrachtet man die Ergebnisse des \texttt{GCC}, fällt auf, dass sich die beiden Graphen kaum unterschieden. Das hängt damit zusammen, dass der \texttt{GCC} unabhängig von der \texttt{OpenMP} Compiler Direktive immer SIMD Instruktionen verwendet (Vergleiche \ref{umgebung}).\\
-	Die Verwendung von \texttt{OpenMP} verschlechterte die Ausführungszeiten in diesem Fall minimal.
-	\clearpage
+	Auch hier sinkt die Ausführungszeit mit Anzahl der ranks ab. Es gibt jedoch kein Abknicken, wie noch bei der Initialisierung. Eine mögliche Begründung dafür ist, dass die Berechnung des inneren Feldes soviel Zeit in Anspruch nimmt, dass währenddessen die Kommunikation abgeschlossen wird. Damit verringert sich die Ausführungszeit ohne erkennbare Einbrüche.
+	\subsection{Komplettes Programm}
+	Hier betrachte ich die benötigte Zeit des Programms, inklusive spawnen der Prozesse die Initialisierung von MPI.
 	\begin{figure}[h]
 		\centering
-		%\input{icc_all_calc.pgf}
-		\caption{Logarithmische Darstellung der Ausführungszeit der Funktion \texttt{calculate\_next\_gen()}, kompiliert mit \texttt{ICC}.}
+		\input{all_total.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit des Programms.}
 	\end{figure}
-	Beim \texttt{ICC} wird erstmals deutlich, dass die Verwendung von SIMD Instruktionen einen erheblichen Performance Vorteil bewirkt. Der Speedup liegt bei circa 24.\\
-	Vergleicht man die Zeiten des \texttt{ICC} mit denen des \texttt{GCC}, fällt auf, dass der Programmcode des \texttt{GCC} etwas schneller ist.
+	In \ref{cpu_layout} diskutierte ich, wann Einbrüche zu erwarten sind. Es zeigt sich damit, dass die Ausführungszeit ab 16 ranks immer stärker vom Overhead von MPI dominiert wird. Erkennen lässt sich das daran, dass die Ausführungszeiten ab dieser Grenze stagnieren und anschließend wieder steigen. Gleichzeitig rücken die Feldgrößen immer näher zusammen. Das verdeutlicht, dass sie nicht mehr der dominierende Faktor sind.\\
+	
+	Subtrahiert man von der Ausführungszeit des kompletten Programms die Zeiten der Daten Initialisierung und Berechnung ergibt sich folgendes Bild.
+	\begin{figure}[h]
+		\centering
+		\input{all_overhead.pgf}
+		\caption{Logarithmische Darstellung der Ausführungszeit des Programms.}
+	\end{figure}
 	\newpage
 	\appendix
 	\section{Tabellen} \label{tables}

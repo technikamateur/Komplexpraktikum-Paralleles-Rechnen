@@ -4,322 +4,322 @@ Die folgenden Module wurden nicht entladen:
   1) modenv/scs5
 Module OpenMPI/4.1.2-GCC-11.2.0 and 14 dependencies loaded.
 
-real	0m14.181s
-user	0m0.035s
-sys	0m0.018s
+real	0m19.133s
+user	0m0.032s
+sys	0m0.022s
 
-real	0m14.200s
+real	0m18.577s
 user	0m0.029s
 sys	0m0.020s
 
-real	0m14.174s
-user	0m0.024s
-sys	0m0.024s
-
-real	0m14.168s
-user	0m0.035s
-sys	0m0.016s
-
-real	0m14.277s
-user	0m0.036s
-sys	0m0.016s
-
-real	0m14.277s
-user	0m0.031s
+real	0m18.590s
+user	0m0.028s
 sys	0m0.018s
 
-real	0m14.091s
+real	0m18.696s
+user	0m0.028s
+sys	0m0.017s
+
+real	0m20.559s
+user	0m0.030s
+sys	0m0.019s
+
+real	0m18.541s
+user	0m0.032s
+sys	0m0.020s
+
+real	0m21.260s
+user	0m0.029s
+sys	0m0.016s
+
+real	0m18.607s
+user	0m0.028s
+sys	0m0.017s
+
+real	0m18.527s
+user	0m0.034s
+sys	0m0.016s
+
+real	0m18.424s
+user	0m0.028s
+sys	0m0.017s
+
+real	0m18.534s
+user	0m0.032s
+sys	0m0.018s
+
+real	0m18.692s
+user	0m0.028s
+sys	0m0.021s
+
+real	0m18.662s
+user	0m0.033s
+sys	0m0.018s
+
+real	0m18.514s
+user	0m0.031s
+sys	0m0.022s
+
+real	0m18.694s
+user	0m0.033s
+sys	0m0.016s
+
+real	0m18.659s
 user	0m0.034s
 sys	0m0.017s
 
-real	0m14.161s
-user	0m0.031s
+real	0m18.659s
+user	0m0.034s
+sys	0m0.016s
+
+real	0m18.554s
+user	0m0.033s
 sys	0m0.020s
 
-real	0m14.164s
-user	0m0.026s
+real	0m18.637s
+user	0m0.033s
+sys	0m0.019s
+
+real	0m19.470s
+user	0m0.038s
+sys	0m0.016s
+
+real	0m19.963s
+user	0m0.035s
+sys	0m0.015s
+
+real	0m22.848s
+user	0m0.027s
+sys	0m0.021s
+
+real	0m21.130s
+user	0m0.033s
+sys	0m0.023s
+
+real	0m20.107s
+user	0m0.032s
+sys	0m0.020s
+
+real	0m20.145s
+user	0m0.034s
+sys	0m0.019s
+
+real	0m20.529s
+user	0m0.035s
 sys	0m0.022s
 
-real	0m14.292s
+real	0m20.221s
+user	0m0.035s
+sys	0m0.018s
+
+real	0m19.991s
+user	0m0.025s
+sys	0m0.018s
+
+real	0m20.025s
 user	0m0.036s
 sys	0m0.017s
 
-real	0m14.153s
+real	0m19.938s
+user	0m0.036s
+sys	0m0.019s
+
+real	0m20.035s
+user	0m0.035s
+sys	0m0.017s
+
+real	0m19.953s
+user	0m0.029s
+sys	0m0.024s
+
+real	0m20.204s
+user	0m0.027s
+sys	0m0.023s
+
+real	0m20.111s
+user	0m0.026s
+sys	0m0.020s
+
+real	0m20.050s
+user	0m0.034s
+sys	0m0.019s
+
+real	0m20.198s
+user	0m0.030s
+sys	0m0.015s
+
+real	0m20.078s
+user	0m0.032s
+sys	0m0.020s
+
+real	0m22.454s
+user	0m0.035s
+sys	0m0.016s
+
+real	0m20.418s
+user	0m0.033s
+sys	0m0.019s
+
+real	0m20.529s
+user	0m0.029s
+sys	0m0.018s
+
+real	0m23.014s
+user	0m0.033s
+sys	0m0.022s
+
+real	0m22.788s
+user	0m0.037s
+sys	0m0.020s
+
+real	0m22.668s
+user	0m0.032s
+sys	0m0.019s
+
+real	0m22.728s
 user	0m0.029s
 sys	0m0.021s
 
-real	0m14.234s
-user	0m0.034s
+real	0m22.636s
+user	0m0.038s
 sys	0m0.016s
 
-real	0m14.168s
-user	0m0.031s
+real	0m22.633s
+user	0m0.035s
 sys	0m0.018s
 
-real	0m14.125s
-user	0m0.034s
-sys	0m0.016s
-
-real	0m14.303s
-user	0m0.031s
-sys	0m0.024s
-
-real	0m14.188s
-user	0m0.028s
-sys	0m0.023s
-
-real	0m14.169s
-user	0m0.028s
-sys	0m0.025s
-
-real	0m14.138s
+real	0m23.037s
 user	0m0.037s
 sys	0m0.019s
 
-real	0m14.099s
-user	0m0.031s
+real	0m23.256s
+user	0m0.034s
 sys	0m0.018s
 
-real	0m14.247s
+real	0m22.626s
+user	0m0.033s
+sys	0m0.018s
+
+real	0m23.440s
+user	0m0.030s
+sys	0m0.021s
+
+real	0m22.617s
+user	0m0.031s
+sys	0m0.021s
+
+real	0m22.697s
+user	0m0.035s
+sys	0m0.018s
+
+real	0m24.628s
+user	0m0.028s
+sys	0m0.023s
+
+real	0m22.657s
+user	0m0.030s
+sys	0m0.021s
+
+real	0m22.773s
+user	0m0.030s
+sys	0m0.021s
+
+real	0m22.614s
+user	0m0.034s
+sys	0m0.015s
+
+real	0m22.805s
+user	0m0.037s
+sys	0m0.016s
+
+real	0m22.921s
+user	0m0.035s
+sys	0m0.018s
+
+real	0m22.727s
+user	0m0.043s
+sys	0m0.012s
+
+real	0m22.680s
+user	0m0.030s
+sys	0m0.025s
+
+real	0m31.032s
+user	0m0.023s
+sys	0m0.022s
+
+real	0m30.804s
+user	0m0.036s
+sys	0m0.017s
+
+real	0m30.772s
 user	0m0.036s
 sys	0m0.018s
 
-real	0m15.557s
-user	0m0.031s
-sys	0m0.019s
-
-real	0m15.591s
-user	0m0.029s
-sys	0m0.020s
-
-real	0m15.578s
-user	0m0.028s
-sys	0m0.020s
-
-real	0m15.617s
+real	0m30.969s
 user	0m0.035s
-sys	0m0.019s
-
-real	0m15.584s
-user	0m0.028s
-sys	0m0.020s
-
-real	0m15.631s
-user	0m0.034s
-sys	0m0.020s
-
-real	0m15.554s
-user	0m0.029s
-sys	0m0.022s
-
-real	0m15.606s
-user	0m0.035s
-sys	0m0.020s
-
-real	0m15.514s
-user	0m0.028s
 sys	0m0.018s
 
-real	0m15.551s
-user	0m0.029s
-sys	0m0.017s
-
-real	0m15.527s
-user	0m0.035s
-sys	0m0.017s
-
-real	0m15.710s
-user	0m0.038s
-sys	0m0.015s
-
-real	0m15.623s
-user	0m0.025s
-sys	0m0.017s
-
-real	0m15.556s
-user	0m0.027s
-sys	0m0.022s
-
-real	0m15.609s
-user	0m0.028s
-sys	0m0.019s
-
-real	0m15.661s
-user	0m0.029s
-sys	0m0.022s
-
-real	0m15.583s
-user	0m0.031s
-sys	0m0.016s
-
-real	0m15.531s
-user	0m0.024s
-sys	0m0.016s
-
-real	0m15.526s
-user	0m0.032s
-sys	0m0.016s
-
-real	0m15.696s
-user	0m0.033s
-sys	0m0.020s
-
-real	0m18.268s
-user	0m0.032s
-sys	0m0.019s
-
-real	0m18.340s
-user	0m0.033s
-sys	0m0.016s
-
-real	0m18.292s
-user	0m0.031s
-sys	0m0.020s
-
-real	0m18.356s
-user	0m0.032s
-sys	0m0.019s
-
-real	0m18.263s
-user	0m0.026s
-sys	0m0.018s
-
-real	0m18.285s
-user	0m0.032s
-sys	0m0.015s
-
-real	0m18.253s
-user	0m0.034s
-sys	0m0.021s
-
-real	0m18.380s
-user	0m0.031s
-sys	0m0.020s
-
-real	0m18.471s
-user	0m0.038s
-sys	0m0.016s
-
-real	0m18.202s
-user	0m0.033s
-sys	0m0.015s
-
-real	0m18.311s
+real	0m34.899s
 user	0m0.030s
-sys	0m0.018s
-
-real	0m18.347s
-user	0m0.035s
-sys	0m0.017s
-
-real	0m18.329s
-user	0m0.027s
 sys	0m0.020s
 
-real	0m18.270s
-user	0m0.030s
-sys	0m0.019s
-
-real	0m18.284s
-user	0m0.035s
-sys	0m0.018s
-
-real	0m18.438s
-user	0m0.035s
-sys	0m0.019s
-
-real	0m18.260s
-user	0m0.030s
-sys	0m0.015s
-
-real	0m18.787s
-user	0m0.035s
-sys	0m0.017s
-
-real	0m18.313s
-user	0m0.035s
-sys	0m0.015s
-
-real	0m18.408s
+real	0m30.897s
 user	0m0.031s
 sys	0m0.024s
 
-real	0m26.949s
-user	0m0.025s
+real	0m30.805s
+user	0m0.032s
+sys	0m0.020s
+
+real	0m30.789s
+user	0m0.032s
+sys	0m0.019s
+
+real	0m30.925s
+user	0m0.035s
+sys	0m0.020s
+
+real	0m30.907s
+user	0m0.035s
+sys	0m0.019s
+
+real	0m31.022s
+user	0m0.035s
+sys	0m0.019s
+
+real	0m31.014s
+user	0m0.036s
+sys	0m0.020s
+
+real	0m30.861s
+user	0m0.035s
+sys	0m0.017s
+
+real	0m30.760s
+user	0m0.035s
+sys	0m0.020s
+
+real	0m30.992s
+user	0m0.034s
+sys	0m0.017s
+
+real	0m30.993s
+user	0m0.030s
 sys	0m0.023s
 
-real	0m26.691s
-user	0m0.027s
-sys	0m0.019s
-
-real	0m26.735s
-user	0m0.035s
-sys	0m0.017s
-
-real	0m26.576s
-user	0m0.026s
-sys	0m0.025s
-
-real	0m26.754s
-user	0m0.031s
-sys	0m0.020s
-
-real	0m27.014s
+real	0m30.807s
 user	0m0.032s
-sys	0m0.021s
-
-real	0m26.882s
-user	0m0.030s
-sys	0m0.021s
-
-real	0m26.823s
-user	0m0.026s
-sys	0m0.021s
-
-real	0m26.799s
-user	0m0.031s
-sys	0m0.021s
-
-real	0m26.743s
-user	0m0.035s
-sys	0m0.016s
-
-real	0m26.839s
-user	0m0.031s
-sys	0m0.018s
-
-real	0m26.737s
-user	0m0.044s
-sys	0m0.013s
-
-real	0m26.758s
-user	0m0.034s
-sys	0m0.018s
-
-real	0m26.907s
-user	0m0.038s
-sys	0m0.017s
-
-real	0m26.867s
-user	0m0.033s
 sys	0m0.019s
 
-real	0m26.745s
-user	0m0.031s
-sys	0m0.020s
-
-real	0m26.660s
-user	0m0.038s
-sys	0m0.020s
-
-real	0m26.788s
-user	0m0.027s
+real	0m31.086s
+user	0m0.029s
 sys	0m0.022s
 
-real	0m26.939s
-user	0m0.036s
-sys	0m0.014s
+real	0m30.825s
+user	0m0.028s
+sys	0m0.017s
 
-real	0m26.867s
+real	0m30.921s
 user	0m0.032s
-sys	0m0.018s
+sys	0m0.021s

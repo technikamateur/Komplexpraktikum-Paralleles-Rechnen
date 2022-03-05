@@ -5,8 +5,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048811 seconds to execute.
-Calculation took 163.171716 seconds to execute.
+Field initializer took 0.047488 seconds to execute.
+Calculation took 159.493219 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -16,8 +16,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048770 seconds to execute.
-Calculation took 163.154177 seconds to execute.
+Field initializer took 0.047353 seconds to execute.
+Calculation took 159.843528 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -27,8 +27,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048815 seconds to execute.
-Calculation took 163.159084 seconds to execute.
+Field initializer took 0.047403 seconds to execute.
+Calculation took 159.442694 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -38,8 +38,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048747 seconds to execute.
-Calculation took 163.128737 seconds to execute.
+Field initializer took 0.047676 seconds to execute.
+Calculation took 159.403413 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -49,8 +49,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048782 seconds to execute.
-Calculation took 163.210495 seconds to execute.
+Field initializer took 0.047376 seconds to execute.
+Calculation took 159.405290 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -60,8 +60,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048727 seconds to execute.
-Calculation took 163.130509 seconds to execute.
+Field initializer took 0.047448 seconds to execute.
+Calculation took 159.362746 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -71,8 +71,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048817 seconds to execute.
-Calculation took 163.153151 seconds to execute.
+Field initializer took 0.047708 seconds to execute.
+Calculation took 159.455594 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -82,8 +82,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048742 seconds to execute.
-Calculation took 163.161993 seconds to execute.
+Field initializer took 0.047694 seconds to execute.
+Calculation took 159.597166 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -93,8 +93,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048869 seconds to execute.
-Calculation took 163.127798 seconds to execute.
+Field initializer took 0.047408 seconds to execute.
+Calculation took 159.633754 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -104,8 +104,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048802 seconds to execute.
-Calculation took 163.174349 seconds to execute.
+Field initializer took 0.048463 seconds to execute.
+Calculation took 159.356017 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -115,8 +115,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048790 seconds to execute.
-Calculation took 163.162380 seconds to execute.
+Field initializer took 0.047654 seconds to execute.
+Calculation took 159.493545 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -126,8 +126,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048767 seconds to execute.
-Calculation took 163.138379 seconds to execute.
+Field initializer took 0.048129 seconds to execute.
+Calculation took 159.532439 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -137,8 +137,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048818 seconds to execute.
-Calculation took 166.191814 seconds to execute.
+Field initializer took 0.047370 seconds to execute.
+Calculation took 159.538113 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -148,8 +148,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048976 seconds to execute.
-Calculation took 163.770994 seconds to execute.
+Field initializer took 0.047652 seconds to execute.
+Calculation took 159.504988 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -159,8 +159,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.048771 seconds to execute.
-Calculation took 164.487742 seconds to execute.
+Field initializer took 0.047682 seconds to execute.
+Calculation took 159.462729 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -170,8 +170,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.049021 seconds to execute.
-Calculation took 166.601560 seconds to execute.
+Field initializer took 0.047361 seconds to execute.
+Calculation took 159.492708 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -181,8 +181,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.049048 seconds to execute.
-Calculation took 166.855633 seconds to execute.
+Field initializer took 0.047690 seconds to execute.
+Calculation took 159.418539 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -192,8 +192,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.050899 seconds to execute.
-Calculation took 166.904827 seconds to execute.
+Field initializer took 0.047723 seconds to execute.
+Calculation took 159.531314 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -203,8 +203,8 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.050572 seconds to execute.
-Calculation took 167.657591 seconds to execute.
+Field initializer took 0.047427 seconds to execute.
+Calculation took 159.513464 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)
 Welcome to the MPI game of life!
@@ -214,7 +214,7 @@ Game size: Columns: 2048, Rows: 2048.
 Blocks: per Column: 1, per Row: 1.
 Block size: Columns: 2048, Rows: 2048.
 Starting now...
-Field initializer took 0.049112 seconds to execute.
-Calculation took 167.782623 seconds to execute.
+Field initializer took 0.047379 seconds to execute.
+Calculation took 159.486339 seconds to execute.
 Writing pbm files took 0.000000 seconds to execute.
 Done :)

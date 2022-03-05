@@ -1,10 +1,11 @@
-\begin{thebibliography}{AMD18}
+\begin{thebibliography}{AMD20}
 
-\bibitem[AMD18]{amd}
+\bibitem[AMD20]{amd}
 \textsc{AMD}.
-\newblock \emph{HPC Tuning Guide for AMD EPYC Processors}.
-\newblock \\\url{http://developer.amd.com/wp-content/resources/56420.pdf}.
-\newblock 2018
+\newblock \emph{HPC Tuning Guide for AMD EPYC 7002 Series Processors}.
+\newblock
+  \\\url{https://www.amd.com/system/files/documents/amd-epyc-7002-tg-hpc-56827.pdf}.
+\newblock 2020
 
 \bibitem[Gar70]{gardner}
 \textsc{Gardner}, Martin.

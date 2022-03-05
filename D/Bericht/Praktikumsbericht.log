@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.2.11)  4 MAR 2022 17:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2022.2.11)  5 MAR 2022 14:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1054,7 +1054,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 239--240
  []
 
 [7]
-<initialized_board.pdf, id=198, 48.18pt x 48.18pt>
+<initialized_board.pdf, id=200, 48.18pt x 48.18pt>
 File: initialized_board.pdf Graphic file (type pdf)
 <use initialized_board.pdf>
 Package pdftex.def Info: initialized_board.pdf  used on input line 270.
@@ -1094,7 +1094,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 392--393
 
  []
 
-<mpi_block_block.png, id=312, 784.9325pt x 222.8325pt>
+<mpi_block_block.png, id=314, 784.9325pt x 222.8325pt>
 File: mpi_block_block.png Graphic file (type png)
 <use mpi_block_block.png>
 Package pdftex.def Info: mpi_block_block.png  used on input line 404.
@@ -1104,11 +1104,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 411--412
 
  []
 
-<AMD_EPYC.png, id=323, 1122.44344pt x 542.025pt>
+<AMD_EPYC.png, id=325, 508.90125pt x 558.58687pt>
 File: AMD_EPYC.png Graphic file (type png)
 <use AMD_EPYC.png>
 Package pdftex.def Info: AMD_EPYC.png  used on input line 415.
-(pdftex.def)             Requested size: 392.86108pt x 189.71158pt.
+(pdftex.def)             Requested size: 178.1181pt x 195.50833pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 419--420
 
@@ -1125,20 +1125,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 423--424
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 427--431
+Underfull \hbox (badness 10000) in paragraph at lines 427--430
 
  []
 
 [13 <./AMD_EPYC.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 432--433
+Underfull \hbox (badness 10000) in paragraph at lines 431--432
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 433--435
 
  []
 
 [14]
-Overfull \hbox (1.53133pt too wide) in paragraph at lines 444--448
-\T1/ptm/m/n/10.95 Ich im-ple-men-tier-te je-doch einen \T1/pcr/m/n/10.95 Xorshi
-ft128+ \T1/ptm/m/n/10.95 Pseu-do-zu-falls-zah-len-ge-ne-ra-tor, um das Pro-blem
- SIMD
+Underfull \hbox (badness 10000) in paragraph at lines 447--448
+
+ []
+
+(./all_init.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 2136--452
+ [][] 
  []
 
 
@@ -1147,45 +1155,62 @@ Underfull \hbox (badness 10000) in paragraph at lines 452--452
 t der Funk-ti-on
  []
 
+[15] (./all_calc.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1740--462
+ [][] 
+ []
 
-Underfull \hbox (badness 10000) in paragraph at lines 457--457
+
+Underfull \hbox (badness 10000) in paragraph at lines 462--462
 [][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
 t der Funk-ti-on
  []
 
-[15] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 467--467
-[][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
-t der Funk-ti-on
+(./all_total.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1242--470
+ [][] 
  []
 
-[17
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 475--475
-[][][]|\T1/ptm/m/n/10.95 Lo-ga-rith-mi-sche Dar-stel-lung der Aus-füh-rungs-zei
-t der Funk-ti-on
+Underfull \hbox (badness 10000) in paragraph at lines 466--473
+
  []
 
-[18
 
-] [19
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+(./all_overhead.pgf)
+Overfull \hbox (7.28348pt too wide) in paragraph at lines 1146--478
+ [][] 
+ []
+
+[16]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[17] [18] [19
 
 
 
 
-] [20] (./Praktikumsbericht.bbl) [21
+] [20] (./Praktikumsbericht.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 4--9
+[]$\T1/pcr/m/n/10.95 https : / / www . amd . com / system / files / documents /
+
+ []
+
+) [21
 
 ] (./Praktikumsbericht.aux)
 Package rerunfilecheck Info: File `Praktikumsbericht.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27054 strings out of 480121
- 494736 string characters out of 5892160
+ 27131 strings out of 480121
+ 496317 string characters out of 5892160
  1342932 words of memory out of 5000000
- 44294 multiletter control sequences out of 15000+600000
- 524483 words of font info for 100 fonts, out of 8000000 for 9000
+ 44354 multiletter control sequences out of 15000+600000
+ 533153 words of font info for 106 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
  122i,12n,120p,10644b,1911s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -1194,13 +1219,14 @@ f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/ur
 w/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uh
-vb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Praktikumsbericht.pdf (22 pages, 213440 bytes).
+vb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/urw/times/utmri8a.pfb>
+Output written on Praktikumsbericht.pdf (22 pages, 521783 bytes).
 PDF statistics:
- 544 PDF objects out of 1000 (max. 8388607)
- 491 compressed objects within 5 object streams
- 247 named destinations out of 1000 (max. 500000)
- 204 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 553 PDF objects out of 1000 (max. 8388607)
+ 498 compressed objects within 5 object streams
+ 248 named destinations out of 1000 (max. 500000)
+ 212 words of extra memory for PDF output out of 10000 (max. 10000000)
 
