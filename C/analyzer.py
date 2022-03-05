@@ -152,7 +152,7 @@ for measurement in [gcc_list, icc_list]:
     measurement.sort(key=lambda x: x.size, reverse=False)
     for m in measurement:
         if m.type.value != Type.BSIMD.value:
-            print("{},{},{},{}".format(m.size, m.compiler, round(m.init_mean, 3), m.type.value))
+            print("{} & {} & {} & {} & {} \\\ \hline".format(m.compiler, m.size, m.type.value, 100, round(m.init_mean, 4)))
 
 print("\n")
 print("Calc time\n")
@@ -160,4 +160,4 @@ for measurement in [gcc_list, icc_list]:
     measurement.sort(key=lambda x: x.size, reverse=False)
     for m in measurement:
         if m.type.value != Type.CEXTREM.value:
-            print("{},{},{},{}".format(m.size, m.compiler, round(m.calc_mean, 3), m.type.value))
+            print("{} & {} & {} & {} & {} \\\ \hline".format(m.compiler, m.size, m.type.value, 100, round(m.init_mean, 4)))

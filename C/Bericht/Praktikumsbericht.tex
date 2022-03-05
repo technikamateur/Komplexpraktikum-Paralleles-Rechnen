@@ -1,6 +1,6 @@
 \documentclass[german,plainarticle,hyperref,utf8]{zihpub}
 \author{Daniel Körsten}
-\title{Komplexpraktikum Paralleles Rechnen - Aufgabe C}
+\title{Komplexpraktikum Paralleles Rechnen - SIMD parallele Progrmmierung}
 \matno{4690396}
 \betreuer{Dr. Robert Schöne}
 
@@ -260,6 +260,10 @@ for (int i = 0; i < repetitions; i++) {
 printf("Calculation took %f seconds to execute (all threads added).\n", time_calc);
 printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 \end{lstlisting}
+	\begin{description}
+		\item[Bemerkung zur \texttt{clock()} Funktion:] Wie sich bei der Auswertung der Messergebnisse herausstellte, ist die \texttt{clock()} Funktion ungeeignet zur präzisen Zeitmessung. Dennoch sind die erhaltenen Werte ausreichend genau, um Trends und Ergebnisse verstehen und interpretieren zu können.\
+		Eine erneute Messreihe mit einen präziseren Funktion, wie \texttt{clock\_gettime()}, war aufgrund limitierter Rechenressourcen nicht möglich. \textit{Lessons Learned}.
+	\end{description}
 	
 	\subsection{Ein- und Ausgabe}
 	Da die Messung später in verschiedenen Feldgrößen durchgeführt wird, habe ich mich für den Einsatz von \verb|getopt| entschieden. Es ermöglicht, die Anzahl der Schleifendurchläufe, die Feldgröße und eine optionale Fortschrittsanzeige über Argumente beim Programmstart einzustellen.
@@ -269,7 +273,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	\section{Zeitmessung auf Taurus}
 	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Ein EPYC 7702 besteht aus 64 physischen Kernen. \textit{Simultaneous Multithreading} ist deaktiviert. Ein Node verwendet 2 EPYC Prozessoren (auf einem Dual-Socket Board und ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	
 	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance sollten die größten Vektorregister zum Einsatz kommen. Bei den EPYC Prozessoren entspricht das AVX2. Die Breite der Register liegt hier bei 256 Bit.\\
 	Außerdem wird FMA unterstützt. FMA steht für Fused-multiply-add und steigert die Leistung durch verbesserte Ausnutzung von Registern und einem kompakteren Maschinencode. Das wird durch das Zusammenfassen einer Addition und Multiplikation zu einem Befehl erreicht.
@@ -289,7 +293,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		Das führt zu dem Ergebnis, dass der \texttt{GCC} nur SIMD Instruktionen in Kombination mit der Optimierungsflag verwendet.\\
 		Der Intel Compiler verwendet hingegen SIMD Instruktionen nur, wenn die \texttt{fopenmp} Flag gesetzt wurde.
 	\end{description}
-	
+	\clearpage
 	\subsection{Testmethode}
 	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei der Verwendung von SIMD Instruktionen. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:init} und \ref{tab:calc} entnehmen.\\
@@ -351,61 +355,61 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	\end{description}
 	\begin{table}[h]
 		\centering
-			\begin{tabular}{||c r l c l||}
+			\begin{tabular}{|| c r l c r ||}
 				\hline
 				Compiler & Size  & SIMD & Repetitions & Initialization in s \\ [1ex]
 				\hline\hline
-				gcc & 128   & without SIMD & 100 & 0.0      \\ \hline
-				gcc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 512   & without SIMD & 100 & 0.0      \\ \hline
-				gcc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.046   \\ \hline
-				gcc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
-				gcc & 8192  & without SIMD & 100 & 0.788    \\ \hline
-				gcc & 8192  & SIMDxorshift & 100 & 0.081    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 12.583  \\ \hline
-				gcc & 32768 & SIMDxorshift & 100 & 1.399   \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.0      \\ \hline
-				icc & 128   & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 512   & without SIMD & 100 & 0.0      \\ \hline
-				icc & 512   & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 2048  & without SIMD & 100 & 0.05   \\ \hline
-				icc & 2048  & SIMDxorshift & 100 & 0.0      \\ \hline
-				icc & 8192  & without SIMD & 100 & 0.849    \\ \hline
-				icc & 8192  & SIMDxorshift & 100 & 0.079    \\ \hline
-				icc & 32768 & without SIMD & 100 & 13.846 \\ \hline
-				icc & 32768 & SIMDxorshift & 100 & 1.351    \\ \hline
+				GCC & 128 & without SIMD & 100 & 0.0 \\ \hline
+				GCC & 128 & SIMDxorshift & 100 & 0.0 \\ \hline
+				GCC & 512 & without SIMD & 100 & 0.0 \\ \hline
+				GCC & 512 & SIMDxorshift & 100 & 0.0 \\ \hline
+				GCC & 2048 & without SIMD & 100 & 0.0455 \\ \hline
+				GCC & 2048 & SIMDxorshift & 100 & 0.0 \\ \hline
+				GCC & 8192 & without SIMD & 100 & 0.788 \\ \hline
+				GCC & 8192 & SIMDxorshift & 100 & 0.081 \\ \hline
+				GCC & 32768 & without SIMD & 100 & 12.5835 \\ \hline
+				GCC & 32768 & SIMDxorshift & 100 & 1.3995 \\ \hline \hline
+				ICC & 128 & without SIMD & 100 & 0.0 \\ \hline
+				ICC & 128 & SIMDxorshift & 100 & 0.0 \\ \hline
+				ICC & 512 & without SIMD & 100 & 0.0 \\ \hline
+				ICC & 512 & SIMDxorshift & 100 & 0.0 \\ \hline
+				ICC & 2048 & without SIMD & 100 & 0.0495 \\ \hline
+				ICC & 2048 & SIMDxorshift & 100 & 0.0 \\ \hline
+				ICC & 8192 & without SIMD & 100 & 0.849 \\ \hline
+				ICC & 8192 & SIMDxorshift & 100 & 0.079 \\ \hline
+				ICC & 32768 & without SIMD & 100 & 13.8459 \\ \hline
+				ICC & 32768 & SIMDxorshift & 100 & 1.351 \\ \hline
 			\end{tabular}
-			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 3 Nachkommastellen.}
+			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 4 Nachkommastellen.}
 	\end{table}
 	\begin{table}
 		\begin{center}
-			\begin{tabular}{||c r l c l||}
+			\begin{tabular}{|| c r l c r ||}
 				\hline
 				Compiler & Size  & SIMD & Repetitions & Calculation in s \\ [1ex]
 				\hline\hline
-				gcc & 128   & without SIMD & 100 & 0.0       \\ \hline
-				gcc & 128   & SIMD         & 100 & 0.0       \\ \hline
-				gcc & 512   & without SIMD & 100 & 0.009     \\ \hline
-				gcc & 512   & SIMD         & 100 & 0.01      \\ \hline
-				gcc & 2048  & without SIMD & 100 & 0.082    \\ \hline
-				gcc & 2048  & SIMD         & 100 & 0.093     \\ \hline
-				gcc & 8192  & without SIMD & 100 & 1.38    \\ \hline
-				gcc & 8192  & SIMD         & 100 & 1.49    \\ \hline
-				gcc & 32768 & without SIMD & 100 & 18.752    \\ \hline
-				gcc & 32768 & SIMD         & 100 & 21.272    \\ \hline \hline
-				icc & 128   & without SIMD & 100 & 0.002    \\ \hline
-				icc & 128   & SIMD         & 100 & 0.0       \\ \hline
-				icc & 512   & without SIMD & 100 & 0.15      \\ \hline
-				icc & 512   & SIMD         & 100 & 0.006     \\ \hline
-				icc & 2048  & without SIMD & 100 & 2.47      \\ \hline
-				icc & 2048  & SIMD         & 100 & 0.09      \\ \hline
-				icc & 8192  & without SIMD & 100 & 42.054   \\ \hline
-				icc & 8192  & SIMD         & 100 & 1.722    \\ \hline
-				icc & 32768 & without SIMD & 100 & 633.289 \\ \hline
-				icc & 32768 & SIMD         & 100 & 25.341    \\ \hline
+				GCC & 128 & without SIMD & 100 & 0.0 \\ \hline
+				GCC & 128 & SIMD & 100 & 0.0 \\ \hline
+				GCC & 512 & without SIMD & 100 & 0.0 \\ \hline
+				GCC & 512 & SIMD & 100 & 0.0 \\ \hline
+				GCC & 2048 & without SIMD & 100 & 0.0455 \\ \hline
+				GCC & 2048 & SIMD & 100 & 0.047 \\ \hline
+				GCC & 8192 & without SIMD & 100 & 0.788 \\ \hline
+				GCC & 8192 & SIMD & 100 & 0.8125 \\ \hline
+				GCC & 32768 & without SIMD & 100 & 12.5835 \\ \hline \hline
+				GCC & 32768 & SIMD & 100 & 13.272 \\ \hline
+				ICC & 128 & without SIMD & 100 & 0.0 \\ \hline
+				ICC & 128 & SIMD & 100 & 0.0 \\ \hline
+				ICC & 512 & without SIMD & 100 & 0.0 \\ \hline
+				ICC & 512 & SIMD & 100 & 0.0 \\ \hline
+				ICC & 2048 & without SIMD & 100 & 0.0495 \\ \hline
+				ICC & 2048 & SIMD & 100 & 0.049 \\ \hline
+				ICC & 8192 & without SIMD & 100 & 0.849 \\ \hline
+				ICC & 8192 & SIMD & 100 & 0.833 \\ \hline
+				ICC & 32768 & without SIMD & 100 & 13.8459 \\ \hline
+				ICC & 32768 & SIMD & 100 & 13.3965 \\ \hline
 			\end{tabular}
-			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 3 Nachkommastellen.}
+			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 4 Nachkommastellen.}
 		\end{center}
 	\end{table}
 	\clearpage

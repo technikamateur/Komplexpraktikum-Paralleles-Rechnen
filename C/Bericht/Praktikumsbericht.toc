@@ -12,7 +12,7 @@
 \contentsline {subsection}{\numberline {2.4}Ein- und Ausgabe}{8}{subsection.2.4}%
 \contentsline {section}{\numberline {3}Zeitmessung auf Taurus}{9}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Testumgebung}{9}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Testmethode}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Testmethode}{10}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Testergebnisse}{11}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Dateninitialisierung}{11}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Berechnung}{13}{subsection.4.2}%
