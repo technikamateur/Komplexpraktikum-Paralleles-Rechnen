@@ -1,4 +1,4 @@
-\begin{thebibliography}{AMD20}
+\begin{thebibliography}{GLSM07}
 
 \bibitem[AMD20]{amd}
 \textsc{AMD}.
@@ -13,6 +13,12 @@
   Conway's new solitaire game "life"}.
 \newblock \\\url{https://web.stanford.edu/class/sts145/Library/life.pdf}.
 \newblock 1970
+
+\bibitem[GLSM07]{mpi}
+\textsc{Gropp}, William ; \textsc{Lusk}, Ewing ; \textsc{Skjellum}, Anthony  ;
+  \textsc{Molitor}, Paul:
+\newblock \emph{MPI - Eine Einführung}.
+\newblock De Gruyter Oldenbourg, 2007
 
 \bibitem[Mar21]{hpc}
 \textsc{Markwardt}, Dr.~U.

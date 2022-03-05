@@ -66,10 +66,11 @@
 	Wichtig ist, dass die Folgegeneration für alle Zellen berechnet wird und anschließend die aktuelle Generation ersetzt. Es ist also nicht möglich, die nachfolgende Generation im Spielfeld der Aktuellen zu berechnen.
 	
 	\subsection{Besonderheiten der Aufgabenstellung}
-	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{MPI} erfolgen soll. \texttt{MPI} ist eine API, die die parallele Berechnung über mehrere getrennte Computer ermöglicht. Ich habe in diesem Praktikum die Open-Source Implementierung \texttt{OpenMPI} verwendet.\\
-	Im Gegensatz zu \texttt{OpenMP} benötigt MPI kein \textit{Shared-Memory System}, sondern kann auf dedizierten Rechnern innerhalb eines Clusters ausgeführt werden.\\
+	Die Aufgabenstellung gibt vor, dass die Parallelisierung mittels \texttt{MPI} erfolgen soll. \texttt{MPI} ist eine API, die auf dem Message-Passing-Modell aufbaut \cite{mpi}. Das Message-Passing-Modell beschreibt dabei eine Menge von Prozessen, die mit anderen Prozessen durch das Senden und Empfangen von Nachrichten kommunizieren können.\\
+	Ich habe in diesem Praktikum die Open-Source Implementierung \texttt{OpenMPI} verwendet.\\
+	Im Gegensatz zu \texttt{OpenMP} benötigt MPI kein \textit{Shared-Memory System}, sondern kann auf dedizierten Rechnern ausgeführt werden, die über ein Netzwerk miteinander verbunden sind.\\
 	
-	\texttt{MPI} steht dabei für \textit{Message Passing Interface}. Konkret bedeutet das, dass die parallel laufenden Prozesse Daten über Nachrichten austauschen. Dadurch wird es möglich, das Problem aufzuteilen ("\textit{divide and conquer}"). Der Datenaustausch geschieht nicht automatisch, sondern der Programmierer muss explizit angeben, welcher Prozess zu welchem Zeitpunkt Daten an einen anderen Prozess sendet.\\
+	MPI steht dabei für \textit{Message Passing Interface}. Konkret bedeutet das, dass die parallel laufenden Prozesse Daten über Nachrichten austauschen. Dadurch wird es möglich, das Problem aufzuteilen ("\textit{divide and conquer}"). Der Datenaustausch geschieht nicht automatisch, sondern der Programmierer muss explizit angeben, welcher Prozess zu welchem Zeitpunkt Daten an einen anderen Prozess sendet bzw. empfängt.\\
 	
 	Der Nachrichtenaustausch kann dabei über verschiedene Wege erfolgen.\\
 	Innerhalb eines Sockets, oder auch zwischen Sockets auf einem Dual Socket Board, können Nachrichten über den gemeinsamen Speicher oder Interconnects, wie Infiniband oder Infinity Fabric mit sehr hoher Geschwindigkeit und geringer Latenz ausgetauscht werden.\\
@@ -85,14 +86,14 @@
 	\end{itemize}
 
 	\begin{description}
-		\item[Begriffsklärung rank:] Jeder Prozess, der am Nachrichtenaustausch teilnimmt, muss eine eindeutige Kennung besitzen, um gezielt Nachrichten versenden und empfangen zu können.\\ \texttt{MPI} erstellt dabei Prozessgruppen (typischerweise eine, wenn nicht anders spezifiziert), in der ein Prozess über seinen \textit{rank} identifiziert wird.\\ Der rank ist dabei eine Zahl im Intervall $\left[0, N-1\right]$, $N\dotso$ Anzahl der gestarteten Prozesse.
+		\item[Begriffsklärung rank:] Jeder Prozess, der am Nachrichtenaustausch teilnimmt, muss eine eindeutige Kennung besitzen, um gezielt Nachrichten versenden und empfangen zu können.\\ MPI erstellt dabei Prozessgruppen (typischerweise eine, wenn nicht anders spezifiziert), in der ein Prozess über seinen rank identifiziert wird.\\ Der rank ist dabei eine Zahl im Intervall $\left[0, N-1\right]$, $N\dotso$ Anzahl der gestarteten Prozesse.
 		
 	\end{description}
 	\newpage
 	\section{Implementierung}
 	Bei Aufgabe B \& C allokierte ich einen Speicherbereich der Größe\\ \texttt{columns * rows * sizeof(u\_int8\_t)} durch die C-Funktion \texttt{malloc()}.\\
 	Der Datentyp \texttt{u\_int8\_t} benötigt dabei nur ein Byte pro Zelle und ist für die Speicherung mehr als ausreichend, da ich nur den Zustand 0 - Zelle tot und 1 - Zelle lebendig speichern muss. Ein Byte ist typischerweise die kleinste adressierbare Einheit im Speicher. Das ist auch der Grund, warum kein noch kleinerer Datentyp möglich ist.\\
-	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein chessboard Layout, also der Aufteilung des Spielfeldes in gleich große Teilfelder.\\
+	Bei MPI muss dieses Feld nun so aufgeteilt werden, dass jeder Prozess einen Teil des Feldes bearbeitet. Ich entschied mich dafür für ein \textit{chessboard} Layout, also der Aufteilung des Spielfeldes in gleich große Teilfelder.\\
 	Der Grund ist, dass hier der Kommunikationsaufwand minimal wird, da jeder Prozess seinen direkten Nachbarn nur die äußerste Reihe senden (und umgekehrt von ihnen empfangen) muss.\\
 	Im ersten Schritt muss MPI initialisiert werden. Das erfolgt direkt am Anfang:
 	\begin{lstlisting}[language=C, caption=MPI Initialisierung mit Bestimmung von rank und cluster]
@@ -109,7 +110,7 @@ int main(int argc, char *argv[]) {
 	Da die Größe des Feldes ebenfalls bekannt ist, lässt sich nun das Feld aufteilen.\\
 	
 	Es gilt nun zu bestimmen, in wie viele Zeilen und Spalten das Feld zerlegt werden muss. Da die Felder quadratisch sind und genau wie die ranks mit einer Zweierpotenz ausgedrückt werden können, ist eine Aufteilung immer möglich.\\
-	Dafür verwendete ich eine Funktion, die den \textit{Logarithmus Dualis} der rank Größe berechnet und so die Zeilen und Spalten berechnet.\\
+	Dafür verwende ich eine Funktion, die den \textit{Logarithmus Dualis} der rank Größe berechnet und so die Zeilen und Spalten berechnet.\\
 	Dabei stellt sich ein Problem: Besitzt die Zweierpotenz einer rank Größe einen ungeraden Exponenten, bspw. $128 = 2^7$, entspricht die Anzahl der Zeilen nicht der der Spalten.\\
 	In diesem Fall entschied ich mich mehr Blocks pro Zeile statt Spalte zu verwenden. Dies ist eine willkürliche Festlegung und sollte keinen Einfluss auf die Performance haben.\\
 	\begin{lstlisting}[language=C, caption=Bestimmung der Zeilen und Spalten des chessboard Layouts]
