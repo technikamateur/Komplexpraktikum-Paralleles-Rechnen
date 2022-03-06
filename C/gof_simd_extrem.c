@@ -6,7 +6,6 @@
 #include <string.h>
 #include <getopt.h>
 #include "simdxorshift128plus.h"
-#include "xorshift128plus.h"
 #include <smmintrin.h>
 #include <immintrin.h>
 
