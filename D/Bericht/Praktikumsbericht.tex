@@ -75,7 +75,7 @@
 	Der Nachrichtenaustausch kann dabei über verschiedene Wege erfolgen.\\
 	Innerhalb eines Sockets, oder auch zwischen Sockets auf einem Dual Socket Board, können Nachrichten über den gemeinsamen Speicher oder Interconnects, wie Infiniband oder Infinity Fabric mit sehr hoher Geschwindigkeit und geringer Latenz ausgetauscht werden.\\
 	Kommen mehrere Compute Nodes in einem Cluster zum Einsatz, kann die Kommunikation über das Netzwerk, in der Regel über TCP/IP, erfolgen.\\
-	Die genaue Testumgebung mit Kommunikationsmöglichkeiten wird später in \ref{cpu_layout} diskutiert.\\
+	Die genaue Testumgebung mit Kommunikationsmöglichkeiten wird später in \ref{chan} diskutiert.\\
 	
 	Weitere Besonderheiten:
 	\begin{itemize}
@@ -409,16 +409,17 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\end{figure}
 
 	Es werden also zuerst alle Cores innerhalb eines Sockets und anschließend innerhalb eines Nodes verwendet. Je näher die ranks beieinander liegen, desto schneller ist die Kommunikation. Darauf möchte ich unter Betrachtung der AMD EPYC CPU einmal genauer eingehen.
-	\subsection{Open MPI Kommunikationskanäle}
-	Der Nachrichtenaustausch bei OpenMPI kann dabei über verschiedene Kanäle Erfolgen, wie in \ref{aufgabe} angesprochen. Die Verfügbaren lassen sich mit dem Befehl \texttt{ompi\_info | grep 'MCA [mb]tl'} ausgeben.\\
-	Auf Taurus bestehen folgende Möglichkeiten:
+	\subsection{Open MPI Kommunikationskanäle} \label{chan}
+	Der Nachrichtenaustausch bei OpenMPI kann dabei über verschiedene Kanäle erfolgen. Die Verfügbaren lassen sich mit dem Befehl\\
+	\texttt{ompi\_info | grep 'MCA [mb]tl'}\\
+	ausgeben. Auf Taurus bestehen folgende Möglichkeiten:
 	\begin{enumerate}
 		\item \texttt{self} - Sinnvoll für Kommunikation zum selben rank, beispielsweise bei der Ausführung mit nur einem rank
 		\item \texttt{vader} - shared memory communication innerhalb eines Knotens 
 		\item \texttt{ofi} - OpenFabrics Interfaces, wichtig für die Verwendung von AMDs \textit{Infinity Fabric}
 		\item \texttt{tcp} - Kommunikation über das Netzwerk mittels TCP/IP
 	\end{enumerate}
-	OpenMPI versucht dann bei einer Kommunikation immer den schnellsten Kommunikationsweg zwischen zwei ranks zu finden.
+	OpenMPI versucht, bei einer Kommunikation, immer den schnellsten Kommunikationsweg zwischen zwei ranks zu finden.
 	\clearpage
 	\subsection{AMD EPYC CPU Layout} \label{cpu_layout}
 	Bevor ich zur Testmethode und den Ergebnissen übergehe, möchte ich erst auf die Struktur der AMD EPYC CPU eingehen, um Ergebnisse später besser deuten zu können.\\
