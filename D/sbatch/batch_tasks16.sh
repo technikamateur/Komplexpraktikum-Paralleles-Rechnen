@@ -4,11 +4,12 @@
 #SBATCH --ntasks-per-node=16
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=romeo
-#SBATCH --time=01:00:00
+#SBATCH --time=00:50:00
 #SBATCH --account=p_lv_kp_wise2122
 #SBATCH --output=out16.txt
 #SBATCH --error=err16.txt
 #SBATCH --mem-per-cpu=1972
+#SBATCH --exclusive
 
 module purge
 module load OpenMPI/4.1.2-GCC-11.2.0

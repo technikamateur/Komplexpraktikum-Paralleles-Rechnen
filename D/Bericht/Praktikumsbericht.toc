@@ -3,24 +3,25 @@
 \contentsline {subsection}{\numberline {1.1}Conway’s Game-of-Life}{2}{subsection.1.1}%
 \contentsline {subsection}{\numberline {1.2}Besonderheiten der Aufgabenstellung}{2}{subsection.1.2}%
 \contentsline {section}{\numberline {2}Implementierung}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}MPI Kommunikation}{5}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Nachrichtenaustausch}{5}{subsubsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.2}Neighbour Matrix}{6}{subsubsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.2}Daten Initialisierung}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.1}MPI Kommunikation}{6}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Nachrichtenaustausch}{6}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {2.1.2}Neighbour Matrix}{7}{subsubsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.2}Daten Initialisierung}{8}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Berechnung der nächsten Generation}{9}{subsection.2.3}%
 \contentsline {subsubsection}{\numberline {2.3.1}Kanten und Ecken}{9}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Inneres Feld}{10}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.2}Inneres Feld}{11}{subsubsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.4}Zeitmessung}{11}{subsection.2.4}%
-\contentsline {subsection}{\numberline {2.5}Ein- und Ausgabe}{11}{subsection.2.5}%
-\contentsline {section}{\numberline {3}Zeitmessung auf Taurus}{12}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Testumgebung}{12}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}AMD EPYC CPU Layout}{13}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Testmethode}{14}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Testergebnisse}{15}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Dateninitialisierung}{15}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Berechnung}{16}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Komplettes Programm}{17}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Einfluss der exklusiven Nutzung von Knoten}{19}{subsection.4.4}%
-\contentsline {section}{\numberline {A}Tabellen}{20}{appendix.A}%
-\contentsline {section}{\nonumberline Literatur}{21}{section*.12}%
+\contentsline {subsection}{\numberline {2.5}Ein- und Ausgabe}{12}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Zeitmessung auf Taurus}{13}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Testumgebung}{13}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Open MPI Kommunikationskanäle}{14}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}AMD EPYC CPU Layout}{15}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Testmethode}{15}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Testergebnisse}{17}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Dateninitialisierung}{17}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Berechnung}{18}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Komplettes Programm}{19}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Einfluss der exklusiven Nutzung von Knoten}{21}{subsection.4.4}%
+\contentsline {section}{\numberline {A}Tabellen}{22}{appendix.A}%
+\contentsline {section}{\nonumberline Literatur}{23}{section*.12}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

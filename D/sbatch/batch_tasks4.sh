@@ -9,6 +9,7 @@
 #SBATCH --output=out4.txt
 #SBATCH --error=err4.txt
 #SBATCH --mem-per-cpu=1972
+#SBATCH --exclusive
 
 module purge
 module load OpenMPI/4.1.2-GCC-11.2.0

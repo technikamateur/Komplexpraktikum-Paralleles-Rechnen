@@ -112,7 +112,8 @@ int main(int argc, char *argv[]) {
 	Es gilt nun zu bestimmen, in wie viele Zeilen und Spalten das Feld zerlegt werden muss. Da die Felder quadratisch sind und genau wie die ranks mit einer Zweierpotenz ausgedrückt werden können, ist eine Aufteilung immer möglich.\\
 	Dafür verwende ich eine Funktion, die den \textit{Logarithmus Dualis} der rank Größe berechnet und so die Zeilen und Spalten berechnet.\\
 	Dabei stellt sich ein Problem: Besitzt die Zweierpotenz einer rank Größe einen ungeraden Exponenten, bspw. $128 = 2^7$, entspricht die Anzahl der Zeilen nicht der der Spalten.\\
-	In diesem Fall entschied ich mich mehr Blocks pro Zeile statt Spalte zu verwenden. Dies ist eine willkürliche Festlegung und sollte keinen Einfluss auf die Performance haben.\\
+	In diesem Fall entschied ich mich mehr Blocks pro Zeile statt Spalte zu verwenden. Dies ist eine willkürliche Festlegung und sollte keinen Einfluss auf die Performance haben.
+	\clearpage
 	\begin{lstlisting}[language=C, caption=Bestimmung der Zeilen und Spalten des chessboard Layouts]
 void init_chessboard() {
 	u_int32_t exponent = (u_int32_t) log2((double) cluster);
@@ -144,7 +145,7 @@ u_int8_t *state_tmp = NULL;
 	\end{lstlisting}
 	
 	Um zu berücksichtigen, dass die Folgegeneration immer die aktuelle Generation ersetzt, allokiere ich einen zweiten Speicherbereich gleicher Größe. Vor dem Beginn einer neuen Berechnung vertausche ich die beiden Pointer, was dazu führt, dass die im vorhergehenden Schritt berechnete Folgegeneration zur aktuellen Generation wird und eine neue Generation berechnet werden kann.
-	
+	\clearpage
 	\subsection{MPI Kommunikation}
 	\subsubsection{Nachrichtenaustausch} \label{message}
 	Für den Nachrichtenaustausch zwischen den Prozessen verwende ich asynchrone (\textit{non-blocking}) Kommunikation. Asynchrone Kommunikation bedeutet, dass nicht auf die Zustellung bzw. den Empfang der Nachricht gewartet wird. Die Funktionsaufrufe blockieren also nicht.\\
@@ -319,7 +320,7 @@ for (int i = 2; i < block_col - 2; i++) {
 	Der Zustand der Zelle in der nächsten Generation wird über die Spielregeln bestimmt und ist abhängig vom aktuellen Zustand der Zelle und ihren acht Nachbarn. Da der Zustand mit Null (tot) oder Eins (lebendig) repräsentiert wird, kann die Zahl der Nachbarzellen aufsummiert werden. Die Summe entspricht dabei der Zahl lebender Nachbarn.\\
 	An dieser Stelle könnte mithilfe einer \textit{if}-Verzweigung der Folgezustand entschieden werden. Allerdings entschied ich mich für die Verwendung von bitweisen Operatoren. Es handelt sich dabei aus schaltungstechnischer Sicht um die einfachsten Operationen auf den einzelnen Bits.\\
 	Der Grund liegt darin, dass diese bitweisen Operatoren sich gut bei SIMD Operationen verwenden lassen.\\
-	
+	\clearpage
 	\subsubsection{Inneres Feld}
 	Im ersten Schritt werden alle inneren Zellen berechnet. Dafür verwende ich zwei geschachtelte \texttt{for}-Schleifen:\\
 	\begin{lstlisting}[language=C, caption=Berechnung der inneren Zellen]
@@ -349,6 +350,7 @@ for (int i = 2; i < block_row - 2; i++) {
 	Für die Berechnung der Ausführungszeit wird vor und nach Ausführung der zu untersuchenden Funktion \texttt{clock\_gettime()} aufgerufen. Die Differenz aus den beiden Momentaufnahmen entspricht der jeweiligen Zeit.\\
 	
 	Zusätzlich messe ich die Ausführungszeit des kompletten Programms mit dem Linux Befehl \textit{time}. Da die Funktionen \texttt{calculate\_next\_gen()} und \texttt{field\_initializer()} den größten Abteil der Programm haben, lässt sich, zumindest näherungsweise, der MPI Overhead zum spawnen und initialisieren der Prozesse berechnen.
+	\clearpage
 	\begin{lstlisting}[language=C, caption=Berechnung der Ausführungszeit eines \textit{function calls}]
 clockid_t clk_id = CLOCK_MONOTONIC;
 double time_calc = 0;
@@ -407,7 +409,17 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 	\end{figure}
 
 	Es werden also zuerst alle Cores innerhalb eines Sockets und anschließend innerhalb eines Nodes verwendet. Je näher die ranks beieinander liegen, desto schneller ist die Kommunikation. Darauf möchte ich unter Betrachtung der AMD EPYC CPU einmal genauer eingehen.
-	
+	\subsection{Open MPI Kommunikationskanäle}
+	Der Nachrichtenaustausch bei OpenMPI kann dabei über verschiedene Kanäle Erfolgen, wie in \ref{aufgabe} angesprochen. Die Verfügbaren lassen sich mit dem Befehl \texttt{ompi\_info | grep 'MCA [mb]tl'} ausgeben.\\
+	Auf Taurus bestehen folgende Möglichkeiten:
+	\begin{enumerate}
+		\item \texttt{self} - Sinnvoll für Kommunikation zum selben rank, beispielsweise bei der Ausführung mit nur einem rank
+		\item \texttt{vader} - shared memory communication innerhalb eines Knotens 
+		\item \texttt{ofi} - OpenFabrics Interfaces, wichtig für die Verwendung von AMDs \textit{Infinity Fabric}
+		\item \texttt{tcp} - Kommunikation über das Netzwerk mittels TCP/IP
+	\end{enumerate}
+	OpenMPI versucht dann bei einer Kommunikation immer den schnellsten Kommunikationsweg zwischen zwei ranks zu finden.
+	\clearpage
 	\subsection{AMD EPYC CPU Layout} \label{cpu_layout}
 	Bevor ich zur Testmethode und den Ergebnissen übergehe, möchte ich erst auf die Struktur der AMD EPYC CPU eingehen, um Ergebnisse später besser deuten zu können.\\
 	
@@ -483,7 +495,7 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 		\caption{Logarithmische Darstellung des ungefähren Overheads.}
 	\end{figure}
 
-	Es zeigt in etwa den Overhead durch MPI. Der Overhead sollte nur von der Anzahl der ranks abhängen, da die Initialisierung von MPI und das Spawnen der Prozesse unabhängig von der Problemgröße sind. Das ist erfüllt, da alle Kurven etwa übereinander liegen.\\
+	Es zeigt in etwa den Overhead durch MPI. Der Overhead sollte nur von der Anzahl der ranks abhängen, da die Initialisierung von MPI und das Spawnen der Prozesse unabhängig von der Problemgröße ist. Das ist erfüllt, da alle Kurven etwa übereinander liegen.\\
 	Bei den ranks 1 und 4 ist der Overhead in etwa konstant und im Vergleich zur kompletten Ausführungszeit weniger als 1\%.\\
 	Danach steigt er drastisch an, bis er bei 256 ranks schon ca. 90\% ausmacht.\\
 	
@@ -528,7 +540,7 @@ printf("Calculation took %f seconds to execute.\n", time_calc);
 				131072 & 128 & 1.5304 & 5.6618 & 32.6177 \\ \hline
 				131072 & 256 & 0.796 & 2.8887 & 31.7655 \\ \hline
 			\end{tabular}
-			\caption{Messergebnisse. \textit{Initialization} und \textit{Calculation} beziehen sich auf die beiden Funktionen \texttt{field\_initializer()} und \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 4 Nachkommastellen.}
+			\caption{Messergebnisse. \textit{Initialization} und \textit{Calculation} beziehen sich auf die beiden Funktionen \texttt{field\_initializer()} und \texttt{calculate\_next\_gen()}. Zeiten sind Mittelwerte und gerundet auf 4 Nachkommastellen.}
 	\end{table}
 	\clearpage
 	\bibliography{Praktikumsbericht}
