@@ -262,7 +262,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 \end{lstlisting}
 	\begin{description}
 		\item[Bemerkung zur \texttt{clock()} Funktion:] Wie sich bei der Auswertung der Messergebnisse herausstellte, ist die \texttt{clock()} Funktion ungeeignet zur präzisen Zeitmessung. Dennoch sind die erhaltenen Werte ausreichend genau, um Trends und Ergebnisse verstehen und interpretieren zu können.\
-		Eine erneute Messreihe mit einen präziseren Funktion, wie \texttt{clock\_gettime()}, war aufgrund limitierter Rechenressourcen nicht möglich. \textit{Lessons Learned}.
+		Eine erneute Messreihe mit einer präziseren Funktion, wie \texttt{clock\_gettime()}, war aufgrund limitierter Rechenressourcen nicht möglich. \textit{Lessons Learned}.
 	\end{description}
 	
 	\subsection{Ein- und Ausgabe}
@@ -380,7 +380,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				ICC & 32768 & without SIMD & 100 & 13.8459 \\ \hline
 				ICC & 32768 & SIMDxorshift & 100 & 1.351 \\ \hline
 			\end{tabular}
-			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten gerundet auf 4 Nachkommastellen.}
+			\caption{\label{tab:init}Testergebnisse der Funktion \texttt{field\_initializer()}. Zeiten sind Mittelwerte und gerundet auf 4 Nachkommastellen.}
 	\end{table}
 	\begin{table}
 		\begin{center}
@@ -409,7 +409,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				ICC & 32768 & without SIMD & 100 & 13.8459 \\ \hline
 				ICC & 32768 & SIMD & 100 & 13.3965 \\ \hline
 			\end{tabular}
-			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten gerundet auf 4 Nachkommastellen.}
+			\caption{\label{tab:calc}Testergebnisse der Funktion \texttt{calculate\_next\_gen()}. Zeiten sind Mittelwerte und gerundet auf 4 Nachkommastellen.}
 		\end{center}
 	\end{table}
 	\clearpage
