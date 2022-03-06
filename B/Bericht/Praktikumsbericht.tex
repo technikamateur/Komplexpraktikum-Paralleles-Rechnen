@@ -1,6 +1,6 @@
 \documentclass[german,plainarticle,hyperref,utf8]{zihpub}
 \author{Daniel Körsten}
-\title{Komplexpraktikum Paralleles Rechnen - Aufgabe B}
+\title{Komplexpraktikum Paralleles Rechnen - OpenMP parallele Programmierung}
 \matno{4690396}
 \betreuer{Dr. Robert Schöne}
 
@@ -264,7 +264,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 	\section{Zeitmessung auf Taurus}
 	\subsection{Testumgebung} \label{umgebung}
 	Alle Messungen wurden auf dem Hochleistungsrechner Taurus der TU Dresden durchgeführt.\\
-	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Hier reservierte ich für die Messungen einen kompletten Node, um Schwankungen durch andere Prozesse auf dem Knoten auszuschließen. Ein Node ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
+	Verwendet habe ich die Romeo-Partition, die auf AMD Rome EPYC 7702 Prozessoren basiert \cite{hpc}. Ein EPYC 7702 besteht aus 64 physischen Kernen. \textit{Simultaneous Multithreading} ist deaktiviert. Ein Node verwendet 2 EPYC Prozessoren (auf einem Dual-Socket Board und ist mit 512 GB RAM ausgestattet. Als Betriebssystem kommt Centos 7 zum Einsatz.\\
 	Wie in der Aufgabenstellung gefordert, kompilierte ich das Programm mit dem \texttt{GCC} (\textbf{G}NU \textbf{C}ompiler \textbf{C}ollection, Version 11.2) und dem \texttt{ICC} (\textbf{I}ntel \textbf{C}ompiler \textbf{C}ollection, Version 19.0.1.144); jeweils mit der Compiler-Flag \texttt{-fopenmp}.\\
 	
 	Vor Beginn der Messung muss noch die Topologie des unterliegenden Systems betrachtet werden. Für die optimale Performance soll ein Thread pro Core ausgeführt werden, also kein Simultaneous Multithreading verwendet werden.\\
@@ -279,7 +279,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 		\item \texttt{OMP\_DISPLAY\_ENV=VERBOSE} - zur Überprüfung, ob alle Parameter korrekt gesetzt wurden
 	\end{itemize}	
 	\subsection{Testmethode}
-	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt.\\
+	Die Tests wurden automatisiert mit einem \texttt{sbatch}-Skript ausgeführt. Um Schwankungen auszugleichen, wurde jede Messung 20 mal wiederholt. Die Knoten für die Messung wurden exklusiv allkoiert.\\
 	Um herauszufinden, wie lang ein Test durchgeführt werden muss, habe ich eine Messung mit einer Wiederholung, 32 Threads und einer Feldgröße von 128 durchgeführt. Das stellt die minimale Zeit dar, die das Programm in etwa benötigt, um geladen zu werden, Threads zu spawnen und zu synchronisieren, und lag bei ca. 2 ms. Zur Berücksichtigung dieser Zeit, entschied ich mich, die Messungen mindestens 3 Größenordnungen länger, also mehr als 2 s, auszuführen.\\
 	Dabei ist zu beachten, dass die Ausführungszeit (logischerweise) mit der Feldgröße linear ansteigt. Interessanter für das Praktikum ist jedoch das Verhalten bei Thread-paralleler Ausführung. Deshalb passte ich die Anzahl der Wiederholungen an die Feldgröße an. Die genauen Details lassen sich den Tabellen \ref{tab:gcc} und
 	\ref{tab:icc} entnehmen.\\
@@ -446,7 +446,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				GCC      & 32768 & 32        & 10          & 17.7285             & 6.3286           \\
 				\hline
 			\end{tabular}
-			\caption{\label{tab:gcc}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:gcc}Testergebnisse der GCC kompilierten Version des Game-of-Life. Zeiten sind Mittelwerte und gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\begin{table}
@@ -516,7 +516,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				ICC      & 32768 & 32        & 10          & 12.3533                   & 1.7492                \\
 				\hline
 			\end{tabular}
-			\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:icc}Testergebnisse der ICC kompilierten Version des Game-of-Life. Zeiten sind Mittelwerte und gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\begin{table}
@@ -534,7 +534,7 @@ printf("Calculation took %f seconds to execute (real time).\n", omp_calc);
 				ICC      & static   & 128  & 32        & 1 000 000   & 0.0133                   & 20.6912                \\
 				\hline
 			\end{tabular}
-			\caption{\label{tab:sched}Testergebnisse der verschiedenen Scheduling-Verfahren. Zeiten gerundet auf vier Stellen.}
+			\caption{\label{tab:sched}Testergebnisse der verschiedenen Scheduling-Verfahren. Zeiten sind Mittelwerte und gerundet auf vier Stellen.}
 		\end{center}
 	\end{table}
 	\clearpage
